@@ -12,6 +12,17 @@ Hent også `https://supabase.com/docs/guides/getting-started/quickstarts/nextjs`
 
 Opprett `.env.example` med alle Supabase-nøkler dokumentert, og en typesafe `src/env.ts` som validerer env-variabler med Zod.
 
+## Sjekkliste
+
+- [ ] Pre-flight docs-sjekk kjørt
+- [ ] `@t3-oss/env-nextjs` og `zod` installert
+- [ ] `.env.example` opprettet med Supabase + (valgfri) Resend-nøkler
+- [ ] `src/env.ts` opprettet med typesikker `createEnv`-oppsett (server + client + runtimeEnv)
+- [ ] `.env.local` verifisert: finnes lokalt og er ignorert av git (nøkler ble skrevet inn i steg 05 for Supabase)
+- [ ] Verifisert at importstien `@/env` fungerer — ingen `process.env` direkte utenfor `src/env.ts`
+
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 06 i `oppstart/CHECKLIST.md` og gå til steg 07.
+
 ## Kommandoer
 
 ```bash
@@ -84,4 +95,4 @@ Kopier `.env.example` → `.env.local` og fyll inn faktiske verdier. Brukeren m�
 
 ## Avkrysning
 
-Kryss av steg 06 i `oppstart/CHECKLIST.md` når ferdig.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 06 i `oppstart/CHECKLIST.md`.
