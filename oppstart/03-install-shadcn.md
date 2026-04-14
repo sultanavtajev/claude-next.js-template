@@ -13,6 +13,18 @@ Hvis CLI-pakken er endret eller prompts har ny struktur: følg docs.
 
 Initialiser shadcn/ui og legg til basissett av komponenter.
 
+## Sjekkliste
+
+- [ ] Pre-flight docs-sjekk kjørt
+- [ ] `npx shadcn@latest init` kjørt og prompts besvart (Default / Slate / CSS variables: Yes)
+- [ ] `components.json` opprettet i roten
+- [ ] `src/lib/utils.ts` inneholder `cn()`-helper
+- [ ] `tailwind.config.ts` og `src/app/globals.css` oppdatert med shadcn-temavariabler
+- [ ] Basiskomponenter lagt til: `button input label form card dialog toast`
+- [ ] Verifisering: midlertidig `<Button>` rendres i nettleser, fjernet etterpå
+
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 03 i `oppstart/CHECKLIST.md` og gå til steg 04.
+
 ## Kommandoer
 
 ```bash
@@ -49,4 +61,4 @@ Legg midlertidig inn en `<Button>` i `src/app/page.tsx` og bekreft i nettleser a
 
 ## Avkrysning
 
-Kryss av steg 03 i `oppstart/CHECKLIST.md` når ferdig.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 03 i `oppstart/CHECKLIST.md`.
