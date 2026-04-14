@@ -17,6 +17,36 @@ Ett samlet steg for alt Supabase-arbeid:
 3. Sett opp Supabase Auth (login/signup-sider + RLS-retningslinjer)
 4. (Valgfritt) Installer Supabase CLI for migrations
 
+## Sjekkliste
+
+### Del 1 — Prosjekt
+- [ ] Pre-flight docs-sjekk kjørt
+- [ ] `AskUserQuestion` stilt: har-prosjekt / må-opprette / hopp-over
+- [ ] (Hvis må-opprette) bruker har bekreftet at prosjekt er klart i Supabase dashboard
+- [ ] Project ref, URL, publishable key, service role key samlet via `AskUserQuestion`
+- [ ] `{{SUPABASE_PROJECT_REF}}` erstattet i `CLAUDE.md` og `.claude/mcp-servers.json`
+- [ ] Nøkler skrevet til `.env.local`
+
+### Del 2 — Klienter
+- [ ] `@supabase/supabase-js` og `@supabase/ssr` installert via `pnpm add`
+- [ ] `src/lib/supabase/client.ts` opprettet (browser-klient)
+- [ ] `src/lib/supabase/server.ts` opprettet (server-klient med cookies)
+- [ ] `src/lib/supabase/proxy.ts` opprettet (session-refresh-helper)
+- [ ] `src/proxy.ts` opprettet (Next.js 16+ proxy-fil)
+
+### Del 3 — Auth
+- [ ] `src/app/login/page.tsx` opprettet (Server Component med form)
+- [ ] `src/app/login/actions.ts` opprettet (login/signup/logout Server Actions)
+- [ ] RLS-retningslinje dokumentert (skal brukes for alle brukerdata-tabeller)
+
+### Del 4 — Migrations (valgfri)
+- [ ] `supabase`-CLI installert som dev-dependency
+- [ ] `npx supabase init` kjørt
+- [ ] `npx supabase link --project-ref <ref>` kjørt
+- [ ] `db:types`, `db:push`, `db:new`-scripts lagt til i `package.json`
+
+Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle relevante bokser er `[x]` (Del 4 er valgfri), marker steg 05 i `oppstart/CHECKLIST.md` og gå til steg 06. Hvis bruker valgte "hopp-over" i Del 1, hoppes Del 2–4 over også.
+
 ## Del 1 — Supabase-prosjekt-gjennomgang
 
 ### 1. Spør om bruker allerede har Supabase-prosjekt
@@ -353,4 +383,4 @@ Legg til i `package.json`:
 
 ## Avkrysning
 
-Kryss av steg 05 i `oppstart/CHECKLIST.md` når ferdig.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]` (Del 4 er valgfri), kryss av steg 05 i `oppstart/CHECKLIST.md`.
