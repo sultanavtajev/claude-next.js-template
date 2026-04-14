@@ -35,3 +35,19 @@ Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 ## Etter oppstart
 
 `oppstart/`-mappen slettes i siste steg. Prosjektet er da et helt vanlig Next.js-prosjekt med Claude-konfigurasjonen vedlagt i `.claude/`.
+
+## Tilpasse templaten videre
+
+Templaten er designet for å endres. Noen naturlige utvidelser:
+
+- **Flere skills**: kopier en eksisterende `.claude/skills/<navn>/SKILL.md` som mal.
+- **Flere agents**: legg til `.claude/agents/<navn>.md` med frontmatter (`name`, `description`, `tools`).
+- **Flere hooks**: rediger `.claude/settings.json` og legg til scripts i `.claude/hooks/scripts/`.
+- **Andre stack-valg**: endre `oppstart/02-create-next-app.md`-flagg eller swap Prisma → Drizzle.
+
+## Forutsetninger på maskinen
+
+- Node.js 20+
+- pnpm (`npm i -g pnpm`)
+- git
+- Claude Code CLI (installert, innlogget)

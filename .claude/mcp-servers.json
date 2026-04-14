@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/mcp-servers.json",
+  "_comment": "MCP-servere for dette prosjektet. {{GITHUB_REPO}} og {{VERCEL_PROJECT}} fylles inn i oppstart-steg 01.",
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}",
+        "GITHUB_REPO": "{{GITHUB_REPO}}"
+      }
+    },
+    "vercel": {
+      "command": "npx",
+      "args": ["-y", "@vercel/mcp-adapter"],
+      "env": {
+        "VERCEL_TOKEN": "${VERCEL_TOKEN}",
+        "VERCEL_PROJECT": "{{VERCEL_PROJECT}}"
+      }
+    }
+  }
+}
