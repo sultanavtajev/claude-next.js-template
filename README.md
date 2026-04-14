@@ -52,6 +52,20 @@ Templaten er designet for å endres. Noen naturlige utvidelser:
 - **Flere hooks**: rediger `.claude/settings.json` og legg til scripts i `.claude/hooks/scripts/`.
 - **Andre stack-valg**: endre `oppstart/02-create-next-app.md`-flagg eller erstatt Supabase med annen backend (Neon+Drizzle, Convex, etc.) via nye oppstart-filer.
 
+## Windows-brukere: unngå OneDrive-sync
+
+Moderne Windows (spesielt med jobbkonto) synkroniserer `C:\Users\<navn>\`-undermapper til OneDrive. Kodeprosjekter *i* denne synkroniseringen gir problemer:
+
+- File locks under `pnpm build` / `pnpm dev` (EPERM / ENOBUFS)
+- Treg filsystem-ytelse (OneDrive queuerer skrivinger)
+- `node_modules/` synkes — enorm ytelsestreff og fyller OneDrive-kvota
+- `.git`-korrupsjon ved samtidig sync + git-write
+- Lange path-prefiks som bryter Windows' 260-tegns-grense
+
+**Anbefaling**: opprett en dedikert mappe direkte under `C:\`, f.eks. `C:\Kodeprosjekter\`, og plasser alle prosjekter der. Dette er utenfor OneDrive-sync og gir stabil utvikling. Det er også hva eksemplene i denne READMEen forutsetter.
+
+Hvis du allerede har prosjekter under `C:\Users\<navn>\...`: flytt dem ut. "Free up space"-flagget i OneDrive er ikke tilstrekkelig — mappen må være *unsynced* helt.
+
 ## Forutsetninger på maskinen
 
 - Node.js 20+
