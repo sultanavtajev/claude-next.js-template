@@ -50,6 +50,3 @@ test-results/
 
 # Claude local overrides (hold per-prosjekt)
 .claude/settings.local.json
-
-# Arbeidsdokument for templaten selv — ikke del av bootstrap
-TEMPLATE-PLAN.md
