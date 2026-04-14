@@ -38,7 +38,7 @@ Canonical doc-URLer for denne stacken:
 - [ ] [05 — Auth.js](./05-install-authjs.md) — sett opp Auth.js v5 med én provider
 - [ ] [06 — Environment](./06-configure-env.md) — lag `.env.example` med alle nødvendige nøkler dokumentert
 - [ ] [07 — Verify](./07-verify.md) — kjør dev, build, lint, typecheck — alt grønt
-- [ ] [08 — Cleanup](./08-cleanup.md) — slett `oppstart/`, gjør første commit
+- [ ] [08 — Cleanup](./08-cleanup.md) — slett `oppstart/`, gjør første commit, informér om IDE/Claude-restart
 
 ## Regler for Claude
 
