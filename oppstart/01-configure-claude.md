@@ -50,6 +50,8 @@ MCP-serverne i `.claude/mcp-servers.json` refererer til disse env-variablene (m�
 Disse krever ingen env-variabel:
 - `playwright` (@playwright/mcp) — browser-automasjon og E2E-testing
 - `next-devtools` (next-devtools-mcp) — kobler til Next.js 16+ dev-serverens `/_next/mcp`-endepunkt automatisk for build/runtime-feil og live state
+- `shadcn` (shadcn@latest mcp) — søk og hent shadcn-komponenter fra registries
+- `chrome-devtools` (chrome-devtools-mcp) — live Chrome-debugging mot åpen browser (komplementerer Playwright)
 
 Informér brukeren at disse må settes for at MCP-serverne skal virke. Fjern eventuelt servere som ikke er aktuelle fra `.claude/mcp-servers.json`.
 
