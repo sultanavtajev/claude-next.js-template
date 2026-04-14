@@ -5,7 +5,7 @@ Gjenbrukbar startmal for Next.js-prosjekter med ferdig Claude Code-konfigurasjon
 ## Bruk
 
 ```bash
-git clone <denne-repo-url> mitt-nye-prosjekt
+git clone https://github.com/sultanavtajev/claude-next.js-template.git mitt-nye-prosjekt
 cd mitt-nye-prosjekt
 claude
 ```
