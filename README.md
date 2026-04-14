@@ -4,11 +4,16 @@ Gjenbrukbar startmal for Next.js-prosjekter med ferdig Claude Code-konfigurasjon
 
 ## Bruk
 
+Naviger først til mappen der du vil opprette prosjektet (f.eks. `C:\Kodeprosjekter\`), og kjør deretter:
+
 ```bash
+cd C:\Kodeprosjekter
 git clone https://github.com/sultanavtajev/claude-next.js-template.git mitt-nye-prosjekt
 cd mitt-nye-prosjekt
 claude
 ```
+
+`mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten klonet inn.
 
 I Claude Code, si: **"Kjør oppstart"**
 
