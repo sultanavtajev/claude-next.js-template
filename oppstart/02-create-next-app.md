@@ -16,9 +16,13 @@ Generer Next.js-boilerplate i nåværende mappe med standard stack.
 ## Sjekkliste
 
 - [ ] Pre-flight docs-sjekk kjørt (se seksjonen over)
-- [ ] `npx create-next-app@latest .` kjørt med flaggsettet fra "Kommandoer"
+- [ ] Backup-filer opprettet: `.README.bak`, `.gitignore.bak`, `.CLAUDE.md.bak`
+- [ ] `npx create-next-app@latest . ... --skip-git` kjørt med flaggsettet fra "Kommandoer"
 - [ ] `package.json`, `tsconfig.json`, `next.config.ts`, `src/app/` opprettet
-- [ ] `CLAUDE.md`, `README.md` og `.claude/` er **ikke** overskrevet (verifisert med `git status`)
+- [ ] Backup-filer restaurert: `README.md`, `.gitignore`, `CLAUDE.md` er templatens versjon (ikke Next.js-defaults)
+- [ ] Ingen `.bak`-filer gjenstår (`ls -la .*.bak` gir ingen output)
+- [ ] `.claude/`, `oppstart/`, `TEMPLATE.md` urørt
+- [ ] Ingen `.git/`-mappe opprettet av create-next-app (`--skip-git` fungerte)
 - [ ] `pnpm dev` viser standard Next.js-velkomstside på `http://localhost:3000`
 - [ ] Dev-server stoppet
 
