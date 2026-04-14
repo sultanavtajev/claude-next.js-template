@@ -4,6 +4,17 @@
 
 Bekreft at alle deler av oppsettet fungerer: dev-server, bygg, lint, typecheck.
 
+## Sjekkliste
+
+- [ ] `pnpm install` kjørt uten feil
+- [ ] `pnpm db:types` kjørt (eller markert hoppet over hvis Supabase CLI ikke er linket)
+- [ ] `pnpm lint`: 0 errors
+- [ ] `pnpm typecheck` (eller `pnpm tsc --noEmit`): 0 errors
+- [ ] `pnpm build`: lykkes (env-variabel-advarsler rapporteres, men blokkerer ikke)
+- [ ] (Valgfritt) `pnpm dev` testet mot `http://localhost:3000`, dev-server stoppet
+
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]` (valgfritt-punkt unntatt), marker steg 07 i `oppstart/CHECKLIST.md` og gå til steg 08.
+
 ## Kommandoer (i rekkefølge)
 
 ```bash
@@ -41,4 +52,4 @@ pnpm dev
 
 ## Avkrysning
 
-Kryss av steg 07 i `oppstart/CHECKLIST.md` når ferdig.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]` (dev-sjekk er valgfri), kryss av steg 07 i `oppstart/CHECKLIST.md`.
