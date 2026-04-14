@@ -2,7 +2,13 @@
 
 Prosjekt-spesifikke slash-kommandoer for Claude Code. Aktiveres med `/<navn>` i Claude Code-sessionen.
 
-Nummerering gruppe: `1.x` = git, `2.x` = oppgaver, `3.x` = workspace.
+Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace.
+
+## 0. Bootstrap
+
+| Kommando | Beskrivelse |
+|----------|-------------|
+| `/0.0-oppstart` | Kjør bootstrap-prosessen — leser `oppstart/CHECKLIST.md` og eksekverer alle 9 steg i rekkefølge. Brukes én gang i nytt prosjekt rett etter kloning. |
 
 ## 1. Git
 

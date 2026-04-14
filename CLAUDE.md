@@ -59,8 +59,9 @@ design-system/
 
 ### Slash-kommandoer (Claude Code)
 
-Se `.claude/commands/README.md` for full oversikt. Gruppert: `1.x` = git, `2.x` = oppgaver, `3.x` = workspace.
+Se `.claude/commands/README.md` for full oversikt. Gruppert: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace.
 
+- `/0.0-oppstart` — kjør bootstrap (oppstart/CHECKLIST.md) for nytt prosjekt
 - `/1.0-commit` — commit alle endringer med beskrivende melding
 - `/1.1-build-commit` — verifikasjon → commit
 - `/1.2-merge-to-main` — merge feature → main og push

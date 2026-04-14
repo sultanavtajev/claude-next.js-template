@@ -46,6 +46,7 @@ Canonical doc-URLer for denne stacken:
 
 - Kjør stegene i rekkefølge. Ikke hopp over.
 - Etter hvert fullført steg: oppdater sjekklisten her (`[ ]` → `[x]`) og gå til neste.
-- Hvis et steg feiler: stopp, rapporter feilen, og spør brukeren hvordan du skal fortsette.
-- Hvis et steg krever input fra brukeren (f.eks. prosjektnavn i steg 01, design-valg i steg 04), spør før du fortsetter.
+- Hvis et steg feiler: stopp, rapporter feilen, og bruk `AskUserQuestion`-verktøyet for å avklare hvordan du skal fortsette.
+- **Alle spørsmål til brukeren skal stilles via `AskUserQuestion`-verktøyet** — ikke fritekst-spørsmål. Gruppér relaterte spørsmål i samme kall (maks 4 spørsmål per kall, 2–4 svaralternativer per spørsmål).
+- Stegfilene kan be deg stille enkeltvise spørsmål (f.eks. design-discovery i steg 04). Samle dem i ett eller flere `AskUserQuestion`-kall der det gir mening.
 - Etter steg 09 er alt ferdig — ikke gjør noe ekstra.

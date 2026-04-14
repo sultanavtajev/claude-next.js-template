@@ -15,7 +15,7 @@ claude
 
 `mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten klonet inn.
 
-I Claude Code, si: **"Kjør oppstart"**
+I Claude Code, kjør: **`/0.0-oppstart`**
 
 Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 

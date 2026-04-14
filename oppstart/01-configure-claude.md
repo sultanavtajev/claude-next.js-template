@@ -11,12 +11,14 @@ Fyll inn prosjektspesifikk metadata i `CLAUDE.md` og `.claude/mcp-servers.json` 
 
 ## Kommandoer
 
-1. Spør brukeren om følgende verdier:
+1. **Bruk `AskUserQuestion`-verktøyet** til å hente inn prosjekt-metadata. Siden disse er frie tekstverdier (ikke enum-valg), stiller du dem som enkle spørsmål med én sensibel standard-option + "Other (skriv inn verdien)". Alternativt: spør alle fem på rad via flere AskUserQuestion-kall.
+
+   Verdiene som trengs:
    - **Prosjektnavn** (f.eks. `mitt-saas`) → `{{PROJECT_NAME}}`
    - **Kort beskrivelse** (én setning) → `{{PROJECT_DESCRIPTION}}`
-   - **GitHub-repo** (f.eks. `brukernavn/mitt-saas` — kan være `TBD` hvis ikke opprettet ennå) → `{{GITHUB_REPO}}`
+   - **GitHub-repo** (f.eks. `brukernavn/mitt-saas` — `TBD` hvis ikke opprettet) → `{{GITHUB_REPO}}`
    - **Vercel-prosjektnavn** (eller `TBD`) → `{{VERCEL_PROJECT}}`
-   - **Supabase project ref** (fra Supabase dashboard → Project Settings → Reference ID; eller `TBD` hvis Supabase ikke brukes) → `{{SUPABASE_PROJECT_REF}}`
+   - **Supabase project ref** (fra dashboard → Project Settings → Reference ID; eller `TBD`) → `{{SUPABASE_PROJECT_REF}}`
 
    **Merk**: hvis brukeren ikke bruker Supabase eller Resend, kan de beholde `TBD`/placeholder — MCP-serveren vil bare ikke fungere før verdien er fylt inn. Alternativt: fjern serveren fra `.claude/mcp-servers.json`.
 

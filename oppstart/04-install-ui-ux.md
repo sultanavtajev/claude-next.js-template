@@ -35,50 +35,30 @@ Forventet: SKILL.md + scripts/ + eventuelle støttefiler.
 
 ## Del 2 — Design discovery (interaktivt med brukeren)
 
-**Viktig**: Still brukeren disse spørsmålene én etter én. Ikke gjett. Bruk svarene for å gi anbefalinger.
+**Viktig**: Bruk `AskUserQuestion`-verktøyet. Ikke spør i fritekst. Siden AskUserQuestion tillater maks 4 spørsmål per kall og maks 4 valg per spørsmål, del opp slik:
 
-### Spørsmål 1: Prosjekttype
+### Kall 1 — AskUserQuestion (4 spørsmål)
 
-Hva er det primære formålet med applikasjonen?
-- **SaaS / dashboard** (admin-panel, analytics, CRM)
-- **Landing page / marketing** (produktside, portfolio, agent)
-- **E-handel** (nettbutikk, bookingflyt)
-- **Community / innhold** (blog, forum, media)
-- **Intern verktøy** (intranett, HR-system, skjemaer)
-- **Annet** — la bruker beskrive
+| Spørsmål | Header | Valg (maks 4) |
+|----------|--------|---------------|
+| Hva er det primære formålet? | Prosjekttype | SaaS/dashboard, Landing/marketing, E-handel, Community/innhold |
+| Hvem bruker appen? | Målgruppe | B2B/enterprise, B2C/consumer, Utviklere/tech, Kreative/designere |
+| Hvilken følelse skal appen gi? | Vibe | Profesjonell, Minimalistisk, Bold/leken, Luksuriøs/teknisk |
+| Primærfarge-retning? | Farger | Nøytral (gråskala), Varm (rød/oransje), Kald (blå/grønn), Spesifikk brand-farge |
 
-### Spørsmål 2: Målgruppe
+### Kall 2 — AskUserQuestion (1 spørsmål)
 
-Hvem bruker appen?
-- **B2B / enterprise** (profesjonelle, teknisk kompetente)
-- **B2C / consumer** (allmennheten)
-- **Utviklere / tech** (DX-fokusert)
-- **Kreative / designere** (visuelt kresne)
-- **Blandet / ukjent** (nøytral)
+| Spørsmål | Header | Valg (maks 4) |
+|----------|--------|---------------|
+| Dark mode-strategi? | Dark mode | Bare light, Bare dark, Begge (default light), Begge (default dark) |
 
-### Spørsmål 3: Vibe
+### Ved "Intern verktøy", "Blandet", "Annet", etc.
 
-Hvilken følelse skal appen gi?
-- **Profesjonell** — trygg, seriøs, korporat
-- **Minimalistisk** — rent, fokusert, luftig
-- **Leken** — fargerik, uformell, engasjerende
-- **Bold** — sterk, kontrast, selvsikker
-- **Luksuriøs** — raffinert, monokrom, typografi-tung
-- **Teknisk** — data-tett, funksjonell, kompakt
+Brukeren kan alltid velge "Other" og skrive fritekst — AskUserQuestion håndterer dette automatisk. Bruk fritekst-svaret direkte i `search.py`-spørringen i Del 4.
 
-### Spørsmål 4: Primærfarge-retning
+### Hvis bruker velger "Spesifikk brand-farge"
 
-- **Nøytral** (gråskala + én accent) — trygt valg, passer SaaS/dashboards
-- **Varm** (rød/oransje/gul/rosa) — energi, kreativ, retail
-- **Kald** (blå/grønn/lilla) — tillit, finans, helse
-- **Spesifikk brand-farge** — bruker oppgir hex-kode
-
-### Spørsmål 5: Dark mode
-
-- Bare light mode
-- Bare dark mode
-- Begge (default light, bryter til dark)
-- Begge (default dark, bryter til light)
+Gjør et oppfølgings-AskUserQuestion-kall der bruker oppgir hex-koden som fritekst via "Other"-opsjon.
 
 ## Del 3 — Gi anbefalinger
 
