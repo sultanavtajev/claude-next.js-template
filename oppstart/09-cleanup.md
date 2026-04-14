@@ -2,13 +2,14 @@
 
 ## Mål
 
-Slett `oppstart/`-mappen, lag final commit uten oppstart-instruksjonene, og push til remote (hvis opprettet i steg 08).
+Slett `oppstart/`-mappen og `TEMPLATE.md`, lag final commit uten template-artefaktene, og push til remote (hvis opprettet i steg 08).
 
 ## Sjekkliste
 
 - [ ] `rm -rf oppstart/` kjørt
-- [ ] `git status` viser at `oppstart/` er fjernet, ingen andre uventede endringer
-- [ ] Final commit laget: `"chore: fjern oppstart-instruksjoner etter bootstrap"`
+- [ ] `rm TEMPLATE.md` kjørt (templatens egen dokumentasjon — ikke en del av prosjektet)
+- [ ] `git status` viser at `oppstart/` og `TEMPLATE.md` er fjernet, ingen andre uventede endringer
+- [ ] Final commit laget: `"chore: fjern template-artefakter etter bootstrap"`
 - [ ] (Hvis remote fra steg 08) `git push origin main` kjørt
 - [ ] (Hvis feature-branch) synket og pushet til `origin/feature`
 - [ ] IDE/Claude-restart-instruksjoner gitt til bruker (lukk + åpne, `/mcp`-verifisering)
@@ -18,15 +19,16 @@ Kryss av hver `[ ]` → `[x]` fortløpende. Siste boks er symbolsk siden mappen 
 ## Kommandoer
 
 ```bash
-# Slett oppstart-instruksjonene — de er brukt og ikke lenger nødvendige
+# Slett oppstart-instruksjonene og template-dokumentasjonen
 rm -rf oppstart/
+rm TEMPLATE.md
 
-# Bekreft git-status — skal vise at oppstart/ er slettet
+# Bekreft git-status — skal vise at oppstart/ og TEMPLATE.md er slettet
 git status
 
 # Stage slettingen og commit
 git add -A
-git commit -m "chore: fjern oppstart-instruksjoner etter bootstrap"
+git commit -m "chore: fjern template-artefakter etter bootstrap"
 ```
 
 ## Push til remote (hvis steg 08 opprettet GitHub-repo)
@@ -44,9 +46,10 @@ git checkout main
 ## Forventet resultat
 
 - `oppstart/`-mappen er borte.
+- `TEMPLATE.md` er borte.
 - To commits i loggen:
   1. `"chore: bootstrap fra claude-next.js-template"` (fra steg 08)
-  2. `"chore: fjern oppstart-instruksjoner etter bootstrap"` (fra dette steget)
+  2. `"chore: fjern template-artefakter etter bootstrap"` (fra dette steget)
 - `git status` viser ren working tree.
 - (Hvis remote satt opp) Begge branches pushet til GitHub.
 

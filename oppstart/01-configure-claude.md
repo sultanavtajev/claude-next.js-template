@@ -41,17 +41,21 @@ Ikke spør brukeren om disse nå — de krever login/ressursopprettelse og hånd
 
 Gjør erstatning i disse filene:
 - `CLAUDE.md`
-- `README.md` (hvis det inneholder placeholders — sjekk)
+- `README.md` (prosjektets egen README — begge placeholders er her)
 
-**Ikke** rør `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}` i dette steget — de fylles inn senere.
+**Ikke** rør:
+- `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}` — fylles inn i senere steg.
+- `TEMPLATE.md` — dokumentasjon for selve templaten, slettes i steg 09.
 
 ### 3. Verifiser at bare de riktige placeholders gjenstår
 
 ```bash
-grep -r "{{" . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=oppstart
+grep -r "{{" . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=oppstart --exclude=TEMPLATE.md
 ```
 
 Forventet: treff **kun** på `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`. Ingen `{{PROJECT_NAME}}` eller `{{PROJECT_DESCRIPTION}}`.
+
+Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om templaten (inklusive eksempel-placeholders), og slettes uansett i steg 09.
 
 ## Forventet resultat
 
