@@ -1,0 +1,82 @@
+---
+description: Multi-agent team-oppgave — sett opp koordinert team med teammates, delt oppgaveliste og per-agent sjekklister.
+argument-hint: <oppgavebeskrivelse>
+---
+
+## Agent Team — Oppgave
+
+$ARGUMENTS
+
+## Instruksjoner for teamoppsett
+
+Analyser oppgaven og sett opp et agent team slik du mener er best. Følg disse retningslinjene:
+
+### Teamstruktur
+
+- Velg antall teammates basert på hvor mange uavhengige arbeidsstrømmer oppgaven naturlig deler seg i.
+- Gi hver teammate et tydelig navn og en avgrenset rolle.
+- Hver teammate skal ha en detaljert spawn-prompt med all nødvendig kontekst (de arver **ikke** samtalens historikk).
+
+### Oppgavefordeling
+
+- Del arbeidet slik at ingen teammates redigerer samme fil.
+- Lag 5–6 oppgaver per teammate i den delte oppgavelisten.
+- Oppgavene skal være passe store: selvstendige enheter med et klart leveransemål.
+- Sett opp avhengigheter mellom oppgaver der det er nødvendig.
+
+### Koordinering
+
+- Du (lead) skal **ikke** implementere selv — bruk delegate mode og kun koordinér.
+- Krev plan-godkjenning fra teammates før de gjør endringer i eksisterende kode.
+- Vent til alle teammates er ferdige før du oppsummerer resultater.
+- Hvis en teammate står fast: hjelp dem videre eller omdisponer oppgaven.
+
+### Kvalitet
+
+- Sørg for at teammates kjenner til prosjektets konvensjoner (`CLAUDE.md`, kodestil, mappestruktur, `design-system/MASTER.md`).
+- Hver teammate skal verifisere sitt eget arbeid (kjøre relevante tester, sjekke TypeScript-feil).
+- Oppsummer funn og leveranser fra alle teammates når arbeidet er ferdig.
+
+## Arbeidsmetodikk
+
+- Intervju brukeren via `AskUserQuestion` for å bygge spec.
+- Gå gjennom funksjonaliteten fra start til slutt som en bruker: steg én — hva ser vi og hva bør vi se, steg to — samme, osv.
+- Del oppgaven i så små deler som mulig. Vær grundig. Én komponent/funksjon = én oppgave.
+
+## Sub-agents (under teammates)
+
+Teammates kan i tillegg spawne sub-agents for parallelle, uavhengige underoppgaver (research, typer, docs). Markér slike i sjekklisten med `[SUB-AGENT]`.
+
+## Kodestruktur
+
+- Feature-mapper: `src/features/[navn]/components/`, `hooks/`, `utils/`.
+- Ingen direkte API-kall i komponenter — Server Actions eller hooks.
+- Maks 100–150 linjer per fil — del opp ved behov.
+- Sjekk at alle påvirkede deler tilpasses (backend + frontend).
+
+## UI/UX
+
+- Alle teammates som lager UI skal bruke `design-system-retrieval`-skillen (MASTER + overrides-mønster).
+- shadcn-komponenter først — lag nye komponenter i shadcn-stil ved behov.
+- Alt UI responsivt (mobile-first), strukturert og intuitivt.
+
+## Sjekkliste
+
+- Opprett egen mappe for oppgaven: `$CLAUDE_PROJECT_DIR/teknisk/sjekkliste/<oppgave-navn-i-kebab-case>/`.
+- Samlested for **alle** sjekklister knyttet til oppgaven.
+- Filer i mappen:
+  - `hovedsjekkliste.md` — overordnet med alle steg for hele oppgaven.
+  - `<teammate-navn>.md` — én per teammate med deres spesifikke oppgaver.
+- Hver agent oppdaterer sin egen sjekkliste-fil og krysser av etterhvert.
+- Lead holder `hovedsjekkliste.md` oppdatert basert på agentenes fremgang.
+- Marker oppgaver egnet for sub-agents med `[SUB-AGENT]`.
+- Sjekk at alle oversettelser er lagt til.
+
+## Når alt i sjekklisten er ferdig implementert
+
+1. Kjør full verifikasjon: `pnpm typecheck && pnpm lint && pnpm build`.
+2. Bruk `next-devtools`-MCP for å sjekke runtime-feil og fiks dem.
+3. Commit endringer i alle filer via `/commit`.
+4. **Ikke** merge til andre brancher og **ikke** push.
+5. Legg til `OK - ` først i mappenavnet til oppgavens sjekkliste-mappe.
+6. (Valgfritt, hvis prosjektet har en `ønskeliste`-tabell i Supabase) Logg fullførelse via `supabase`-MCP.

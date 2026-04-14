@@ -29,8 +29,9 @@ Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 - `CLAUDE.md` — prosjektkonfig for Claude Code (med placeholders)
 - `.claude/skills/` — Next.js-spesifikke ferdigheter Claude aktiverer ved behov
 - `.claude/agents/` — delegerbare subagents (reviewer, build-resolver)
+- `.claude/commands/` — slash-kommandoer (workspace, git, task-workflows)
 - `.claude/hooks/` — automatisk formatering + guard mot sensitive filer
-- `.claude/mcp-servers.json` — Vercel + GitHub MCP-config
+- `.claude/mcp-servers.json` — Vercel + GitHub + Supabase + Resend + Playwright + Context7 + shadcn + Chrome DevTools + next-devtools
 - `oppstart/` — engangs-instruksjoner som slettes etter bootstrap
 
 ## Etter oppstart

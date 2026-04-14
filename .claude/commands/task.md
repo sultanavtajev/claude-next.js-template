@@ -1,0 +1,54 @@
+---
+description: Start en solo-oppgave med full arbeidsmetodikk — spec-intervju, sjekkliste, sub-agents, verifikasjon.
+argument-hint: <oppgavebeskrivelse>
+---
+
+## Oppgave
+
+$ARGUMENTS
+
+## Arbeidsmetodikk
+
+- Intervju brukeren via `AskUserQuestion` for å bygge spec.
+- Gå gjennom funksjonaliteten fra start til slutt som en bruker: steg én — hva ser vi og hva bør vi se, steg to — samme, osv. Bruk så mange steg som nødvendig.
+- Del oppgaven i så små deler som mulig.
+- Vær grundig. Atomære enheter: én komponent/funksjon = én oppgave.
+
+## Sub-agents
+
+Bruk sub-agents for parallelle eller uavhengige oppgaver som kan utføres samtidig. Deleger når:
+- Oppgaver kan kjøres uavhengig av hverandre.
+- Research/analyse som ikke blokkerer hovedflyten.
+- Testing eller validering av isolerte komponenter.
+- Generering av dokumentasjon eller typer.
+
+Hver sub-agent får ett klart, avgrenset ansvar. Koordiner resultater fra sub-agents før neste hovedsteg.
+
+## Kodestruktur
+
+- Feature-mapper: `src/features/[navn]/components/`, `hooks/`, `utils/` — eller følg eksisterende mønster i prosjektet.
+- Ingen direkte API-kall i komponenter — bruk Server Actions eller hooks.
+- Maks 100–150 linjer per fil — del opp ved behov.
+- Sjekk at alle deler som blir påvirket av endringen tilpasses (backend + frontend).
+
+## UI/UX
+
+- Bruk `design-system-retrieval`-skillen: les alltid `design-system/MASTER.md` (+ eventuell side-override) før UI-generering.
+- Bruk shadcn-komponenter hvis de finnes. Lag nye komponenter i shadcn-stil ved behov, ikke parallelle stilretninger.
+- Alt UI skal være responsivt (mobile-first) og fungere på alle skjermstørrelser.
+- Ta hensyn til struktur, oversikt og intuitivitet.
+
+## Sjekkliste
+
+- Lag én `.md`-fil som sjekkliste under `$CLAUDE_PROJECT_DIR/teknisk/sjekkliste/<oppgave-navn-i-kebab-case>.md`. Kryss av etterhvert som deler implementeres.
+- Marker oppgaver som egner seg for sub-agents med `[SUB-AGENT]` i sjekklisten.
+- Sjekk at alle oversettelser er lagt til (hvis appen er flerspråklig).
+
+## Når alt i sjekklisten er ferdig implementert
+
+1. Kjør full verifikasjon: `pnpm typecheck && pnpm lint && pnpm build`.
+2. Bruk `next-devtools`-MCP for å sjekke runtime-feil i dev-server og fiks dem.
+3. Commit endringer i alle filer via `/commit`.
+4. **Ikke** merge til andre brancher og **ikke** push.
+5. Legg til `OK - ` først i navnet på sjekkliste-filen (markerer som fullført).
+6. (Valgfritt, hvis prosjektet har en `ønskeliste`-tabell i Supabase) Logg fullførelse via `supabase`-MCP.

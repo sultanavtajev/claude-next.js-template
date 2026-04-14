@@ -45,6 +45,8 @@ design-system/
 
 ## Kommandoer
 
+### Shell
+
 - `pnpm dev` — dev-server med Turbopack
 - `pnpm build` — produksjonsbygg
 - `pnpm start` — start produksjonsbygg
@@ -54,6 +56,20 @@ design-system/
 - `pnpm db:push` — kjør migrasjoner mot linket prosjekt
 - `pnpm db:types` — generer TypeScript-typer fra schema
 - `npx supabase start` — kjør Supabase lokalt (Docker) — valgfritt
+
+### Slash-kommandoer (Claude Code)
+
+Se `.claude/commands/README.md` for full oversikt. Kjerne-kommandoer:
+
+- `/task <beskrivelse>` — solo-oppgave med spec-intervju + sjekkliste
+- `/task-team <beskrivelse>` — multi-agent team-oppgave
+- `/commit` — commit alle endringer med beskrivende melding
+- `/build-commit` — verifikasjon → commit
+- `/merge-to-main` — merge feature → main og push
+- `/workspace-start <navn>` — opprett git worktree + VS Code
+- `/workspace-finish <navn>` — merge workspace tilbake, rydd opp
+
+**Branch-konvensjon**: `feature` er utviklingsbranch, `main` er release. Workspace-kommandoene forutsetter dette — endre i `.claude/commands/*.md` hvis prosjektet bruker annen modell.
 
 ## Design system (låst)
 

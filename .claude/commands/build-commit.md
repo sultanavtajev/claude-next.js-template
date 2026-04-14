@@ -1,0 +1,32 @@
+---
+description: Kjør build, fiks feil, og commit alle endringer.
+---
+
+Kjør build, fiks eventuelle feil, og commit alle endringer.
+
+## Instruksjoner
+
+### 1. Kjør full verifikasjon
+
+Bruk `nextjs-verification`-skillen — den kjører typecheck → lint → build i riktig rekkefølge:
+
+```bash
+pnpm typecheck
+pnpm lint
+pnpm build
+```
+
+### 2. Sjekk resultatet
+
+**Hvis alt lykkes uten feil:**
+- Gå rett til steg 3 (commit).
+
+**Hvis noe feiler:**
+- Vis feilmeldingene til brukeren.
+- Bruk `nextjs-build-resolver`-agenten hvis det er kompliserte byggefeil (hydration, Server/Client-grense, Supabase-cookies-feil osv.).
+- Spør brukeren hva som skal gjøres: fikse feilene, ignorere og committe uansett, eller avbryte.
+- Hvis brukeren vil fikse: fiks feilene og kjør verifikasjonen igjen. Gjenta til alt er grønt.
+
+### 3. Commit alle endringer
+
+Kjør `/commit`.
