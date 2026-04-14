@@ -4,6 +4,28 @@
 
 Reset template-repoets git-historikk, opprett fersk lokal historikk, opprett GitHub-repo med remote og push, og (valgfritt) link prosjektet til Vercel. Fyll inn `{{GITHUB_REPO}}` og `{{VERCEL_PROJECT}}`-placeholders.
 
+## Sjekkliste
+
+### Del 1 — Reset git-historikk
+- [ ] Pre-flight: `gh --version` OK (og `vercel --version` hvis Vercel skal brukes)
+- [ ] `rm -rf .git` + `git init` + `git branch -M main` kjørt
+- [ ] Første commit laget: `"chore: bootstrap fra claude-next.js-template"`
+
+### Del 2 — GitHub
+- [ ] `gh auth status` OK (bruker har kjørt `gh auth login` om nødvendig)
+- [ ] Repo-detaljer samlet via `AskUserQuestion`: navn, synlighet, feature-branch ja/nei
+- [ ] `gh repo create` kjørt; `origin` satt, `main` pushet
+- [ ] (Hvis valgt) `feature`-branch opprettet og pushet
+- [ ] `{{GITHUB_REPO}}` erstattet med `<bruker>/<repo-navn>` i `CLAUDE.md` og `.claude/mcp-servers.json`
+
+### Del 3 — Vercel (valgfri)
+- [ ] `AskUserQuestion`: skal Vercel linkes nå?
+- [ ] (Hvis ja) `vercel whoami` OK (bruker har kjørt `vercel login` om nødvendig)
+- [ ] (Hvis ja) `vercel link` kjørt; `.vercel/project.json` finnes
+- [ ] (Hvis ja) `{{VERCEL_PROJECT}}` erstattet i `CLAUDE.md` og `.claude/mcp-servers.json`
+
+Kryss av hver `[ ]` → `[x]` fortløpende. Når Del 1 + Del 2 er `[x]` (Del 3 er valgfri), marker steg 08 i `oppstart/CHECKLIST.md` og gå til steg 09.
+
 ## Pre-flight
 
 - `gh` CLI installert. Sjekk med `gh --version`. Hvis ikke: `winget install GitHub.cli` (Windows) eller se `https://cli.github.com/`.
@@ -136,4 +158,4 @@ Etter link genereres `.vercel/project.json` lokalt. Les feltet `projectId` eller
 
 ## Avkrysning
 
-Kryss av steg 08 i `oppstart/CHECKLIST.md` når ferdig.
+Se `## Sjekkliste` øverst i denne filen. Når Del 1 + Del 2 er fullført (Del 3 Vercel er valgfri), kryss av steg 08 i `oppstart/CHECKLIST.md`.
