@@ -166,11 +166,13 @@ callbacks: {
 },
 ```
 
-Brukes sammen med middleware-export:
+Brukes sammen med proxy-export (Next.js 16+):
 ```ts
-// src/middleware.ts
-export { auth as middleware } from "@/lib/auth";
+// src/proxy.ts
+export { auth as proxy } from "@/lib/auth";
 ```
+
+> **Merk**: I Next.js <16 het filen `middleware.ts` og eksporten `middleware`. Hvis brukeren er på eldre versjon, bruk den syntaksen i stedet.
 
 ## Bruk i komponenter
 

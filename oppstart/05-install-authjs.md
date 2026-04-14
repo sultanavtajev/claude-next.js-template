@@ -98,21 +98,25 @@ import { handlers } from "@/lib/auth";
 export const { GET, POST } = handlers;
 ```
 
-### `src/middleware.ts`
+### `src/proxy.ts`
+
+Next.js 16+ bruker `proxy.ts` (tidligere `middleware.ts` — deprecated fra v16.0.0).
 
 ```typescript
-export { auth as middleware } from "@/lib/auth";
+export { auth as proxy } from "@/lib/auth";
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
 ```
 
+**Viktig**: ikke stol på proxy alene for autorisering — valider alltid session så nær datahenting som mulig (i Server Components eller route handlers).
+
 ## Forventet resultat
 
 - `next-auth@beta` og `@auth/prisma-adapter` i dependencies.
 - `prisma/schema.prisma` har Auth.js-modeller.
-- `src/lib/auth.ts`, `src/app/api/auth/[...nextauth]/route.ts`, `src/middleware.ts` opprettet.
+- `src/lib/auth.ts`, `src/app/api/auth/[...nextauth]/route.ts`, `src/proxy.ts` opprettet.
 
 ## Feilsøking
 

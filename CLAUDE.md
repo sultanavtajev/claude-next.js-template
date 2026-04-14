@@ -27,7 +27,7 @@ src/
 │   ├── auth.ts          # Auth.js-config
 │   ├── db.ts            # Prisma-client
 │   └── utils.ts
-└── middleware.ts
+└── proxy.ts             # Next.js 16+ (tidligere middleware.ts)
 prisma/
 └── schema.prisma
 ```

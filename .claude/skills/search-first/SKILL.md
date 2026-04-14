@@ -9,7 +9,7 @@ Next.js og tilhørende stack (React, Auth.js v5, Prisma, shadcn) endrer seg ofte
 
 ## Når denne skillen aktiveres
 
-- Brukeren ber om en ny feature som involverer Next.js-API (routing, caching, streaming, Server Actions, middleware).
+- Brukeren ber om en ny feature som involverer Next.js-API (routing, caching, streaming, Server Actions, proxy/middleware).
 - Du skal røre auth-flyt, database-tilgang, eller rendering-grense (Server vs Client).
 - Du er usikker på om en pattern er fortsatt gjeldende (f.eks. `getServerSession` vs `auth()`).
 - Du skal legge til en ny shadcn-komponent eller oppgradere en dep.

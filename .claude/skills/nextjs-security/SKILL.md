@@ -117,14 +117,16 @@ const users = await db.$queryRawUnsafe(`SELECT * FROM User WHERE email = '${emai
 
 React escaper innhold by default. Farlig kun når du bruker `dangerouslySetInnerHTML` — sanitér først med `DOMPurify` eller tilsvarende.
 
-## Middleware til route-beskyttelse
+## Proxy til route-beskyttelse (Next.js 16+)
 
-`src/middleware.ts` kjører før hver request. Bruk til å redirecte uautoriserte brukere før sider laster:
+`src/proxy.ts` (tidligere `middleware.ts` — deprecated fra Next.js 16) kjører før hver request. Bruk til å redirecte uautoriserte brukere før sider laster:
 
 ```ts
-export { auth as middleware } from "@/lib/auth";
+export { auth as proxy } from "@/lib/auth";
 
 export const config = {
   matcher: ["/dashboard/:path*", "/settings/:path*"],
 };
 ```
+
+**Viktig**: ikke bruk proxy som eneste autorisering. Valider alltid session også i Server Components og route handlers — server-handlers kan ikke alltid dekkes av matcher, og en refactor kan stille skru av proxy-beskyttelsen uten at du merker det.
