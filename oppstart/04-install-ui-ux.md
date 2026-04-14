@@ -13,6 +13,21 @@ Installer ui-ux-pro-max-skillen og bruk den til å etablere et **låst, prosjekt
 
 Resultat: én valgt kombinasjon av (stil + palette + fonts) som skrives inn i `src/app/globals.css` + `CLAUDE.md`. Ingen ad-hoc design-valg senere.
 
+## Sjekkliste
+
+- [ ] Pre-flight docs-sjekk kjørt
+- [ ] `npx uipro-cli init --ai claude` kjørt; `.claude/skills/ui-ux-pro-max/` finnes
+- [ ] Discovery-spørsmål stilt via `AskUserQuestion`: prosjekttype, målgruppe, vibe, farger
+- [ ] Discovery-spørsmål stilt: dark mode-strategi
+- [ ] 2–3 anbefalte kombinasjoner presentert; bruker har valgt én
+- [ ] `design-system/MASTER.md` generert via `python3 .claude/skills/ui-ux-pro-max/scripts/search.py ... --design-system --persist`
+- [ ] `src/app/globals.css` oppdatert med CSS-variabler fra MASTER
+- [ ] `tailwind.config.ts` + `src/app/layout.tsx` oppdatert hvis custom fonts
+- [ ] `CLAUDE.md` "Design system (låst)"-seksjon fylt inn med konkrete verdier
+- [ ] `design-system/`-mappen stage-klar for commit
+
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 04 i `oppstart/CHECKLIST.md` og gå til steg 05.
+
 ## Forutsetninger
 
 - Steg 03 ferdig (shadcn/ui er initialisert med default-farger).
@@ -168,4 +183,4 @@ git add design-system/
 
 ## Avkrysning
 
-Kryss av steg 04 i `oppstart/CHECKLIST.md` når ferdig.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 04 i `oppstart/CHECKLIST.md`.
