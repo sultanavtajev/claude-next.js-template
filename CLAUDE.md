@@ -59,15 +59,18 @@ design-system/
 
 ### Slash-kommandoer (Claude Code)
 
-Se `.claude/commands/README.md` for full oversikt. Kjerne-kommandoer:
+Se `.claude/commands/README.md` for full oversikt. Gruppert: `1.x` = git, `2.x` = oppgaver, `3.x` = workspace.
 
-- `/task <beskrivelse>` — solo-oppgave med spec-intervju + sjekkliste
-- `/task-team <beskrivelse>` — multi-agent team-oppgave
-- `/commit` — commit alle endringer med beskrivende melding
-- `/build-commit` — verifikasjon → commit
-- `/merge-to-main` — merge feature → main og push
-- `/workspace-start <navn>` — opprett git worktree + VS Code
-- `/workspace-finish <navn>` — merge workspace tilbake, rydd opp
+- `/1.0-commit` — commit alle endringer med beskrivende melding
+- `/1.1-build-commit` — verifikasjon → commit
+- `/1.2-merge-to-main` — merge feature → main og push
+- `/2.0-task <beskrivelse>` — solo-oppgave med spec-intervju + sjekkliste
+- `/2.1-task-team <beskrivelse>` — multi-agent team-oppgave
+- `/3.0-workspace-start <navn>` — opprett git worktree + VS Code
+- `/3.1-workspace-merge <navn>` — merge workspace, behold worktree
+- `/3.2-workspace-reload <navn>` — gjenåpne eksisterende workspace
+- `/3.3-workspace-discard <navn>` — forkast workspace uten merge
+- `/3.4-workspace-finish <navn>` — merge workspace tilbake, rydd opp
 
 **Branch-konvensjon**: `feature` er utviklingsbranch, `main` er release. Workspace-kommandoene forutsetter dette — endre i `.claude/commands/*.md` hvis prosjektet bruker annen modell.
 

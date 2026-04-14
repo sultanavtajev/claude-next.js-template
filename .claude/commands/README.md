@@ -2,30 +2,32 @@
 
 Prosjekt-spesifikke slash-kommandoer for Claude Code. Aktiveres med `/<navn>` i Claude Code-sessionen.
 
-## Oppgaver
+Nummerering gruppe: `1.x` = git, `2.x` = oppgaver, `3.x` = workspace.
+
+## 1. Git
 
 | Kommando | Beskrivelse |
 |----------|-------------|
-| `/task <oppgave>` | Solo-oppgave med full arbeidsmetodikk, sjekkliste, sub-agents, kodestruktur og UI/UX-krav |
-| `/task-team <oppgave>` | Multi-agent team-oppgave. Setter opp koordinert team med teammates, delt oppgaveliste og per-agent sjekklister |
+| `/1.0-commit` | Commit alle endringer med beskrivende melding |
+| `/1.1-build-commit` | Kjør build, fiks feil, og commit |
+| `/1.2-merge-to-main` | Commit, merge feature → main lokalt, push, tilbake til feature |
 
-## Workspace (git worktree)
-
-| Kommando | Beskrivelse |
-|----------|-------------|
-| `/workspace-start <navn>` | Opprett nytt workspace med egen branch og åpne VS Code |
-| `/workspace-merge <navn>` | Merge workspace-branch til feature, behold worktree |
-| `/workspace-reload <navn>` | Gjenåpne eksisterende workspace i VS Code |
-| `/workspace-discard <navn>` | Forkast workspace uten merge, slett worktree og branch |
-| `/workspace-finish <navn>` | Sjekk ucommittede endringer, merge til feature, rydd opp workspace |
-
-## Git
+## 2. Oppgaver
 
 | Kommando | Beskrivelse |
 |----------|-------------|
-| `/commit` | Commit alle endringer med beskrivende melding |
-| `/build-commit` | Kjør build, fiks feil, og commit |
-| `/merge-to-main` | Commit, merge feature → main lokalt, push, tilbake til feature |
+| `/2.0-task <oppgave>` | Solo-oppgave med full arbeidsmetodikk, sjekkliste, sub-agents, kodestruktur og UI/UX-krav |
+| `/2.1-task-team <oppgave>` | Multi-agent team-oppgave. Setter opp koordinert team med teammates, delt oppgaveliste og per-agent sjekklister |
+
+## 3. Workspace (git worktree)
+
+| Kommando | Beskrivelse |
+|----------|-------------|
+| `/3.0-workspace-start <navn>` | Opprett nytt workspace med egen branch og åpne VS Code |
+| `/3.1-workspace-merge <navn>` | Merge workspace-branch til feature, behold worktree |
+| `/3.2-workspace-reload <navn>` | Gjenåpne eksisterende workspace i VS Code |
+| `/3.3-workspace-discard <navn>` | Forkast workspace uten merge, slett worktree og branch |
+| `/3.4-workspace-finish <navn>` | Sjekk ucommittede endringer, merge til feature, rydd opp workspace |
 
 ## Konvensjoner disse kommandoene antar
 
