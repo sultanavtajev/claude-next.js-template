@@ -1,4 +1,4 @@
-# Steg 09 — Remote-oppsett (Git, GitHub, Vercel)
+# Steg 08 — Remote-oppsett (Git, GitHub, Vercel)
 
 ## Mål
 
@@ -136,4 +136,4 @@ Etter link genereres `.vercel/project.json` lokalt. Les feltet `projectId` eller
 
 ## Avkrysning
 
-Kryss av steg 09 i `oppstart/CHECKLIST.md` når ferdig.
+Kryss av steg 08 i `oppstart/CHECKLIST.md` når ferdig.

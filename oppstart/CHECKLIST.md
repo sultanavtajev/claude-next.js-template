@@ -38,12 +38,11 @@ Canonical doc-URLer for denne stacken:
 - [ ] [02 — create-next-app](./02-create-next-app.md) — generer Next.js-boilerplate
 - [ ] [03 — shadcn/ui](./03-install-shadcn.md) — init shadcn og legg til basiskomponenter
 - [ ] [04 — UI/UX design system](./04-install-ui-ux.md) — installer ui-ux-pro-max og lås stil/palette/fonts
-- [ ] [05 — Supabase](./05-install-supabase.md) — installer @supabase/ssr-klienter + proxy
-- [ ] [06 — Supabase Auth](./06-install-supabase-auth.md) — login/signup-sider + RLS-retningslinjer
-- [ ] [07 — Environment](./07-configure-env.md) — lag `.env.example` med alle nødvendige nøkler dokumentert
-- [ ] [08 — Verify](./08-verify.md) — kjør dev, build, lint, typecheck — alt grønt
-- [ ] [09 — Remote-oppsett](./09-git-setup.md) — reset git-historikk, GitHub-repo-gjennomgang (`gh auth`, opprett repo, push), Vercel-link (valgfritt)
-- [ ] [10 — Cleanup](./10-cleanup.md) — slett `oppstart/`, final commit, push, informér om IDE/Claude-restart
+- [ ] [05 — Supabase](./05-install-supabase.md) — prosjekt-gjennomgang, klienter, auth-sider, RLS, (valgfritt) CLI + migrations
+- [ ] [06 — Environment](./06-configure-env.md) — lag `.env.example` med alle nødvendige nøkler dokumentert
+- [ ] [07 — Verify](./07-verify.md) — kjør dev, build, lint, typecheck — alt grønt
+- [ ] [08 — Remote-oppsett](./08-git-setup.md) — reset git-historikk, GitHub-repo-gjennomgang (`gh auth`, opprett repo, push), Vercel-link (valgfritt)
+- [ ] [09 — Cleanup](./09-cleanup.md) — slett `oppstart/`, final commit, push, informér om IDE/Claude-restart
 
 ## Regler for Claude
 
@@ -52,4 +51,4 @@ Canonical doc-URLer for denne stacken:
 - Hvis et steg feiler: stopp, rapporter feilen, og bruk `AskUserQuestion`-verktøyet for å avklare hvordan du skal fortsette.
 - **Alle spørsmål til brukeren skal stilles via `AskUserQuestion`-verktøyet** — ikke fritekst-spørsmål. Gruppér relaterte spørsmål i samme kall (maks 4 spørsmål per kall, 2–4 svaralternativer per spørsmål).
 - Stegfilene kan be deg stille enkeltvise spørsmål (f.eks. design-discovery i steg 04). Samle dem i ett eller flere `AskUserQuestion`-kall der det gir mening.
-- Etter steg 10 er alt ferdig — ikke gjør noe ekstra.
+- Etter steg 09 er alt ferdig — ikke gjør noe ekstra.

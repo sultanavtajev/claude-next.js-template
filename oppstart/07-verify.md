@@ -1,4 +1,4 @@
-# Steg 08 — Verify
+# Steg 07 — Verify
 
 ## Mål
 
@@ -41,4 +41,4 @@ pnpm dev
 
 ## Avkrysning
 
-Kryss av steg 08 i `oppstart/CHECKLIST.md` når ferdig.
+Kryss av steg 07 i `oppstart/CHECKLIST.md` når ferdig.

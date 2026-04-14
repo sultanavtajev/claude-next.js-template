@@ -1,8 +1,8 @@
-# Steg 10 — Cleanup
+# Steg 09 — Cleanup
 
 ## Mål
 
-Slett `oppstart/`-mappen, lag final commit uten oppstart-instruksjonene, og push til remote (hvis opprettet i steg 09).
+Slett `oppstart/`-mappen, lag final commit uten oppstart-instruksjonene, og push til remote (hvis opprettet i steg 08).
 
 ## Kommandoer
 
@@ -18,12 +18,12 @@ git add -A
 git commit -m "chore: fjern oppstart-instruksjoner etter bootstrap"
 ```
 
-## Push til remote (hvis steg 09 opprettet GitHub-repo)
+## Push til remote (hvis steg 08 opprettet GitHub-repo)
 
 ```bash
 git push origin main
 
-# Hvis feature-branch ble opprettet i steg 09
+# Hvis feature-branch ble opprettet i steg 08
 git checkout feature
 git merge main --ff-only
 git push origin feature
@@ -34,7 +34,7 @@ git checkout main
 
 - `oppstart/`-mappen er borte.
 - To commits i loggen:
-  1. `"chore: bootstrap fra claude-next.js-template"` (fra steg 09)
+  1. `"chore: bootstrap fra claude-next.js-template"` (fra steg 08)
   2. `"chore: fjern oppstart-instruksjoner etter bootstrap"` (fra dette steget)
 - `git status` viser ren working tree.
 - (Hvis remote satt opp) Begge branches pushet til GitHub.
@@ -70,4 +70,4 @@ Disse skrittene gjøres utenfor oppstart-flyten fordi de krever eksterne ressurs
 
 ## Avkrysning
 
-Kryss av steg 10 i `oppstart/CHECKLIST.md` — men fordi mappen slettes i dette steget, er avkrysningen symbolsk. Når du er her og alt over er OK, er bootstrap fullført.
+Kryss av steg 09 i `oppstart/CHECKLIST.md` — men fordi mappen slettes i dette steget, er avkrysningen symbolsk. Når du er her og alt over er OK, er bootstrap fullført.

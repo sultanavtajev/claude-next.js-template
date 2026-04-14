@@ -22,8 +22,8 @@ Fyll inn prosjektspesifikk metadata i `CLAUDE.md` og `.claude/mcp-servers.json` 
 
 `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}` og `{{SUPABASE_PROJECT_REF}}` blir fylt inn i sine respektive steg:
 - `{{SUPABASE_PROJECT_REF}}` → steg 05 (Supabase-prosjekt-gjennomgang)
-- `{{GITHUB_REPO}}` → steg 09 (git + GitHub-repo-opprettelse)
-- `{{VERCEL_PROJECT}}` → steg 09 (Vercel-linking)
+- `{{GITHUB_REPO}}` → steg 08 (git + GitHub-repo-opprettelse)
+- `{{VERCEL_PROJECT}}` → steg 08 (Vercel-linking)
 
 Ikke spør brukeren om disse nå — de krever login/ressursopprettelse og håndteres best som dedikerte gjennomganger.
 
@@ -69,8 +69,8 @@ Informér brukeren at disse må settes for at MCP-serverne skal virke. Fjern eve
 
 ## Feilsøking
 
-- **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 10.
-- **Grep finner `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`**: forventet — de fylles inn i steg 05 og 09.
+- **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 09.
+- **Grep finner `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`**: forventet — de fylles inn i steg 05 og 08.
 - **Bruker bruker ikke Supabase/Resend/Vercel**: disse kan enten fjernes fra `.claude/mcp-servers.json` (i relevant steg) eller beholdes med `TBD` — MCP-serveren vil da ikke fungere før verdien er fylt inn.
 
 ## Avkrysning
