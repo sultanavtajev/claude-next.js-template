@@ -13,6 +13,17 @@ Hvis docs har endret anbefalingen: følg docs, og noter avviket.
 
 Generer Next.js-boilerplate i nåværende mappe med standard stack.
 
+## Sjekkliste
+
+- [ ] Pre-flight docs-sjekk kjørt (se seksjonen over)
+- [ ] `npx create-next-app@latest .` kjørt med flaggsettet fra "Kommandoer"
+- [ ] `package.json`, `tsconfig.json`, `next.config.ts`, `src/app/` opprettet
+- [ ] `CLAUDE.md`, `README.md` og `.claude/` er **ikke** overskrevet (verifisert med `git status`)
+- [ ] `pnpm dev` viser standard Next.js-velkomstside på `http://localhost:3000`
+- [ ] Dev-server stoppet
+
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 02 i `oppstart/CHECKLIST.md` og gå til steg 03.
+
 ## Forutsetninger
 
 - `pnpm` eller `npm` tilgjengelig.
@@ -54,4 +65,4 @@ pnpm dev
 
 ## Avkrysning
 
-Kryss av steg 02 i `oppstart/CHECKLIST.md` når ferdig.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 02 i `oppstart/CHECKLIST.md`.
