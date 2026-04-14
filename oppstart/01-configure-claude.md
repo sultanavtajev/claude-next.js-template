@@ -4,6 +4,16 @@
 
 Fyll inn prosjektspesifikk metadata i `CLAUDE.md` og `.claude/mcp-servers.json` slik at Claude-konfigurasjonen reflekterer dette prosjektet.
 
+## Sjekkliste
+
+- [ ] Prosjektnavn hentet via `AskUserQuestion`
+- [ ] Beskrivelse hentet via `AskUserQuestion`
+- [ ] `{{PROJECT_NAME}}` erstattet i `CLAUDE.md` (og `README.md` hvis det finnes placeholder)
+- [ ] `{{PROJECT_DESCRIPTION}}` erstattet i `CLAUDE.md`
+- [ ] Verifisert at bare `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}` og `{{SUPABASE_PROJECT_REF}}` gjenstår som placeholders
+
+Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle er `[x]`, marker steg 01 i `oppstart/CHECKLIST.md` som ferdig og gå til steg 02.
+
 ## Forutsetninger
 
 - `CLAUDE.md` og `.claude/mcp-servers.json` finnes i prosjektroten (lagt inn fra templaten).
@@ -75,4 +85,4 @@ Informér brukeren at disse må settes for at MCP-serverne skal virke. Fjern eve
 
 ## Avkrysning
 
-Kryss av steg 01 i `oppstart/CHECKLIST.md` når ferdig.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 01 i `oppstart/CHECKLIST.md`.
