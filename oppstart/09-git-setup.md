@@ -1,27 +1,15 @@
-# Steg 09 — Git-oppsett (lokal + remote)
+# Steg 09 — Remote-oppsett (Git, GitHub, Vercel)
 
 ## Mål
 
-Slett template-repoets git-historikk, initialisér fersk historikk for brukerens prosjekt, og sett opp remote på GitHub med både `main` og `feature`-branch pushet.
+Reset template-repoets git-historikk, opprett fersk lokal historikk, opprett GitHub-repo med remote og push, og (valgfritt) link prosjektet til Vercel. Fyll inn `{{GITHUB_REPO}}` og `{{VERCEL_PROJECT}}`-placeholders.
 
 ## Pre-flight
 
-- `gh` CLI installert og autentisert (`gh auth status`).
-- Bruker ønsker å opprette GitHub-repo nå. (Hvis ikke — hopp til "Alternativ: bare lokal" nederst.)
+- `gh` CLI installert. Sjekk med `gh --version`. Hvis ikke: `winget install GitHub.cli` (Windows) eller se `https://cli.github.com/`.
+- `vercel` CLI installert hvis Vercel brukes. Sjekk med `vercel --version`. Hvis ikke: `pnpm add -g vercel`.
 
-## Kommandoer
-
-### 1. Spør brukeren om remote-detaljer
-
-Bruk `AskUserQuestion` med disse spørsmålene:
-
-| Spørsmål | Header | Valg |
-|----------|--------|------|
-| Hva skal repoet hete på GitHub? | Repo-navn | `{{PROJECT_NAME}}` (samme som prosjekt), Other (skriv inn) |
-| Skal repoet være public eller private? | Synlighet | Public, Private |
-| Skal vi også opprette `feature`-branch og pushe den? | Feature-branch | Ja (anbefalt — workspace-kommandoene bruker den), Nei (bare main) |
-
-### 2. Reset git-historikk
+## Del 1 — Reset git-historikk
 
 Template-repoet har historie fra `sultanavtajev/claude-next.js-template`. Brukerens nye prosjekt skal ha fersk historikk:
 
@@ -29,69 +17,122 @@ Template-repoet har historie fra `sultanavtajev/claude-next.js-template`. Bruker
 rm -rf .git
 git init
 git branch -M main
-```
-
-### 3. Stage alt og lag første commit
-
-```bash
 git add .
 git commit -m "chore: bootstrap fra claude-next.js-template"
 ```
 
-### 4. Opprett GitHub-repo og push main
+Hvis brukeren vil beholde template-historikk: hopp over `rm -rf .git` og `git init`. Legg da til ny remote via `git remote set-url origin <ny-url>` i Del 2.
 
-Bytt ut `<repo-navn>` og `--<visibility>` med svarene fra steg 1:
+## Del 2 — GitHub-repo-gjennomgang
+
+### 1. Verifiser gh-autentisering
+
+```bash
+gh auth status
+```
+
+Hvis ikke autentisert, si til brukeren:
+
+> "Jeg kan ikke autentisere deg på dine vegne. Kjør `gh auth login` i terminalen (velg HTTPS + web-auth), og si fra når du er ferdig."
+
+Vent på bekreftelse, sjekk `gh auth status` på nytt.
+
+### 2. Samle inn repo-preferanser via `AskUserQuestion`
+
+| Spørsmål | Header | Valg |
+|----------|--------|------|
+| Hva skal repoet hete på GitHub? | Repo-navn | Samme som prosjektnavn, Other (skriv inn) |
+| Public eller private? | Synlighet | Public, Private |
+| Opprett også `feature`-branch og push? | Feature-branch | Ja (anbefalt — workspace-kommandoene bruker den), Nei (bare main) |
+
+### 3. Opprett repo og push
+
+Bytt ut `<repo-navn>` og `<visibility>` med svarene fra AskUserQuestion:
 
 ```bash
 gh repo create <repo-navn> --<public|private> --source=. --push --description "Opprettet fra claude-next.js-template"
 ```
 
-Dette setter automatisk `origin` som remote og pusher `main`.
+Hent brukernavnet fra `gh api user --jq .login` og lag streng `<brukernavn>/<repo-navn>`.
 
-### 5. (Hvis valgt) Opprett og push feature-branch
+### 4. (Hvis valgt) Opprett feature-branch
 
 ```bash
 git branch feature
 git push -u origin feature
 ```
 
-### 6. Verifiser
+### 5. Fyll inn `{{GITHUB_REPO}}`-placeholder
 
+Søk-og-erstatt `{{GITHUB_REPO}}` med `<brukernavn>/<repo-navn>` i:
+- `CLAUDE.md`
+- `.claude/mcp-servers.json`
+
+Commit denne endringen (blir siste commit i steg 10):
 ```bash
-gh repo view --web     # (valgfri) åpner repoet i nettleser
-git branch -vv         # begge branches med tracking-info
-git remote -v          # origin peker på riktig repo
+# ikke commit nå — samler opp til steg 10
 ```
 
-## Alternativ: bare lokal (hopper over remote)
+## Del 3 — Vercel-gjennomgang (valgfritt)
 
-Hvis brukeren ikke vil opprette GitHub-repo nå:
+### 1. Spør om bruker vil linke Vercel
+
+Bruk `AskUserQuestion`:
+
+| Spørsmål | Header | Valg |
+|----------|--------|------|
+| Skal prosjektet linkes til Vercel nå? | Vercel | Ja, link nå · Nei, hopp over |
+
+### 2. Hvis "Nei"
+
+Behold `{{VERCEL_PROJECT}}`-placeholderen og hopp til "Forventet resultat". Bruker kan kjøre `vercel link` senere.
+
+### 3. Hvis "Ja"
+
+Verifiser vercel-autentisering:
 
 ```bash
-rm -rf .git
-git init
-git branch -M main
-git add .
-git commit -m "chore: bootstrap fra claude-next.js-template"
+vercel whoami
 ```
 
-Remote kan legges til senere med:
+Hvis ikke autentisert, si til brukeren:
+
+> "Kjør `vercel login` i terminalen og velg metode (GitHub, GitLab, email). Si fra når du er ferdig."
+
+Vent på bekreftelse.
+
+### 4. Link prosjektet
+
 ```bash
-gh repo create <navn> --<visibility> --source=. --push
+vercel link
 ```
+
+Dette er interaktivt — Vercel spør hvilken scope (org/team) og prosjektnavn. Brukeren må svare selv i terminalen. Be dem velge prosjektnavn som matcher GitHub-repo-navnet for konsistens.
+
+### 5. Hent Vercel-prosjektnavn fra `.vercel/project.json`
+
+Etter link genereres `.vercel/project.json` lokalt. Les feltet `projectId` eller spør brukeren hva de kalte prosjektet. Fyll inn `{{VERCEL_PROJECT}}`-placeholder i:
+- `CLAUDE.md`
+- `.claude/mcp-servers.json`
+
+`.vercel/` er allerede i `.gitignore` — lokal-only.
 
 ## Forventet resultat
 
 - `.git/` er fersk — ingen template-commits i historikken.
 - Minst én commit: `"chore: bootstrap fra claude-next.js-template"`.
-- (Hvis GitHub-repo ble opprettet) `origin` peker på `https://github.com/<bruker>/<repo-navn>`, `main` og eventuelt `feature` pushet.
+- `origin` peker på `https://github.com/<bruker>/<repo-navn>`, `main` og eventuelt `feature` pushet.
+- `{{GITHUB_REPO}}` erstattet med `<bruker>/<repo-navn>`.
+- (Hvis Vercel ble linket) `{{VERCEL_PROJECT}}` erstattet med prosjektnavn. `.vercel/project.json` finnes lokalt.
 
 ## Feilsøking
 
-- **`gh: command not found`**: installer GitHub CLI (`winget install GitHub.cli`) og `gh auth login`.
+- **`gh: command not found`**: installer GitHub CLI og `gh auth login`.
+- **`vercel: command not found`**: `pnpm add -g vercel`.
 - **`repository <navn> already exists`**: velg nytt navn via AskUserQuestion og prøv igjen.
 - **`Permission denied` ved `rm -rf .git`**: lukk IDE eller andre prosesser som kan ha lås på `.git/`-filer. På Windows kan VS Codes Git-extension holde filer åpne.
-- **Bruker vil beholde template-historikk**: hopp over `rm -rf .git` og `git init` — da vil historikken fra template være med. Legg til ny remote via `git remote set-url origin <ny-url>` eller `git remote add origin <ny-url>` i stedet.
+- **`gh auth login` krever manuell input**: Claude kan ikke fullføre OAuth-flyten — bruker må gjøre det selv i terminalen.
+- **`vercel link` krever interaktiv input**: samme som over — bruker må klikke gjennom.
 
 ## Avkrysning
 

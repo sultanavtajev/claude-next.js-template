@@ -11,16 +11,57 @@ Hent `https://supabase.com/docs/guides/getting-started/quickstarts/nextjs` og `h
 
 ## Mål
 
-Installer Supabase-klienter og sett opp server/browser/proxy-utilities. Selve databasen og auth-brukere bor på Supabase — ingen lokal Postgres.
+Gjennomgå Supabase-prosjekt med brukeren (opprett hvis nødvendig), fyll inn `{{SUPABASE_PROJECT_REF}}`-placeholderen, og sett opp klienter (server/browser/proxy).
 
-## Forutsetninger
+## Del 1 — Supabase-prosjekt-gjennomgang
 
-- Bruker har opprettet et Supabase-prosjekt og har tilgang til:
-  - Project URL
-  - Publishable key (tidligere `anon key`)
-  - Service role key (server-only, må ikke commits)
+### 1. Spør om bruker allerede har Supabase-prosjekt
 
-## Kommandoer
+Bruk `AskUserQuestion`:
+
+| Spørsmål | Header | Valg |
+|----------|--------|------|
+| Har du allerede et Supabase-prosjekt klart for denne appen? | Supabase-prosjekt | Ja, har project ref klar · Nei, må opprette nå · Hopp over Supabase for nå |
+
+### 2. Hvis "må opprette nå"
+
+Guide brukeren:
+
+1. Si: "Gå til https://supabase.com/dashboard/new og opprett et nytt prosjekt. Velg region nær brukerne (for Norge: Frankfurt/EU West), og lagre database-passordet et sikkert sted."
+2. Vent til brukeren bekrefter at prosjektet er klart.
+3. Si: "Gå til Project Settings → Data API → kopier **Project URL** og **Publishable key** (tidligere anon key). Project ref-en er delen før `.supabase.co` i URLen."
+4. Fortsett til steg 3.
+
+### 3. Samle inn nøkler via AskUserQuestion
+
+Bruk "Other"-opsjonen for fritekst:
+
+| Spørsmål | Header |
+|----------|--------|
+| Hva er Supabase project ref? (f.eks. `abcdefghijklmnop`) | Project ref |
+| Oppgi `NEXT_PUBLIC_SUPABASE_URL` (full URL) | Supabase URL |
+| Oppgi `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key |
+| Oppgi `SUPABASE_SERVICE_ROLE_KEY` (kopier fra dashboard) | Service role key |
+
+### 4. Fyll inn placeholders og skriv til `.env.local`
+
+Søk-og-erstatt `{{SUPABASE_PROJECT_REF}}` i:
+- `CLAUDE.md`
+- `.claude/mcp-servers.json`
+
+Skriv nøklene til `.env.local` (opprett filen hvis den ikke finnes — den er allerede i `.gitignore`):
+
+```
+NEXT_PUBLIC_SUPABASE_URL=<verdi fra spørsmål 3>
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<verdi fra spørsmål 3>
+SUPABASE_SERVICE_ROLE_KEY=<verdi fra spørsmål 3>
+```
+
+### 5. Hvis "hopp over"
+
+Behold `{{SUPABASE_PROJECT_REF}}`-placeholderen, hopp over resten av steget, og hopp også over steg 06 (Supabase Auth). Informér brukeren om at de må kjøre disse manuelt senere.
+
+## Del 2 — Installer klienter
 
 ```bash
 pnpm add @supabase/supabase-js @supabase/ssr
@@ -130,15 +171,17 @@ export const config = {
 };
 ```
 
-## Migrations (valgfritt, men anbefalt)
+## Del 3 — Migrations (valgfritt, men anbefalt)
 
-Installer Supabase CLI for lokale migrasjoner:
+Installer Supabase CLI for lokale migrasjoner og link til prosjektet:
 
 ```bash
 pnpm add -D supabase
 npx supabase init
-npx supabase link --project-ref {{SUPABASE_PROJECT_REF}}
+npx supabase link --project-ref <project-ref fra Del 1>
 ```
+
+Når du kjører `link`, bruk den faktiske project ref brukeren oppga (ikke placeholder).
 
 Opprett migrasjon:
 ```bash

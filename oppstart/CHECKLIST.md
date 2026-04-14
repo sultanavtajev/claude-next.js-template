@@ -15,6 +15,7 @@ Canonical doc-URLer for denne stacken:
 |-------|-----|-------------------|
 | Next.js | `https://nextjs.org/docs` | 02, 08 (build) |
 | GitHub CLI | `https://cli.github.com/manual/` | 09 |
+| Vercel CLI | `https://vercel.com/docs/cli` | 09 |
 | React | `https://react.dev/reference/react` | (generelt) |
 | shadcn/ui | `https://ui.shadcn.com/docs/installation/next` | 03 |
 | ui-ux-pro-max | `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` | 04 |
@@ -41,7 +42,7 @@ Canonical doc-URLer for denne stacken:
 - [ ] [06 — Supabase Auth](./06-install-supabase-auth.md) — login/signup-sider + RLS-retningslinjer
 - [ ] [07 — Environment](./07-configure-env.md) — lag `.env.example` med alle nødvendige nøkler dokumentert
 - [ ] [08 — Verify](./08-verify.md) — kjør dev, build, lint, typecheck — alt grønt
-- [ ] [09 — Git-oppsett](./09-git-setup.md) — reset template-historikk, init ny, opprett GitHub-repo, push main + feature
+- [ ] [09 — Remote-oppsett](./09-git-setup.md) — reset git-historikk, GitHub-repo-gjennomgang (`gh auth`, opprett repo, push), Vercel-link (valgfritt)
 - [ ] [10 — Cleanup](./10-cleanup.md) — slett `oppstart/`, final commit, push, informér om IDE/Claude-restart
 
 ## Regler for Claude
