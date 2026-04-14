@@ -4,6 +4,17 @@
 
 Slett `oppstart/`-mappen, lag final commit uten oppstart-instruksjonene, og push til remote (hvis opprettet i steg 08).
 
+## Sjekkliste
+
+- [ ] `rm -rf oppstart/` kjørt
+- [ ] `git status` viser at `oppstart/` er fjernet, ingen andre uventede endringer
+- [ ] Final commit laget: `"chore: fjern oppstart-instruksjoner etter bootstrap"`
+- [ ] (Hvis remote fra steg 08) `git push origin main` kjørt
+- [ ] (Hvis feature-branch) synket og pushet til `origin/feature`
+- [ ] IDE/Claude-restart-instruksjoner gitt til bruker (lukk + åpne, `/mcp`-verifisering)
+
+Kryss av hver `[ ]` → `[x]` fortløpende. Siste boks er symbolsk siden mappen slettes i samme steg — når alle bokser er `[x]`, marker steg 09 i master-CHECKLIST.md som ferdig. Bootstrap er da fullført.
+
 ## Kommandoer
 
 ```bash
@@ -70,4 +81,4 @@ Disse skrittene gjøres utenfor oppstart-flyten fordi de krever eksterne ressurs
 
 ## Avkrysning
 
-Kryss av steg 09 i `oppstart/CHECKLIST.md` — men fordi mappen slettes i dette steget, er avkrysningen symbolsk. Når du er her og alt over er OK, er bootstrap fullført.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, marker steg 09 i `oppstart/CHECKLIST.md` som ferdig — avkrysningen er symbolsk siden mappen slettes i samme steg. Bootstrap er da fullført.
