@@ -13,18 +13,18 @@ Canonical doc-URLer for denne stacken:
 
 | Stack | URL | Relevant for steg |
 |-------|-----|-------------------|
-| Next.js | `https://nextjs.org/docs` | 02, 08 (build) |
-| GitHub CLI | `https://cli.github.com/manual/` | 09 |
-| Vercel CLI | `https://vercel.com/docs/cli` | 09 |
+| Next.js | `https://nextjs.org/docs` | 02, 07 (build) |
+| GitHub CLI | `https://cli.github.com/manual/` | 08 |
+| Vercel CLI | `https://vercel.com/docs/cli` | 08 |
 | React | `https://react.dev/reference/react` | (generelt) |
 | shadcn/ui | `https://ui.shadcn.com/docs/installation/next` | 03 |
 | ui-ux-pro-max | `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` | 04 |
-| Supabase (Next.js) | `https://supabase.com/docs/guides/getting-started/quickstarts/nextjs` | 05, 07 |
-| Supabase Auth SSR | `https://supabase.com/docs/guides/auth/server-side/nextjs` | 06 |
+| Supabase (Next.js) | `https://supabase.com/docs/guides/getting-started/quickstarts/nextjs` | 05, 06 |
+| Supabase Auth SSR | `https://supabase.com/docs/guides/auth/server-side/nextjs` | 05 |
 | Supabase CLI | `https://supabase.com/docs/guides/cli` | 05 (migrations) |
-| Resend | `https://resend.com/docs/send-with-nextjs` | 07 |
+| Resend | `https://resend.com/docs/send-with-nextjs` | 06 |
 | Vercel | `https://vercel.com/docs/frameworks/nextjs` | (deploy) |
-| T3 Env | `https://env.t3.gg/docs/nextjs` | 07 |
+| T3 Env | `https://env.t3.gg/docs/nextjs` | 06 |
 
 **Verifiseringsregel for hvert install-steg:**
 1. Les stegfilen (hva den sier å gjøre).
