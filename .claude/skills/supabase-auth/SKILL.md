@@ -89,7 +89,7 @@ export async function GET() {
 ## Providers
 
 ### E-post + passord
-Default, ingen config. Brukes via `signInWithPassword`/`signUp` som vist i oppstart-steg 05.
+Default, ingen config. Brukes via `signInWithPassword`/`signUp` som vist i oppstart-steg 06.
 
 ### OAuth (GitHub/Google/etc.)
 

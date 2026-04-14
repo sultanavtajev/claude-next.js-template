@@ -1,4 +1,4 @@
-# Steg 04 — Supabase (database + klienter)
+# Steg 05 — Supabase (database + klienter)
 
 ## Pre-flight: sjekk docs
 
@@ -174,4 +174,4 @@ Legg til i `package.json`:
 
 ## Avkrysning
 
-Kryss av steg 04 i `oppstart/CHECKLIST.md` når ferdig.
+Kryss av steg 05 i `oppstart/CHECKLIST.md` når ferdig.

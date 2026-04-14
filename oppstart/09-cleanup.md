@@ -1,4 +1,4 @@
-# Steg 08 — Cleanup
+# Steg 09 — Cleanup
 
 ## Mål
 
@@ -56,4 +56,4 @@ Disse skrittene gjøres utenfor oppstart-flyten fordi de krever eksterne ressurs
 
 ## Avkrysning
 
-Kryss av steg 08 i `oppstart/CHECKLIST.md` — men fordi mappen slettes i dette steget, er avkrysningen symbolsk. Når du er her og alt over er OK, er bootstrap fullført.
+Kryss av steg 09 i `oppstart/CHECKLIST.md` — men fordi mappen slettes i dette steget, er avkrysningen symbolsk. Når du er her og alt over er OK, er bootstrap fullført.

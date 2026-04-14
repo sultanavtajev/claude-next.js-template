@@ -17,11 +17,12 @@ Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 1. Konfigurerer Claude-oppsettet med prosjektnavn/GitHub-repo/Vercel-prosjekt
 2. Kjører `create-next-app@latest` med standardflagg (TS, App Router, Tailwind, Turbopack, src/)
 3. Initialiserer shadcn/ui
-4. Installerer Supabase-klienter (`@supabase/ssr`) og proxy for session-refresh
-5. Setter opp Supabase Auth med login/signup-sider
-6. Lager `.env.example` med dokumenterte nøkler
-7. Verifiserer at `dev`, `build`, `lint`, `typecheck` er grønne
-8. Rydder opp (sletter `oppstart/`, lager første commit)
+4. Installerer ui-ux-pro-max-skillen og låser designsystem (stil, palette, fonts) basert på prosjektdialog
+5. Installerer Supabase-klienter (`@supabase/ssr`) og proxy for session-refresh
+6. Setter opp Supabase Auth med login/signup-sider
+7. Lager `.env.example` med dokumenterte nøkler
+8. Verifiserer at `dev`, `build`, `lint`, `typecheck` er grønne
+9. Rydder opp (sletter `oppstart/`, lager første commit)
 
 ## Hva ligger i templaten
 

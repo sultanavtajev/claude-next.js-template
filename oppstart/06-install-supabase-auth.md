@@ -1,4 +1,4 @@
-# Steg 05 — Supabase Auth
+# Steg 06 — Supabase Auth
 
 ## Pre-flight: sjekk docs
 
@@ -13,7 +13,7 @@ Konfigurer Supabase Auth med e-post+passord som default provider. OAuth (GitHub/
 
 ## Forutsetninger
 
-- Steg 04 ferdig — Supabase-klientene finnes i `src/lib/supabase/`.
+- Steg 05 ferdig — Supabase-klientene finnes i `src/lib/supabase/`.
 - `src/proxy.ts` kjører session-refresh.
 - Supabase-prosjektet har Auth aktivert (default).
 
@@ -150,4 +150,4 @@ Og en callback-route: `src/app/auth/callback/route.ts` som håndterer code excha
 
 ## Avkrysning
 
-Kryss av steg 05 i `oppstart/CHECKLIST.md` når ferdig.
+Kryss av steg 06 i `oppstart/CHECKLIST.md` når ferdig.

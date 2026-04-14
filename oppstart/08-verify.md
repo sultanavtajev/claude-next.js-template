@@ -1,4 +1,4 @@
-# Steg 07 — Verify
+# Steg 08 — Verify
 
 ## Mål
 
@@ -35,10 +35,10 @@ pnpm dev
 
 ## Feilsøking
 
-- **Build feiler pga env-variabler**: rapporter hvilke. Brukeren må fylle ut `.env.local` før en ekte build kan kjøres. Dette er ikke blokkerende for steg 08.
+- **Build feiler pga env-variabler**: rapporter hvilke. Brukeren må fylle ut `.env.local` før en ekte build kan kjøres. Dette er ikke blokkerende for steg 09.
 - **TypeScript-feil om `@/lib/supabase/server`**: sjekk at `tsconfig.json` har `"paths": { "@/*": ["./src/*"] }`.
 - **ESLint-feil i generert kode**: kjør `pnpm lint --fix`.
 
 ## Avkrysning
 
-Kryss av steg 07 i `oppstart/CHECKLIST.md` når ferdig.
+Kryss av steg 08 i `oppstart/CHECKLIST.md` når ferdig.

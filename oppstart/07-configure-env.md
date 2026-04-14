@@ -1,4 +1,4 @@
-# Steg 06 — Environment
+# Steg 07 — Environment
 
 ## Pre-flight: sjekk docs
 
@@ -84,4 +84,4 @@ Kopier `.env.example` → `.env.local` og fyll inn faktiske verdier. Brukeren m�
 
 ## Avkrysning
 
-Kryss av steg 06 i `oppstart/CHECKLIST.md` når ferdig.
+Kryss av steg 07 i `oppstart/CHECKLIST.md` når ferdig.

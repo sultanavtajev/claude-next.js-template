@@ -51,6 +51,21 @@ supabase/
 - `pnpm db:types` — generer TypeScript-typer fra schema
 - `npx supabase start` — kjør Supabase lokalt (Docker) — valgfritt
 
+## Design system (låst)
+
+<!--
+Denne seksjonen fylles ut i oppstart-steg 04 basert på svar fra prosjektdialogen.
+Inntil ferdig utfylt er defaultverdiene shadcn/ui sin standard (Slate + Inter).
+-->
+
+- **Stil**: <fylles inn i steg 04 — f.eks. Minimalism / Bento grid / Flat design>
+- **Palette**: <f.eks. Slate-basert, cool-neutral>
+- **Heading-font**: <f.eks. Inter>
+- **Body-font**: <f.eks. Inter>
+- **Dark mode**: <ja/nei/begge>
+
+**Regel**: nye komponenter skal følge denne stilen. Ikke introduser brutalism, claymorphism, neumorphism eller andre stiler med mindre brukeren eksplisitt ber om det. Fargepalette hentes fra CSS-variablene i `src/app/globals.css` — aldri hardkode hex/rgb i komponenter.
+
 ## Harde regler
 
 1. **Server Components by default.** Bruk `"use client"` kun når nødvendig (interaktivitet, hooks, browser-API).

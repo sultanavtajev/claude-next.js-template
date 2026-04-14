@@ -57,7 +57,7 @@ Informér brukeren at disse må settes for at MCP-serverne skal virke. Fjern eve
 
 ## Feilsøking
 
-- **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 08.
+- **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 09.
 - **Bruker vet ikke GitHub-repo ennå**: bruk `TBD` som verdi. Kan oppdateres senere.
 - **Bruker bruker ikke Supabase/Resend**: fjern `supabase` / `resend` fra `.claude/mcp-servers.json` i stedet for å beholde placeholder.
 
