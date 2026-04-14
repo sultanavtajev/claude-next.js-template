@@ -2,6 +2,13 @@
 
 {{PROJECT_DESCRIPTION}}
 
+<!--
+@AGENTS.md-referansen under legges til i oppstart-steg 02 etter at
+create-next-app har generert AGENTS.md. Ikke fjern den manuelt —
+den sørger for at Next.js-spesifikke breaking-change-advarsler og
+agent-instrukser leses inn sammen med CLAUDE.md.
+-->
+
 ## Stack
 
 - **Next.js** (seneste) — App Router, TypeScript, Turbopack
