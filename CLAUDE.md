@@ -92,7 +92,20 @@ Inntil ferdig utfylt er defaultverdiene shadcn/ui sin standard (Slate + Inter).
 
 ## Referanser
 
+### Prosjekt
+
 - GitHub: `{{GITHUB_REPO}}`
 - Vercel: `{{VERCEL_PROJECT}}`
 - Supabase: `{{SUPABASE_PROJECT_REF}}`
 - Resend: API-nøkkel i `RESEND_API_KEY`
+
+### Stack-dokumentasjon
+
+- Next.js: https://nextjs.org/docs
+- shadcn/ui: https://ui.shadcn.com
+- Tailwind CSS: https://tailwindcss.com/docs
+- Supabase Next.js-guide: https://supabase.com/docs/guides/getting-started/quickstarts/nextjs
+- Supabase Auth SSR: https://supabase.com/docs/guides/auth/server-side/nextjs
+- Supabase CLI: https://supabase.com/docs/guides/cli
+- ui-ux-pro-max-skill: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+- T3 Env: https://env.t3.gg/docs/nextjs

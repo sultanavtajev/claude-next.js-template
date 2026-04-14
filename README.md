@@ -52,3 +52,10 @@ Templaten er designet for å endres. Noen naturlige utvidelser:
 - pnpm (`npm i -g pnpm`)
 - git
 - Claude Code CLI (installert, innlogget)
+
+## Tredjeparts-verktøy templaten bruker
+
+- **[ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)** — AI-skill for designsystem, 67 stiler, 161 palletter, 57 font-pairings. Installeres i steg 04.
+- **[shadcn/ui](https://ui.shadcn.com)** — komponentbibliotek.
+- **[Supabase](https://supabase.com)** — database, auth, storage.
+- **[T3 Env](https://env.t3.gg)** — typesikker env-validering.
