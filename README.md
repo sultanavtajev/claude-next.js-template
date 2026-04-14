@@ -27,7 +27,8 @@ Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 6. Setter opp Supabase Auth med login/signup-sider
 7. Lager `.env.example` med dokumenterte nøkler
 8. Verifiserer at `dev`, `build`, `lint`, `typecheck` er grønne
-9. Rydder opp (sletter `oppstart/`, lager første commit)
+9. Resetter git-historikk, oppretter GitHub-repo og pusher `main` + `feature`
+10. Rydder opp (sletter `oppstart/`, final commit, pusher)
 
 ## Hva ligger i templaten
 

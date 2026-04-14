@@ -14,6 +14,7 @@ Canonical doc-URLer for denne stacken:
 | Stack | URL | Relevant for steg |
 |-------|-----|-------------------|
 | Next.js | `https://nextjs.org/docs` | 02, 08 (build) |
+| GitHub CLI | `https://cli.github.com/manual/` | 09 |
 | React | `https://react.dev/reference/react` | (generelt) |
 | shadcn/ui | `https://ui.shadcn.com/docs/installation/next` | 03 |
 | ui-ux-pro-max | `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` | 04 |
@@ -40,7 +41,8 @@ Canonical doc-URLer for denne stacken:
 - [ ] [06 — Supabase Auth](./06-install-supabase-auth.md) — login/signup-sider + RLS-retningslinjer
 - [ ] [07 — Environment](./07-configure-env.md) — lag `.env.example` med alle nødvendige nøkler dokumentert
 - [ ] [08 — Verify](./08-verify.md) — kjør dev, build, lint, typecheck — alt grønt
-- [ ] [09 — Cleanup](./09-cleanup.md) — slett `oppstart/`, gjør første commit, informér om IDE/Claude-restart
+- [ ] [09 — Git-oppsett](./09-git-setup.md) — reset template-historikk, init ny, opprett GitHub-repo, push main + feature
+- [ ] [10 — Cleanup](./10-cleanup.md) — slett `oppstart/`, final commit, push, informér om IDE/Claude-restart
 
 ## Regler for Claude
 
@@ -49,4 +51,4 @@ Canonical doc-URLer for denne stacken:
 - Hvis et steg feiler: stopp, rapporter feilen, og bruk `AskUserQuestion`-verktøyet for å avklare hvordan du skal fortsette.
 - **Alle spørsmål til brukeren skal stilles via `AskUserQuestion`-verktøyet** — ikke fritekst-spørsmål. Gruppér relaterte spørsmål i samme kall (maks 4 spørsmål per kall, 2–4 svaralternativer per spørsmål).
 - Stegfilene kan be deg stille enkeltvise spørsmål (f.eks. design-discovery i steg 04). Samle dem i ett eller flere `AskUserQuestion`-kall der det gir mening.
-- Etter steg 09 er alt ferdig — ikke gjør noe ekstra.
+- Etter steg 10 er alt ferdig — ikke gjør noe ekstra.
