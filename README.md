@@ -17,8 +17,8 @@ Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 1. Konfigurerer Claude-oppsettet med prosjektnavn/GitHub-repo/Vercel-prosjekt
 2. Kjører `create-next-app@latest` med standardflagg (TS, App Router, Tailwind, Turbopack, src/)
 3. Initialiserer shadcn/ui
-4. Installerer og initialiserer Prisma
-5. Setter opp Auth.js
+4. Installerer Supabase-klienter (`@supabase/ssr`) og proxy for session-refresh
+5. Setter opp Supabase Auth med login/signup-sider
 6. Lager `.env.example` med dokumenterte nøkler
 7. Verifiserer at `dev`, `build`, `lint`, `typecheck` er grønne
 8. Rydder opp (sletter `oppstart/`, lager første commit)
@@ -43,7 +43,7 @@ Templaten er designet for å endres. Noen naturlige utvidelser:
 - **Flere skills**: kopier en eksisterende `.claude/skills/<navn>/SKILL.md` som mal.
 - **Flere agents**: legg til `.claude/agents/<navn>.md` med frontmatter (`name`, `description`, `tools`).
 - **Flere hooks**: rediger `.claude/settings.json` og legg til scripts i `.claude/hooks/scripts/`.
-- **Andre stack-valg**: endre `oppstart/02-create-next-app.md`-flagg eller swap Prisma → Drizzle.
+- **Andre stack-valg**: endre `oppstart/02-create-next-app.md`-flagg eller erstatt Supabase med annen backend (Neon+Drizzle, Convex, etc.) via nye oppstart-filer.
 
 ## Forutsetninger på maskinen
 

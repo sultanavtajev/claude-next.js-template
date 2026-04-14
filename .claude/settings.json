@@ -60,8 +60,6 @@
 
       "WebFetch(domain:nextjs.org)",
       "WebFetch(domain:react.dev)",
-      "WebFetch(domain:authjs.dev)",
-      "WebFetch(domain:prisma.io)",
       "WebFetch(domain:ui.shadcn.com)",
       "WebFetch(domain:tailwindcss.com)",
       "WebFetch(domain:supabase.com)",

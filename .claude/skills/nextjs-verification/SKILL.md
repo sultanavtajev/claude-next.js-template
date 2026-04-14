@@ -56,7 +56,7 @@ Kun hvis brukeren har bedt om UI-verifikasjon. Åpne relevante ruter i nettleser
 | `Dynamic server usage: cookies()` | Bruker dynamisk API i statisk rute | Legg `export const dynamic = "force-dynamic"` eller flytt til Server Action |
 | Hydration mismatch | Server og client rendrer ulikt | Unngå `Date.now()`, `Math.random()`, browser-API i render |
 | `Cannot find module '@/...'` | tsconfig.json-paths mangler | Sjekk at `"paths": { "@/*": ["./src/*"] }` er satt |
-| Prisma-klient-feil i edge runtime | Prisma støtter ikke edge by default | Bruk `nodejs`-runtime for ruter som bruker Prisma |
+| Supabase server-klient feiler i Client Component | `@/lib/supabase/server` bruker `cookies()` — server-only | Bruk `@/lib/supabase/client` i browser |
 
 ## Etter verifikasjon
 

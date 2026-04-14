@@ -16,9 +16,9 @@ Canonical doc-URLer for denne stacken:
 | Next.js | `https://nextjs.org/docs` | 02, 07 (build) |
 | React | `https://react.dev/reference/react` | (generelt) |
 | shadcn/ui | `https://ui.shadcn.com/docs/installation/next` | 03 |
-| Prisma | `https://www.prisma.io/docs/getting-started/quickstart-prismaPostgres` | 04 |
-| Auth.js v5 | `https://authjs.dev/getting-started/installation` | 05 |
-| Supabase | `https://supabase.com/docs/guides/getting-started/quickstarts/nextjs` | 04, 06 |
+| Supabase (Next.js) | `https://supabase.com/docs/guides/getting-started/quickstarts/nextjs` | 04, 06 |
+| Supabase Auth SSR | `https://supabase.com/docs/guides/auth/server-side/nextjs` | 05 |
+| Supabase CLI | `https://supabase.com/docs/guides/cli` | 04 (migrations) |
 | Resend | `https://resend.com/docs/send-with-nextjs` | 06 |
 | Vercel | `https://vercel.com/docs/frameworks/nextjs` | (deploy) |
 | T3 Env | `https://env.t3.gg/docs/nextjs` | 06 |
@@ -34,8 +34,8 @@ Canonical doc-URLer for denne stacken:
 - [ ] [01 — Configure Claude](./01-configure-claude.md) — fyll inn prosjektnavn, GitHub-repo, Vercel-prosjekt i `CLAUDE.md` + `.claude/mcp-servers.json`
 - [ ] [02 — create-next-app](./02-create-next-app.md) — generer Next.js-boilerplate
 - [ ] [03 — shadcn/ui](./03-install-shadcn.md) — init shadcn og legg til basiskomponenter
-- [ ] [04 — Prisma](./04-install-prisma.md) — installer og initialiser Prisma
-- [ ] [05 — Auth.js](./05-install-authjs.md) — sett opp Auth.js v5 med én provider
+- [ ] [04 — Supabase](./04-install-supabase.md) — installer @supabase/ssr-klienter + proxy
+- [ ] [05 — Supabase Auth](./05-install-supabase-auth.md) — login/signup-sider + RLS-retningslinjer
 - [ ] [06 — Environment](./06-configure-env.md) — lag `.env.example` med alle nødvendige nøkler dokumentert
 - [ ] [07 — Verify](./07-verify.md) — kjør dev, build, lint, typecheck — alt grønt
 - [ ] [08 — Cleanup](./08-cleanup.md) — slett `oppstart/`, gjør første commit, informér om IDE/Claude-restart

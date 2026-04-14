@@ -1,9 +1,9 @@
 ---
 name: route-handler
-description: Lag Next.js route handler (app/api/*/route.ts) med typesikker input, auth, og NextResponse. Bruk når brukeren ber om et API-endepunkt — f.eks. for webhooks, tredjeparts klienter, eller ikke-form data.
+description: Lag Next.js route handler (app/api/*/route.ts) med Supabase auth, typesikker input, og NextResponse. Bruk når brukeren ber om et API-endepunkt — f.eks. for webhooks, tredjeparts klienter, eller ikke-form data.
 ---
 
-# Route Handler — standardmønster
+# Route Handler — standardmønster (Supabase)
 
 ## Når bruke route handler vs Server Action
 
@@ -19,8 +19,7 @@ description: Lag Next.js route handler (app/api/*/route.ts) med typesikker input
 // src/app/api/posts/route.ts
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 
 const createSchema = z.object({
   title: z.string().min(1).max(200),
@@ -31,17 +30,21 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const limit = Math.min(Number(searchParams.get("limit") ?? 20), 100);
 
-  const posts = await db.post.findMany({
-    take: limit,
-    orderBy: { createdAt: "desc" },
-  });
+  const supabase = await createClient();
+  const { data: posts, error } = await supabase
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
 
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ posts });
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -60,9 +63,13 @@ export async function POST(req: Request) {
     );
   }
 
-  const post = await db.post.create({
-    data: { ...parsed.data, authorId: session.user.id },
-  });
+  const { data: post, error } = await supabase
+    .from("posts")
+    .insert({ ...parsed.data, author_id: user.id })
+    .select()
+    .single();
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   return NextResponse.json({ post }, { status: 201 });
 }
@@ -77,8 +84,14 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params; // Next 15+ — params er Promise
-  const post = await db.post.findUnique({ where: { id } });
-  if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const supabase = await createClient();
+  const { data: post, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json({ post });
 }
 ```
@@ -92,21 +105,21 @@ export async function GET(
 | 204 | No Content (DELETE suksess) |
 | 400 | Bad Request (ugyldig JSON, manglende felt) |
 | 401 | Unauthorized (ikke innlogget) |
-| 403 | Forbidden (innlogget, men mangler tilgang) |
+| 403 | Forbidden (innlogget, men mangler tilgang — RLS-blokkering) |
 | 404 | Not Found |
-| 422 | Unprocessable Entity (validering feilet) |
+| 422 | Unprocessable Entity (Zod-validering feilet) |
 | 429 | Too Many Requests (rate limit) |
 | 500 | Server feil (uventet) |
 
 ## Runtime
 
-Default er **Node.js runtime**. For edge-distribuert (f.eks. enkle endepunkter uten Prisma):
+Default er **Node.js runtime**. Supabase-klienten kjører også på **edge runtime** (i motsetning til Prisma):
 
 ```ts
 export const runtime = "edge";
 ```
 
-**Prisma støtter ikke edge runtime** by default — bruk `nodejs` hvis handler rører `db`.
+Nyttig for rask tilgang fra kanten hvis handleren ikke trenger Node-only API-er.
 
 ## Revalidering
 
@@ -120,7 +133,7 @@ revalidateTag("posts");
 
 ## Webhooks
 
-For eksterne webhooks (Stripe, GitHub): verifiser signatur FØR du prosesserer body.
+For eksterne webhooks (Stripe, GitHub, Resend): verifiser signatur FØR du prosesserer body.
 
 ```ts
 export async function POST(req: Request) {
@@ -133,6 +146,25 @@ export async function POST(req: Request) {
   } catch {
     return new Response("Invalid signature", { status: 400 });
   }
-  // ...
+
+  // For webhooks som skal skrive uansett bruker-context:
+  const supabase = createAdminClient(); // service role
+  // ... oppdater data
 }
 ```
+
+## Service role — når det er OK
+
+Hvis handleren må bypasse RLS (f.eks. admin-oppgaver, webhooks fra Stripe som oppdaterer user-data):
+
+```ts
+import { createAdminClient } from "@/lib/supabase/admin";
+
+export async function POST(req: Request) {
+  // Etter å ha verifisert webhook-signatur:
+  const supabase = createAdminClient();
+  await supabase.from("subscriptions").insert({ ... });
+}
+```
+
+**Aldri** bruk admin-klienten uten at handleren først har verifisert at caller faktisk har autoritet (webhook-signatur, admin-rolle i JWT, osv.).

@@ -20,12 +20,13 @@ Ikke legg `"use client"` "for sikkerhets skyld" — det river ned hele treet und
 
 ```tsx
 // app/dashboard/page.tsx — Server Component
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 import { InteractiveChart } from "./interactive-chart";
 
 export default async function Page() {
-  const data = await db.metric.findMany();
-  return <InteractiveChart data={data} />;
+  const supabase = await createClient();
+  const { data } = await supabase.from("metrics").select("*");
+  return <InteractiveChart data={data ?? []} />;
 }
 
 // app/dashboard/interactive-chart.tsx — Client Component
@@ -41,12 +42,13 @@ Data hentes på server, interaktivitet skjer på client. Ikke fetch i client nå
 
 ## Data fetching
 
-**I Server Components**: `async`-komponenter, direkte kall til DB eller fetch.
+**I Server Components**: `async`-komponenter, direkte kall til Supabase eller fetch.
 
 ```tsx
 export default async function Page() {
-  const users = await db.user.findMany();
-  return <UserList users={users} />;
+  const supabase = await createClient();
+  const { data: users } = await supabase.from("users").select("*");
+  return <UserList users={users ?? []} />;
 }
 ```
 
@@ -56,7 +58,8 @@ export default async function Page() {
 async function createUser(formData: FormData) {
   "use server";
   const parsed = createUserSchema.parse(Object.fromEntries(formData));
-  await db.user.create({ data: parsed });
+  const supabase = await createClient();
+  await supabase.from("users").insert(parsed);
 }
 ```
 
@@ -109,7 +112,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 ## Vanlige feil å unngå
 
 - ❌ `useEffect` for data fetching i Server Components (bruk `async` direkte).
-- ❌ Importere server-only moduler (`@/lib/db`) i Client Components.
+- ❌ Importere server-only moduler (`@/lib/supabase/server`, `@/lib/supabase/admin`) i Client Components — bruk `@/lib/supabase/client` i browser.
 - ❌ Glemme `"use server"` på Server Actions.
 - ❌ Passere funksjoner som props fra Server til Client (ikke serialiserbart — bruk Server Actions i stedet).
 - ❌ Anta at `fetch` cacher som i Next 14.

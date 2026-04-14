@@ -7,8 +7,8 @@
 - **Next.js** (seneste) — App Router, TypeScript, Turbopack
 - **Tailwind CSS** — styling
 - **shadcn/ui** — komponentbibliotek (basert på Radix + Tailwind)
-- **Prisma** — ORM mot PostgreSQL
-- **Auth.js (NextAuth v5)** — autentisering
+- **Supabase** — database (Postgres), auth, storage, realtime, edge functions
+- **@supabase/ssr** — server-side Supabase-klient for Next.js
 - **Zod** — runtime-validering av input
 - **ESLint + Prettier** — linting og formatering
 
@@ -16,20 +16,27 @@
 
 ```
 src/
-├── app/                 # App Router — Server Components by default
-│   ├── (auth)/          # route group for auth-sider
-│   ├── api/             # route handlers
+├── app/                     # App Router — Server Components by default
+│   ├── (auth)/              # route group for auth-sider
+│   ├── login/               # login/signup med Server Actions
+│   ├── auth/callback/       # OAuth callback-route
+│   ├── api/                 # route handlers
 │   └── layout.tsx
 ├── components/
-│   ├── ui/              # shadcn-komponenter
+│   ├── ui/                  # shadcn-komponenter
 │   └── ...
 ├── lib/
-│   ├── auth.ts          # Auth.js-config
-│   ├── db.ts            # Prisma-client
-│   └── utils.ts
-└── proxy.ts             # Next.js 16+ (tidligere middleware.ts)
-prisma/
-└── schema.prisma
+│   └── supabase/
+│       ├── client.ts        # createBrowserClient (Client Components)
+│       ├── server.ts        # createServerClient (Server Components/Actions)
+│       ├── proxy.ts         # updateSession-helper (kalt fra proxy.ts)
+│       ├── admin.ts         # service role-klient (server-only, bypass RLS)
+│       └── database.types.ts # generert via `pnpm db:types`
+├── env.ts                   # typesikker env-validering
+└── proxy.ts                 # Next.js 16+ (tidligere middleware.ts)
+supabase/
+├── migrations/              # SQL-migrasjoner
+└── config.toml              # lokal Supabase CLI-config
 ```
 
 ## Kommandoer
@@ -39,8 +46,10 @@ prisma/
 - `pnpm start` — start produksjonsbygg
 - `pnpm lint` — ESLint
 - `pnpm typecheck` — `tsc --noEmit`
-- `pnpm db:migrate` — `prisma migrate dev`
-- `pnpm db:studio` — Prisma Studio
+- `pnpm db:new <navn>` — ny Supabase-migrasjon
+- `pnpm db:push` — kjør migrasjoner mot linket prosjekt
+- `pnpm db:types` — generer TypeScript-typer fra schema
+- `npx supabase start` — kjør Supabase lokalt (Docker) — valgfritt
 
 ## Harde regler
 
@@ -48,9 +57,11 @@ prisma/
 2. **Zod for all input.** Alle Server Actions og route handlers skal validere input med Zod før videre prosessering.
 3. **Ingen `any`.** Bruk `unknown` + narrowing hvis typen er ukjent.
 4. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod.
-5. **Prisma-klient som singleton.** Importer fra `src/lib/db.ts`, ikke instansier nye.
-6. **Auth.js v5-syntaks.** `auth()` fra `src/lib/auth.ts`, ikke `getServerSession`.
-7. **Route handlers returnerer `Response` eller `NextResponse`.** Ingen direkte `res.json(...)`.
+5. **`createClient` fra riktig fil.** `@/lib/supabase/client` i Client Components, `@/lib/supabase/server` i Server Components/Actions/Route Handlers.
+6. **Alltid `supabase.auth.getUser()` server-side.** Ikke `getSession()` — den verifiserer ikke JWT.
+7. **RLS på alle tabeller med brukerdata.** Publishable key er offentlig — tilgangskontroll er RLS.
+8. **`SUPABASE_SERVICE_ROLE_KEY` kun i `@/lib/supabase/admin`.** Aldri i klient-kode. Kun for admin-flyter som bevisst skal omgå RLS.
+9. **Route handlers returnerer `Response` eller `NextResponse`.** Ingen direkte `res.json(...)`.
 
 ## Hvor ting hører hjemme
 
@@ -59,8 +70,9 @@ prisma/
 | Ny shadcn-komponent | `src/components/ui/` via `npx shadcn@latest add` |
 | Nytt API-endepunkt | `src/app/api/<rute>/route.ts` |
 | Server Action | Inline i Server Component eller i `src/lib/actions/` |
-| Databasemodell | `prisma/schema.prisma` + `pnpm db:migrate` |
-| Ny auth-provider | `src/lib/auth.ts` |
+| Database-endring | `supabase/migrations/<timestamp>_<navn>.sql` |
+| Ny RLS-policy | Samme migrasjonsfil som tabellen |
+| Ny auth-provider | Aktiveres i Supabase dashboard → Providers |
 | Shared utility | `src/lib/utils.ts` eller egen fil i `src/lib/` |
 
 ## Referanser

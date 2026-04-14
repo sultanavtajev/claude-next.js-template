@@ -1,6 +1,6 @@
 ---
 name: nextjs-build-resolver
-description: Løs byggefeil og runtime-feil i Next.js — use client-grenser, hydration mismatches, Turbopack-spesifikke feil, Prisma edge-runtime-konflikter. Bruk når `pnpm build` eller `pnpm dev` feiler med kryptiske feilmeldinger.
+description: Løs byggefeil og runtime-feil i Next.js — use client-grenser, hydration mismatches, Turbopack-spesifikke feil, Supabase/cookies-konflikter. Bruk når `pnpm build` eller `pnpm dev` feiler med kryptiske feilmeldinger.
 tools: Read, Edit, Grep, Glob, Bash
 ---
 
@@ -51,13 +51,28 @@ Du løser byggefeil systematisk.
 
 **Fiks**: bruk `useEffect` for client-only rendering, eller `suppressHydrationWarning` som siste utvei.
 
-### `PrismaClient is unable to be run in the browser` / edge-runtime feil
+### Supabase server-klient feiler i Client Component
 
-**Årsak**: Prisma importert i edge-runtime eller Client Component.
+**Årsak**: `@/lib/supabase/server` (som bruker `cookies()`) importert i Client Component.
 
 **Fiks**:
-- Fjern `export const runtime = "edge"` fra filen.
-- Hvis det er en Client Component: flytt Prisma-kallet til Server Component eller Server Action.
+- Bruk `@/lib/supabase/client` (browser-klient) i Client Components.
+- Eller: flytt data-fetch til Server Component og pass ned som prop.
+
+### `cookies() expects to be awaited` / `Dynamic server usage: cookies()`
+
+**Årsak**: `cookies()` kalles synkront (Next 14-stil) i Next 15+ hvor det er async.
+
+**Fiks**: `const cookieStore = await cookies();`
+
+### `Row violates row-level security policy`
+
+**Årsak**: RLS-policy blokkerer operasjonen — dette er riktig sikkerhetsoppførsel.
+
+**Fiks**:
+- Sjekk at user er autentisert (`getUser()` returnerer ikke null).
+- Verifiser at policy tillater operasjonen (f.eks. `auth.uid() = author_id` for insert).
+- Hvis intent er admin: bruk `@/lib/supabase/admin` i stedet — med klar begrunnelse.
 
 ### Turbopack-spesifikke feil
 
@@ -76,12 +91,11 @@ Turbopack er under utvikling — noen plugins/imports virker annerledes enn med 
 "paths": { "@/*": ["./src/*"] }
 ```
 
-### Type-feil fra `next-auth`
+### Type-feil fra Supabase-klient
 
-Ofte pga v4 vs v5 mismatch. Sjekk at:
-- `next-auth` versjon er 5.x (`pnpm list next-auth`).
-- Du bruker `auth()` ikke `getServerSession`.
-- Custom types er deklarert i `auth.d.ts` hvis du utvider `Session`.
+- Kjør `pnpm db:types` for å generere `database.types.ts`.
+- Bruk `createClient<Database>(...)` med typen fra `@/lib/supabase/database.types`.
+- Hvis tabellen er nylig opprettet: push migrasjonen og regenerer typene.
 
 ### Build henger eller OOM
 
