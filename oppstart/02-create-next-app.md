@@ -26,9 +26,10 @@ Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 02 i
 
 ## Forutsetninger
 
-- `pnpm` eller `npm` tilgjengelig.
+- **`pnpm` må være installert** (verifisert i `/0.0-oppstart`-kommandoens steg 0). Hvis ikke verifisert: kjør `pnpm --version`. Ved feil, installér med `npm install -g pnpm`.
+- Node.js 20+.
 - Nåværende mappe er ikke et eksisterende Next.js-prosjekt.
-- `.claude/`, `CLAUDE.md`, `oppstart/`, `.gitignore`, `README.md` finnes (disse skal beholdes).
+- `.claude/`, `CLAUDE.md`, `oppstart/`, `.gitignore`, `README.md`, `TEMPLATE.md` finnes (disse skal beholdes).
 
 ## Kommandoer
 
@@ -60,7 +61,7 @@ pnpm dev
 ## Feilsøking
 
 - **`create-next-app` overskrev `README.md`**: gjenopprett fra git (`git checkout README.md`) eller kopier på nytt fra templaten.
-- **pnpm ikke installert**: `npm i -g pnpm`.
+- **`pnpm: command not found` / `not recognized`**: installér med `npm install -g pnpm`, verifiser med `pnpm --version`, og prøv steget på nytt. (Burde vært fanget i `/0.0-oppstart`-kommandoens forutsetnings-sjekk.)
 - **Port 3000 opptatt**: kjør med `pnpm dev -- -p 3001`.
 
 ## Avkrysning
