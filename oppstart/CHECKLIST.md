@@ -47,8 +47,14 @@ Canonical doc-URLer for denne stacken:
 ## Regler for Claude
 
 - Kjør stegene i rekkefølge. Ikke hopp over.
-- Etter hvert fullført steg: oppdater sjekklisten her (`[ ]` → `[x]`) og gå til neste.
-- Hvis et steg feiler: stopp, rapporter feilen, og bruk `AskUserQuestion`-verktøyet for å avklare hvordan du skal fortsette.
+- **Hver stegfil har en egen `## Sjekkliste`-seksjon** med konkrete underaksjoner. Workflow per steg:
+  1. Åpne stegfilen.
+  2. Les `## Sjekkliste` øverst.
+  3. Utfør hver handling i rekkefølge.
+  4. **Kryss av hver `[ ]` → `[x]` fortløpende i stegfilen** mens du jobber — ikke på slutten.
+  5. Når alle interne bokser er `[x]`, marker steget her i master-`CHECKLIST.md` som `[x]` og gå til neste steg.
+- Hvis et steg feiler midtveis: den interne sjekklisten viser hvilke underaksjoner som er fullført og hvilke som gjenstår. Rapporter status til brukeren og bruk `AskUserQuestion` for å avklare veien videre — ikke start steget fra scratch.
 - **Alle spørsmål til brukeren skal stilles via `AskUserQuestion`-verktøyet** — ikke fritekst-spørsmål. Gruppér relaterte spørsmål i samme kall (maks 4 spørsmål per kall, 2–4 svaralternativer per spørsmål).
 - Stegfilene kan be deg stille enkeltvise spørsmål (f.eks. design-discovery i steg 04). Samle dem i ett eller flere `AskUserQuestion`-kall der det gir mening.
+- Noen steg har deler markert som **valgfri** (f.eks. Del 4 i steg 05, Del 3 i steg 08). Valgfrie deler krever ikke avkrysning for at steget regnes som ferdig — men dokumentér i rapport hvis du hopper over dem.
 - Etter steg 09 er alt ferdig — ikke gjør noe ekstra.
