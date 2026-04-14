@@ -6,9 +6,11 @@ Reset template-repoets git-historikk, opprett fersk lokal historikk, opprett Git
 
 ## Sjekkliste
 
-### Del 1 — Reset git-historikk
+### Del 1 — Initialisér git-historikk
 - [ ] Pre-flight: `gh --version` OK (og `vercel --version` hvis Vercel skal brukes)
-- [ ] `rm -rf .git` + `git init` + `git branch -M main` kjørt
+- [ ] Identifisert scenario (A degit — ingen `.git/` / B git clone — har template-historikk)
+- [ ] (Scenario B) `rm -rf .git` kjørt for å fjerne template-historikk
+- [ ] `git init` + `git branch -M main` kjørt
 - [ ] Første commit laget: `"chore: bootstrap fra claude-next.js-template"`
 
 ### Del 2 — GitHub
@@ -31,9 +33,22 @@ Kryss av hver `[ ]` → `[x]` fortløpende. Når Del 1 + Del 2 er `[x]` (Del 3 e
 - `gh` CLI installert. Sjekk med `gh --version`. Hvis ikke: `winget install GitHub.cli` (Windows) eller se `https://cli.github.com/`.
 - `vercel` CLI installert hvis Vercel brukes. Sjekk med `vercel --version`. Hvis ikke: `pnpm add -g vercel`.
 
-## Del 1 — Reset git-historikk
+## Del 1 — Initialisér git-historikk
 
-Template-repoet har historie fra `sultanavtajev/claude-next.js-template`. Brukerens nye prosjekt skal ha fersk historikk:
+Hvis prosjektet ble lastet ned med `degit` (anbefalt flyt i README): det er ingen `.git/` — bare kjør `git init`.
+
+Hvis prosjektet ble lastet ned med `git clone`: template-repoets historikk må først kastes.
+
+### Scenario A — Laget med `degit` (ingen `.git/`)
+
+```bash
+git init
+git branch -M main
+git add .
+git commit -m "chore: bootstrap fra claude-next.js-template"
+```
+
+### Scenario B — Laget med `git clone` (har template-historikk)
 
 ```bash
 rm -rf .git
@@ -43,7 +58,15 @@ git add .
 git commit -m "chore: bootstrap fra claude-next.js-template"
 ```
 
-Hvis brukeren vil beholde template-historikk: hopp over `rm -rf .git` og `git init`. Legg da til ny remote via `git remote set-url origin <ny-url>` i Del 2.
+Sjekk hvilken situasjon du er i:
+
+```bash
+git log --oneline 2>/dev/null | head -3
+```
+
+- Ingen output / feilmelding → Scenario A (degit, ingen .git).
+- Commits med "claude-next.js-template"-historie → Scenario B (git clone).
+- Commits som ikke er template-relatert → bruker har eksisterende repo, stopp og spør.
 
 ## Del 2 — GitHub-repo-gjennomgang
 

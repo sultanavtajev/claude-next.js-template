@@ -8,12 +8,20 @@ Naviger først til mappen der du vil opprette prosjektet (f.eks. `C:\Kodeprosjek
 
 ```bash
 cd C:\Kodeprosjekter
-git clone https://github.com/sultanavtajev/claude-next.js-template.git mitt-nye-prosjekt
+npx degit sultanavtajev/claude-next.js-template mitt-nye-prosjekt
 cd mitt-nye-prosjekt
 claude
 ```
 
-`mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten klonet inn.
+`mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten kopiert inn — **uten** templatens git-historikk. Du starter med en ren mappe som steg 08 initialiserer git på.
+
+Hvis `degit` ikke er tilgjengelig: bruk `git clone` i stedet:
+
+```bash
+git clone https://github.com/sultanavtajev/claude-next.js-template.git mitt-nye-prosjekt
+```
+
+Steg 08 kjører `rm -rf .git && git init` i dette tilfellet, som gir samme sluttresultat (fersk historikk) — bare litt mer trafikk ved kloning.
 
 I Claude Code, kjør: **`/0.0-oppstart`**
 
