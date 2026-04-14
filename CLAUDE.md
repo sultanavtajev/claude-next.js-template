@@ -67,3 +67,5 @@ prisma/
 
 - GitHub: `{{GITHUB_REPO}}`
 - Vercel: `{{VERCEL_PROJECT}}`
+- Supabase: `{{SUPABASE_PROJECT_REF}}`
+- Resend: API-nøkkel i `RESEND_API_KEY`
