@@ -1,5 +1,14 @@
 # Steg 02 — create-next-app
 
+## Pre-flight: sjekk docs
+
+Før du kjører kommandoen, hent `https://nextjs.org/docs/app/getting-started/installation` via WebFetch og bekreft:
+- At `create-next-app`-flaggene under fortsatt er gyldige.
+- At Next.js sin anbefalte Node-versjon er dekket av brukerens miljø.
+- At ingen ny standardkonfigurasjon har blitt introdusert (f.eks. `--proxy`, nye default-flagg).
+
+Hvis docs har endret anbefalingen: følg docs, og noter avviket.
+
 ## Mål
 
 Generer Next.js-boilerplate i nåværende mappe med standard stack.

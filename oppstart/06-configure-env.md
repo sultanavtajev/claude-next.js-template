@@ -1,5 +1,15 @@
 # Steg 06 — Environment
 
+## Pre-flight: sjekk docs
+
+Hent `https://env.t3.gg/docs/nextjs` og bekreft:
+- At `@t3-oss/env-nextjs` fortsatt er anbefalt pakke.
+- Gjeldende `createEnv`-API (kan ha endret skjema-struktur).
+
+Sjekk også om Resend/Supabase krever nye env-nøkler ved å hente:
+- `https://resend.com/docs/send-with-nextjs`
+- `https://supabase.com/docs/guides/getting-started/quickstarts/nextjs`
+
 ## Mål
 
 Opprett `.env.example` med alle nødvendige nøkler dokumentert, og en typesafe `src/env.ts` som validerer env-variabler med Zod.

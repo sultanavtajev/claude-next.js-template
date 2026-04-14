@@ -1,5 +1,13 @@
 # Steg 04 — Prisma
 
+## Pre-flight: sjekk docs
+
+Hent `https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases-typescript-postgresql` og bekreft:
+- Anbefalt init-kommando (`prisma init --datasource-provider postgresql` er nåværende).
+- At `@prisma/client` fortsatt er riktig klientpakke.
+- Singleton-mønsteret for `src/lib/db.ts` (kan ha fått ny offisiell template).
+- Nye features (f.eks. Prisma Accelerate, Prisma Postgres) som kan være relevante.
+
 ## Mål
 
 Installer Prisma, generer et minimalt schema, sett opp singleton-klient.

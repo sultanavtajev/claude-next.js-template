@@ -16,6 +16,15 @@ Next.js og tilhørende stack (React, Auth.js v5, Prisma, shadcn) endrer seg ofte
 
 ## Workflow
 
+### 0. Bootstrap-kontekst: alltid verifiser mot docs
+
+Hvis du kjører et steg i `oppstart/`, **alltid** hent den tilhørende doks-URLen før du eksekverer. Stegfilene kan være utdatert — offisielle docs er sannheten. Eksempler på ting som har endret seg uten varsel i templaten før:
+- `middleware.ts` → `proxy.ts` (Next.js 16)
+- `shadcn-ui` → `shadcn` (CLI-pakkenavn)
+- `getServerSession` → `auth()` (Auth.js v4 → v5)
+
+Hvis du oppdager at stegfilen er utdatert: følg docs, utfør steget, og rapporter avviket tydelig i avkrysningen slik at brukeren kan oppdatere stegfilen etterpå.
+
 ### 1. Sjekk eksisterende kode først
 
 Før du skriver ny kode, søk i prosjektet etter lignende mønstre:

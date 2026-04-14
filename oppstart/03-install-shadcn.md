@@ -1,5 +1,14 @@
 # Steg 03 — shadcn/ui
 
+## Pre-flight: sjekk docs
+
+Før installasjon, hent `https://ui.shadcn.com/docs/installation/next` og bekreft:
+- At `npx shadcn@latest init` fortsatt er riktig CLI-pakke (tidligere het den `shadcn-ui`).
+- Prompts og default-verdier ved init.
+- Listen over anbefalte basiskomponenter.
+
+Hvis CLI-pakken er endret eller prompts har ny struktur: følg docs.
+
 ## Mål
 
 Initialiser shadcn/ui og legg til basissett av komponenter.

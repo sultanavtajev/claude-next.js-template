@@ -1,5 +1,15 @@
 # Steg 05 — Auth.js (NextAuth v5)
 
+## Pre-flight: sjekk docs
+
+Hent `https://authjs.dev/getting-started/installation?framework=next-js` og `https://authjs.dev/getting-started/session-management/protecting` og bekreft:
+- At `next-auth@beta` fortsatt er riktig (kan ha blitt stabil v5).
+- At `proxy.ts`-pattern er gjeldende (Next.js 16+ — tidligere `middleware.ts`).
+- At Prisma-adapter-pakken heter `@auth/prisma-adapter`.
+- Gjeldende syntaks for `NextAuth({...})`-config og `auth()`-helper.
+
+Dette steget er spesielt sårbart for endringer — Auth.js v5 har endret API flere ganger under beta.
+
 ## Mål
 
 Installer Auth.js v5 med Prisma-adapter og én provider (GitHub som default — brukeren kan bytte).
