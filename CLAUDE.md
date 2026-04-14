@@ -37,6 +37,10 @@ src/
 supabase/
 ├── migrations/              # SQL-migrasjoner
 └── config.toml              # lokal Supabase CLI-config
+design-system/
+├── MASTER.md                # global source of truth (farger, typografi, spacing)
+└── pages/                   # side-spesifikke overrides (kun avvik fra MASTER)
+    └── <page-slug>.md
 ```
 
 ## Kommandoer
@@ -53,18 +57,32 @@ supabase/
 
 ## Design system (låst)
 
+**Source of truth**: `design-system/MASTER.md` — les alltid denne før UI-generering.
+
 <!--
-Denne seksjonen fylles ut i oppstart-steg 04 basert på svar fra prosjektdialogen.
-Inntil ferdig utfylt er defaultverdiene shadcn/ui sin standard (Slate + Inter).
+Verdiene under fylles ut i oppstart-steg 04 når MASTER.md genereres.
+Inntil da er defaultverdiene shadcn/ui sin standard (Slate + Inter).
 -->
 
 - **Stil**: <fylles inn i steg 04 — f.eks. Minimalism / Bento grid / Flat design>
-- **Palette**: <f.eks. Slate-basert, cool-neutral>
+- **Palette-primær**: <hex/hsl>
 - **Heading-font**: <f.eks. Inter>
 - **Body-font**: <f.eks. Inter>
 - **Dark mode**: <ja/nei/begge>
 
-**Regel**: nye komponenter skal følge denne stilen. Ikke introduser brutalism, claymorphism, neumorphism eller andre stiler med mindre brukeren eksplisitt ber om det. Fargepalette hentes fra CSS-variablene i `src/app/globals.css` — aldri hardkode hex/rgb i komponenter.
+### Retrieval-regel (hierarkisk oppslag)
+
+Når du skal generere UI for en side:
+1. Les `design-system/MASTER.md` (global baseline).
+2. Sjekk om `design-system/pages/<page-slug>.md` finnes.
+3. Hvis ja: side-spesifikke regler overstyrer MASTER.
+4. Hvis nei: bruk MASTER eksklusivt.
+
+`design-system-retrieval`-skillen aktiveres automatisk og håndterer dette.
+
+### Stil-regel
+
+Ikke introduser brutalism, claymorphism, neumorphism eller andre stiler utenfor MASTER med mindre brukeren eksplisitt ber om det. Fargepalette hentes fra CSS-variablene i `src/app/globals.css` — aldri hardkode hex/rgb i komponenter.
 
 ## Harde regler
 

@@ -65,25 +65,33 @@ Du reviewer Next.js App Router-kode med Supabase-backend for korrekthet og beste
 - `generateStaticParams` for dynamiske statiske sider?
 - `fetch` med `{ next: { tags: [...] } }` der data senere må invalideres?
 
-### 9. Accessibility
+### 9. Design system-etterlevelse
+
+- Er hardkodede hex/rgb-verdier unngått? (Flagg — skal bruke CSS-variabler fra `globals.css`.)
+- Matcher brukte Tailwind-klasser MASTER-skalaen? (spacing, radii, font-sizes)
+- Hvis siden har en override-fil (`design-system/pages/<slug>.md`), er de reglene fulgt?
+- Introduseres stiler utenfor MASTER (glassmorphism, neumorphism, etc.) uten eksplisitt bruker-bestilling? Flagg.
+- Er komponenter som duplikerer shadcn-funksjonalitet (egen button/dialog/card) laget i stedet for å bruke eksisterende? Flagg.
+
+### 10. Accessibility
 
 - Har interaktive elementer riktig role/aria? (`<button>` ikke `<div onClick>`).
 - Har `<img>` / `<Image>` alt-tekst?
 - Er form-inputs knyttet til `<label>`?
 - Har overskrifter logisk hierarki (h1 → h2 → h3)?
 
-### 10. Performance
+### 11. Performance
 
 - Brukes `next/image` (ikke `<img>`)?
 - Brukes `next/font` (ikke `<link>` til Google Fonts)?
 - Er store client-bundles unngått? (Sjekk at tunge komponenter er i server eller dynamic-importert.)
 
-### 11. Env og secrets
+### 12. Env og secrets
 
 - Brukes `env` fra `@/env` (ikke `process.env`)?
 - Er `SUPABASE_SERVICE_ROLE_KEY` kun importert fra `@/lib/supabase/admin` og aldri i komponent-kode?
 
-### 12. Proxy
+### 13. Proxy
 
 - Er `src/proxy.ts` (ikke `middleware.ts` — Next.js 16 deprecated) til stede?
 - Kaller den `updateSession` fra `@/lib/supabase/proxy`?

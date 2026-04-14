@@ -97,113 +97,88 @@ Typiske retninger basert på svar:
 
 Bruk skillen intelligent — ikke bare list opp, koble anbefalingene til svarene.
 
-## Del 4 — Lås valget
+## Del 4 — Lås valget (Master + Overrides-mønster)
 
-Når bruker har valgt én kombinasjon:
+ui-ux-pro-max har en innebygd mekanisme for å **persistere designsystemet til filer** som Claude leser før hver UI-generering. Dette er det som gjør låsingen ekte — ikke bare en kommentar.
 
-### A. Oppdater `src/app/globals.css`
+### A. Generer og persistér `design-system/MASTER.md`
 
-Erstatt `:root` og `.dark` med de valgte CSS-variablene:
+Når bruker har valgt én kombinasjon fra anbefalingene, bygg en spørringstreng fra svarene (f.eks. `"SaaS dashboard minimalism slate-palette"`) og kjør:
 
-```css
-:root {
-  --background: <hsl>;
-  --foreground: <hsl>;
-  --primary: <hsl>;
-  --primary-foreground: <hsl>;
-  /* ... alle shadcn-variabler ... */
-}
-
-.dark {
-  /* ... hvis dark mode ... */
-}
+```bash
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query basert på svarene>" \
+  --design-system \
+  --persist \
+  -p "{{PROJECT_NAME}}"
 ```
 
-### B. Legg til fonts
+Dette oppretter `design-system/MASTER.md` — **global source of truth** for farger, typografi, spacing, komponenter, tilstander.
 
-Hvis valget inkluderer custom fonts (ikke shadcn-default), bruk `next/font`:
+Eksempel-spørringer basert på discovery-svar:
+- `"SaaS dashboard minimalism slate"` → SaaS, B2B, profesjonell, nøytral
+- `"ecommerce landing bold warm"` → E-handel, B2C, bold, varm
+- `"portfolio minimalism serif"` → Portfolio, kreativ, minimalistisk
 
-```tsx
-// src/app/layout.tsx
-import { Inter, Lora } from "next/font/google";
+### B. Oppdater `src/app/globals.css`
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const lora = Lora({ subsets: ["latin"], variable: "--font-serif" });
+`MASTER.md` inneholder konkrete HSL-verdier. Overfør dem til `:root` og `.dark` i `src/app/globals.css`, slik at shadcn-komponenter plukker dem opp automatisk. Custom fonts (hvis valgt) legges til via `next/font` i `src/app/layout.tsx` + `tailwind.config.ts`.
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="no" className={`${inter.variable} ${lora.variable}`}>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
+### C. Oppdater `CLAUDE.md` → "Design system (låst)"-seksjon
 
-Og i `tailwind.config.ts`:
-```ts
-theme: {
-  extend: {
-    fontFamily: {
-      sans: ["var(--font-sans)"],
-      serif: ["var(--font-serif)"],
-    },
-  },
-}
-```
-
-### C. Lock i `CLAUDE.md`
-
-Legg til en seksjon **"Design system (låst)"** i CLAUDE.md:
+Erstatt placeholder-verdiene med ekte verdier fra `MASTER.md`:
 
 ```markdown
 ## Design system (låst)
 
+**Source of truth**: `design-system/MASTER.md` — les alltid denne før UI-generering.
+
 - **Stil**: <valgt stil>
-- **Palette**: <beskrivelse + primær hex>
-- **Heading-font**: <font-navn>
-- **Body-font**: <font-navn>
+- **Palette-primær**: <hex/hsl>
+- **Heading-font**: <font>
+- **Body-font**: <font>
 - **Dark mode**: <ja/nei/begge>
 
-**Regel**: nye komponenter skal følge denne stilen. Ikke introduser brutalism, claymorphism, neumorphism eller andre stiler med mindre brukeren eksplisitt ber om det. Fargepalette hentes fra CSS-variablene i `src/app/globals.css` — aldri hardkode hex/rgb i komponenter.
+**Retrieval-regel**: når du skal generere UI for en side:
+1. Les `design-system/MASTER.md`.
+2. Sjekk om `design-system/pages/<page-slug>.md` finnes.
+3. Hvis ja: side-spesifikke regler overstyrer MASTER.
+4. Hvis nei: bruk MASTER eksklusivt.
+
+**Stil-regel**: ikke introduser brutalism, claymorphism, neumorphism eller andre stiler utenfor MASTER med mindre brukeren eksplisitt ber om det. Fargepalette hentes fra CSS-variablene i `src/app/globals.css` — aldri hardkode hex/rgb i komponenter.
 ```
 
-### D. Opprett `DESIGN-SYSTEM.md` (valgfritt men anbefalt)
+### D. (Valgfritt) Opprett side-spesifikke overrides
 
-En egen fil i roten som dokumenterer valget mer detaljert for mennesker (ikke bare Claude):
+For sider som trenger å avvike fra MASTER (f.eks. en "Checkout" som krever mer kompakt layout, eller en "Landing" med større typografi):
 
-```markdown
-# Design System
+```bash
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "checkout minimalism compact" \
+  --design-system \
+  --persist \
+  -p "{{PROJECT_NAME}}" \
+  --page "checkout"
+```
 
-## Valg tatt ved bootstrap
+Dette oppretter `design-system/pages/checkout.md` — inneholder **kun avvik** fra MASTER. `design-system-retrieval`-skillen i `.claude/skills/` leser alltid MASTER først og merger inn side-overrides etterpå.
 
-- Prosjekttype: <svar>
-- Målgruppe: <svar>
-- Vibe: <svar>
-- Primærfarge: <svar>
-- Dark mode: <svar>
+Dette steget kan hoppes over ved bootstrap — sider legges til etter behov senere.
 
-## Resulterende stil
+### E. Commit design-system/-mappen
 
-<stil-beskrivelse med referanse til ui-ux-pro-max>
+`design-system/` skal **committes** (versjonert). Dette er ikke en bruker-preferanse — det er prosjektets bindende designkontrakt.
 
-## Palette
-| Token | Light | Dark |
-|-------|-------|------|
-| background | <hsl> | <hsl> |
-| foreground | <hsl> | <hsl> |
-...
-
-## Typografi
-- Heading: <font>
-- Body: <font>
+```bash
+git add design-system/
 ```
 
 ## Forventet resultat
 
 - `.claude/skills/ui-ux-pro-max/` finnes og er aktivert.
-- `src/app/globals.css` har oppdaterte CSS-variabler.
-- `CLAUDE.md` har "Design system (låst)"-seksjon.
-- (Valgfritt) `DESIGN-SYSTEM.md` opprettet.
+- `design-system/MASTER.md` eksisterer med konkrete verdier (ikke placeholders).
+- `design-system/pages/` eksisterer som tom mappe (eller med én fil hvis del D ble gjort).
+- `src/app/globals.css` har CSS-variabler som matcher MASTER.
+- `CLAUDE.md` "Design system (låst)"-seksjon peker til MASTER + retrieval-regel.
+- `.claude/skills/design-system-retrieval/` finnes (kommer fra templaten — ingen handling nødvendig) — denne skillen aktiveres automatisk når Claude skal lage UI.
 
 ## Feilsøking
 
