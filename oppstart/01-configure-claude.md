@@ -45,6 +45,11 @@ MCP-serverne i `.claude/mcp-servers.json` refererer til disse env-variablene (m�
 - `VERCEL_TOKEN` — access token fra Vercel dashboard
 - `SUPABASE_ACCESS_TOKEN` — personlig access token fra Supabase (kun hvis Supabase brukes)
 - `RESEND_API_KEY` — API-nøkkel fra Resend dashboard (kun hvis Resend brukes)
+- `CONTEXT7_API_KEY` — API-nøkkel fra context7.com/dashboard (valgfri, men gir høyere rate limits)
+
+Disse krever ingen env-variabel:
+- `playwright` (@playwright/mcp) — browser-automasjon og E2E-testing
+- `next-devtools` (next-devtools-mcp) — kobler til Next.js 16+ dev-serverens `/_next/mcp`-endepunkt automatisk for build/runtime-feil og live state
 
 Informér brukeren at disse må settes for at MCP-serverne skal virke. Fjern eventuelt servere som ikke er aktuelle fra `.claude/mcp-servers.json`.
 

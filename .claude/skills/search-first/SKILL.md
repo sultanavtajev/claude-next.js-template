@@ -38,14 +38,18 @@ Hvis prosjektet allerede har en måte å gjøre det på — **følg den**. Ikke 
 
 ### 2. Sjekk offisielle docs ved usikkerhet
 
-Bruk WebFetch mot:
+**Foretrukket**: bruk `context7` MCP-serveren hvis den er konfigurert — den gir versjon-spesifikke docs og er raskere enn WebFetch.
 
-- `nextjs.org/docs` — Next.js App Router, caching, Server Actions
+**Ellers**: WebFetch mot offisiell kilde:
+
+- `nextjs.org/docs` — Next.js App Router, caching, Server Actions, proxy
 - `react.dev` — Hooks, Suspense, Server Components
 - `authjs.dev` — Auth.js v5 (merk: v4-docs finnes fortsatt, unngå dem)
 - `prisma.io/docs` — schema, migrations, client-bruk
 - `ui.shadcn.com` — komponent-install og customisering
 - `tailwindcss.com/docs` — utility-klasser
+- `supabase.com/docs` — database, auth, storage
+- `resend.com/docs` — e-postsending
 
 ### 3. Rapporter funnene kort før du koder
 
