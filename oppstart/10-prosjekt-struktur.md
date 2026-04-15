@@ -8,25 +8,43 @@ Opprett `teknisk/`-mappestrukturen med `dokumentasjon/` og `sjekkliste/`-underma
 
 ## Sjekkliste
 
+- [ ] `teknisk/`-linjen fjernet fra `.gitignore` (verifisert med `grep "^teknisk/$" .gitignore` — ingen treff)
 - [ ] `teknisk/`-mappa opprettet
 - [ ] `teknisk/README.md` opprettet med overordnet forklaring
 - [ ] `teknisk/dokumentasjon/` opprettet
 - [ ] `teknisk/dokumentasjon/README.md` opprettet med forklaring + eksempler
 - [ ] `teknisk/sjekkliste/` opprettet
 - [ ] `teknisk/sjekkliste/README.md` opprettet med forklaring + eksempler
-- [ ] Verifisert med `git status` at 4 nye filer er klare til stage
+- [ ] Verifisert med `git status` at 4 nye filer er klare til stage (og teknisk/ ikke er ignorert)
 
 Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 10 i `oppstart/CHECKLIST.md` og gå til steg 11.
 
 ## Kommandoer
 
-### 1. Opprett mappene
+### 1. Fjern `teknisk/`-linjen fra `.gitignore`
+
+Templaten ignorerer `teknisk/` by default slik at chat-filer fra hooking under template-utvikling ikke havner i templatens git-repo. Bruker-prosjekter skal versjonere mappen — fjern linjen:
+
+```bash
+# Linux/Mac/Git Bash på Windows:
+sed -i '/^teknisk\/$/d' .gitignore
+
+# Eller mer manuelt: åpne .gitignore og fjern linjen "teknisk/" (og evt. kommentaren rett over)
+```
+
+Verifiser:
+```bash
+grep "^teknisk/$" .gitignore
+```
+Skal gi **ingen** output (linjen er borte).
+
+### 2. Opprett mappene
 
 ```bash
 mkdir -p teknisk/dokumentasjon teknisk/sjekkliste
 ```
 
-### 2. Opprett `teknisk/README.md`
+### 3. Opprett `teknisk/README.md`
 
 ```markdown
 # teknisk/
@@ -45,7 +63,7 @@ Samlested for prosjektintern dokumentasjon og sjekklister.
 - Ved fullføring: legg `OK - ` først i filnavnet (for sjekkliste-filer).
 ```
 
-### 3. Opprett `teknisk/dokumentasjon/README.md`
+### 4. Opprett `teknisk/dokumentasjon/README.md`
 
 ```markdown
 # teknisk/dokumentasjon/
@@ -73,7 +91,7 @@ Samlested for prosjektintern dokumentasjon og sjekklister.
 - `claude-chat-refactor-db-schema.md`
 ```
 
-### 4. Opprett `teknisk/sjekkliste/README.md`
+### 5. Opprett `teknisk/sjekkliste/README.md`
 
 ```markdown
 # teknisk/sjekkliste/
