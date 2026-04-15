@@ -23,13 +23,16 @@ claude
 
 `mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten kopiert inn — **uten** templatens git-historikk. Du starter med en ren mappe som steg 11 initialiserer git på.
 
-Hvis `degit` ikke er tilgjengelig: bruk `git clone` i stedet:
+### Om degit
 
-```bash
-git clone https://github.com/sultanavtajev/claude-next.js-template.git mitt-nye-prosjekt
-```
+`npx degit` trenger ingen manuell installasjon — `npx` laster ned pakken automatisk første gang (krever Node.js, som templaten uansett forutsetter). Resultatet er en ren filkopi uten `.git/`-mappe, til forskjell fra `git clone` som ville tatt med seg hele template-historikken.
 
-Steg 11 kjører `rm -rf .git && git init` i dette tilfellet, som gir samme sluttresultat (fersk historikk) — bare litt mer trafikk ved kloning.
+**Feilsøking hvis `npx degit` feiler**:
+
+1. Verifiser at Node.js er installert: `node --version` (må være v20+)
+2. Test degit direkte: `npx degit --help` skal vise hjelp-tekst
+3. Hvis corporate-nettverk blokkerer npx-downloads: installer globalt én gang med `npm install -g degit`, bruk deretter `degit sultanavtajev/claude-next.js-template mitt-nye-prosjekt` (uten `npx`-prefiks)
+4. Hvis alt feiler: kontakt oss — ikke fall tilbake på `git clone`, det introduserer template-historikk i ditt nye prosjekt.
 
 I Claude Code, kjør: **`/0.0-oppstart`**
 
