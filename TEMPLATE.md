@@ -57,6 +57,7 @@ Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 - `.claude/hooks/` — automatisk formatering + guard mot sensitive filer
 - `.claude/mcp-servers.json` — Vercel + GitHub + Supabase + Resend + Playwright + Context7 + shadcn + Chrome DevTools + next-devtools
 - `oppstart/` — engangs-instruksjoner som slettes etter bootstrap
+- Post-migration snapshot-hook — auto-regenererer `teknisk/dokumentasjon/supabase-snapshot.md` når Supabase-migrasjoner endres, så Claude alltid har oppdatert oversikt over tabeller, RLS, edge functions og triggers
 
 ## Etter oppstart
 

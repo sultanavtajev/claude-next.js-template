@@ -43,7 +43,10 @@ Ett samlet steg for alt Supabase-arbeid:
 - [ ] `supabase`-CLI installert som dev-dependency
 - [ ] `npx supabase init` kjørt
 - [ ] `npx supabase link --project-ref <ref>` kjørt
-- [ ] `db:types`, `db:push`, `db:new`-scripts lagt til i `package.json`
+- [ ] `tsx` installert som dev-dependency (for snapshot-script)
+- [ ] `scripts/supabase-snapshot.ts` opprettet
+- [ ] `db:types`, `db:push`, `db:new`, `db:snapshot`-scripts lagt til i `package.json`
+- [ ] `pnpm db:snapshot` kjørt én gang, genererte `teknisk/dokumentasjon/supabase-snapshot.md`
 
 Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle relevante bokser er `[x]` (Del 4 er valgfri), marker steg 07 i `oppstart/CHECKLIST.md` og gå til steg 08. Hvis bruker valgte "hopp-over" i Del 1, hoppes Del 2–4 over også.
 
@@ -366,12 +369,100 @@ Generer TypeScript-typer fra schema:
 npx supabase gen types typescript --linked > src/lib/supabase/database.types.ts
 ```
 
-Legg til i `package.json`:
+Installer `tsx` som dev-dependency (brukes av snapshot-scriptet):
+```bash
+pnpm add -D tsx
+```
+
+Opprett `scripts/supabase-snapshot.ts` (dumper full schema-oversikt til markdown):
+
+```typescript
+// scripts/supabase-snapshot.ts
+import { execSync } from "node:child_process";
+import { writeFileSync, mkdirSync } from "node:fs";
+
+function sh(cmd: string): string {
+  try {
+    return execSync(cmd, { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] }).trim();
+  } catch (err: unknown) {
+    return `⚠️ ${(err as Error).message}`;
+  }
+}
+
+const now = new Date().toISOString();
+const sections: Array<[string, string]> = [];
+
+// Migrasjoner
+sections.push(["Migrasjoner", "```\n" + sh("npx supabase migration list --linked") + "\n```"]);
+
+// Edge functions
+sections.push(["Edge Functions", "```\n" + sh("npx supabase functions list") + "\n```"]);
+
+// Schema dump (CREATE TABLE + CREATE POLICY)
+const schema = sh("npx supabase db dump --linked --schema-only");
+
+const tables = schema.match(/CREATE TABLE[\\s\\S]*?;/g) || [];
+sections.push([
+  "Tabeller",
+  tables.length
+    ? tables.map((t) => "```sql\n" + t + "\n```").join("\n\n")
+    : "_Ingen tabeller funnet._",
+]);
+
+const policies = schema.match(/CREATE POLICY[\\s\\S]*?;/g) || [];
+sections.push([
+  "RLS-policies",
+  policies.length
+    ? policies.map((p) => "```sql\n" + p + "\n```").join("\n\n")
+    : "_Ingen policies funnet. Husk å aktivere RLS på alle brukerdata-tabeller._",
+]);
+
+const triggers = schema.match(/CREATE TRIGGER[\\s\\S]*?;/g) || [];
+sections.push([
+  "Triggers",
+  triggers.length
+    ? triggers.map((t) => "```sql\n" + t + "\n```").join("\n\n")
+    : "_Ingen triggers._",
+]);
+
+const functions = schema.match(/CREATE (?:OR REPLACE )?FUNCTION[\\s\\S]*?\\$\\$/g) || [];
+sections.push([
+  "Database Functions",
+  functions.length
+    ? functions.map((f) => "```sql\n" + f + "\n$$\n```").join("\n\n")
+    : "_Ingen custom functions._",
+]);
+
+sections.push([
+  "Hvordan oppdatere",
+  "Denne filen regenereres automatisk av `.claude/hooks/scripts/post-migration-snapshot.js` når `supabase/migrations/*.sql` endres.\n\nManuell regenerering: `pnpm db:snapshot`\n\n**Før DB-arbeid**: les denne filen. For live-data bruk Supabase MCP (`mcp__supabase__list_tables`, `get_advisors`, osv.).",
+]);
+
+let md = `# Supabase Snapshot\n\nGenerert: ${now}\n\n`;
+md += "> **Auto-generert** — ikke rediger manuelt, endringer overskrives.\n\n";
+for (const [title, content] of sections) {
+  md += `## ${title}\n\n${content}\n\n`;
+}
+
+mkdirSync("teknisk/dokumentasjon", { recursive: true });
+writeFileSync("teknisk/dokumentasjon/supabase-snapshot.md", md);
+console.log("✓ Snapshot skrevet til teknisk/dokumentasjon/supabase-snapshot.md");
+```
+
+Legg til i `package.json` scripts:
 ```json
 "db:types": "supabase gen types typescript --linked > src/lib/supabase/database.types.ts",
 "db:push": "supabase db push",
-"db:new": "supabase migration new"
+"db:new": "supabase migration new",
+"db:snapshot": "tsx scripts/supabase-snapshot.ts"
 ```
+
+Kjør én gang for å verifisere:
+```bash
+pnpm db:snapshot
+```
+
+Etter dette: Claude Code-hooken `.claude/hooks/scripts/post-migration-snapshot.js` auto-regenererer snapshot hver gang `supabase/migrations/*.sql` endres.
 
 ## Forventet resultat
 
@@ -382,6 +473,7 @@ Legg til i `package.json`:
 - `supabase.auth.getUser()` kan kalles i Server Components/Actions.
 - RLS-retningslinje etablert for nye tabeller.
 - (Valgfritt) `supabase/`-mappe med migrations, lenket til prosjekt.
+- (Valgfritt, hvis Del 4 kjørt) `scripts/supabase-snapshot.ts` + `teknisk/dokumentasjon/supabase-snapshot.md` finnes. `pnpm db:snapshot` kan regenerere snapshoten manuelt; Claude Code-hook gjør det automatisk ved migrasjons-endringer.
 
 ## Feilsøking
 

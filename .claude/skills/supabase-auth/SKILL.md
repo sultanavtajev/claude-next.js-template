@@ -155,6 +155,12 @@ export const config = {
 };
 ```
 
+## Oversikt over RLS-policies
+
+Før du endrer RLS eller skriver kode som avhenger av eksisterende policies: les `teknisk/dokumentasjon/supabase-snapshot.md`. Den inneholder alle `CREATE POLICY`-statements ekstrahert fra schema-dump. Regenereres automatisk av Claude Code-hook når `supabase/migrations/*.sql` endres, eller manuelt via `pnpm db:snapshot`.
+
+For live data (inkludert policies som ikke er fra lokal schema): bruk `mcp__supabase__list_tables` og `mcp__supabase__get_advisors`.
+
 ## RLS + auth samspill
 
 RLS-policies kan referere `auth.uid()` og `auth.jwt()`:

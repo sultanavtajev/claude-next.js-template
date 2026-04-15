@@ -14,13 +14,17 @@ Supabase CLI gir migrasjonsflyt som ligner Prisma/Rails — SQL-filer versjonere
 npx supabase migration new <beskrivende_navn>
 
 # 2. Rediger supabase/migrations/<timestamp>_<navn>.sql
+#    NB: Claude Code-hook auto-regenererer snapshoten etter denne editen
 
 # 3. Push til hosted database
 npx supabase db push
 
-# 4. Regenerer TypeScript-typer
-pnpm db:types   # eller: npx supabase gen types typescript --linked > src/lib/supabase/database.types.ts
+# 4. Regenerer TypeScript-typer + snapshot
+pnpm db:types      # src/lib/supabase/database.types.ts
+pnpm db:snapshot   # teknisk/dokumentasjon/supabase-snapshot.md
 ```
+
+**Før du lager en ny migrasjon**: les `teknisk/dokumentasjon/supabase-snapshot.md` for å forstå eksisterende tabellstruktur, RLS-policies, triggers og functions. Dette hindrer duplikasjon og inkonsistenser.
 
 ## Legge til tabell med RLS
 

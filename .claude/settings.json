@@ -141,6 +141,10 @@
           {
             "type": "command",
             "command": "node $CLAUDE_PROJECT_DIR/.claude/hooks/scripts/post-edit-format.js"
+          },
+          {
+            "type": "command",
+            "command": "node $CLAUDE_PROJECT_DIR/.claude/hooks/scripts/post-migration-snapshot.js"
           }
         ]
       }
