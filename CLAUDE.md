@@ -95,6 +95,8 @@ Se `.claude/commands/README.md` for full oversikt. Gruppert: `0.x` = bootstrap, 
 - `/3.3-workspace-discard <navn>` — forkast workspace uten merge
 - `/3.4-workspace-finish <navn>` — merge workspace tilbake, rydd opp
 - `/4.0-ui <beskrivelse>` — start UI-arbeid med garantert MASTER + ui-ux-pro-max-konsultering
+- `/6.0-audit [scope]` — full audit (security + a11y + performance + design-system)
+- `/6.1-a11y`, `/6.2-security`, `/6.3-performance` — enkelt-audits
 
 ### Skill-precedence ved UI-arbeid
 

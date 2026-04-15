@@ -2,7 +2,7 @@
 
 Prosjekt-spesifikke slash-kommandoer for Claude Code. Aktiveres med `/<navn>` i Claude Code-sessionen.
 
-Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace, `4.x` = UI/UX.
+Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace, `4.x` = UI/UX, `6.x` = audits.
 
 ## 0. Bootstrap
 
@@ -40,6 +40,15 @@ Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = wo
 | Kommando | Beskrivelse |
 |----------|-------------|
 | `/4.0-ui <beskrivelse>` | Start UI-arbeid med garantert kall til `ui-ux-pro-max` + MASTER-konsultering. Bruk for ny side, komponent, eller større styling-endring. |
+
+## 6. Audits
+
+| Kommando | Beskrivelse |
+|----------|-------------|
+| `/6.0-audit [scope]` | Full audit: security + a11y + performance + design-system. Samlet rapport til `teknisk/dokumentasjon/audits/` |
+| `/6.1-a11y [scope]` | Kun a11y-audit (WCAG 2.2 AA) |
+| `/6.2-security [scope]` | Kun security-audit (OWASP + RLS + secrets) |
+| `/6.3-performance [scope]` | Kun performance-audit (bundle, caching, bilder/fonts) |
 
 ## Konvensjoner disse kommandoene antar
 
