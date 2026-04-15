@@ -166,16 +166,17 @@ Unntak (hardkoding OK): logging, feilmeldinger i server-kode som ikke eksponeres
 
 1. **Server Components by default.** Bruk `"use client"` kun når nødvendig (interaktivitet, hooks, browser-API).
 2. **Før DB-arbeid: les `teknisk/dokumentasjon/supabase-snapshot.md`** for full oversikt over tabeller, RLS-policies, triggers, edge functions. Hvis filen ikke finnes eller er utdatert (sjekk `Generert:`-dato): kjør `pnpm db:snapshot`. For live-data bruk Supabase MCP.
-3. **All brukervendt tekst via `next-intl`.** Aldri hardkode strenger. Bruk `useTranslations()` / `getTranslations()`. Legg til keys i **alle** `messages/*.json`.
-4. **Zod for all input.** Alle Server Actions og route handlers skal validere input med Zod før videre prosessering.
-5. **Ingen `any`.** Bruk `unknown` + narrowing hvis typen er ukjent.
-6. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod.
-7. **`createClient` fra riktig fil.** `@/lib/supabase/client` i Client Components, `@/lib/supabase/server` i Server Components/Actions/Route Handlers.
-8. **Alltid `supabase.auth.getUser()` server-side.** Ikke `getSession()` — den verifiserer ikke JWT.
-9. **RLS på alle tabeller med brukerdata.** Publishable key er offentlig — tilgangskontroll er RLS.
-10. **`SUPABASE_SERVICE_ROLE_KEY` kun i `@/lib/supabase/admin`.** Aldri i klient-kode. Kun for admin-flyter som bevisst skal omgå RLS.
-11. **Route handlers returnerer `Response` eller `NextResponse`.** Ingen direkte `res.json(...)`.
-12. **Typesafe navigation via `@/i18n/navigation`.** Bruk `Link`/`redirect`/`useRouter` derfra — ikke `next/link`/`next/navigation` direkte, siden de ikke er locale-aware.
+3. **Ved sesjonsstart: les `teknisk/dokumentasjon/session-state.md` hvis den finnes.** Filen dumpes av PreCompact-hook og inneholder gjenstående sjekkliste-punkter, git-state, ucommittede endringer fra forrige sesjon. Hvis bruker har startet en spesifikk oppgave, fortsett der — ikke begynn på scratch.
+4. **All brukervendt tekst via `next-intl`.** Aldri hardkode strenger. Bruk `useTranslations()` / `getTranslations()`. Legg til keys i **alle** `messages/*.json`.
+5. **Zod for all input.** Alle Server Actions og route handlers skal validere input med Zod før videre prosessering.
+6. **Ingen `any`.** Bruk `unknown` + narrowing hvis typen er ukjent.
+7. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod.
+8. **`createClient` fra riktig fil.** `@/lib/supabase/client` i Client Components, `@/lib/supabase/server` i Server Components/Actions/Route Handlers.
+9. **Alltid `supabase.auth.getUser()` server-side.** Ikke `getSession()` — den verifiserer ikke JWT.
+10. **RLS på alle tabeller med brukerdata.** Publishable key er offentlig — tilgangskontroll er RLS.
+11. **`SUPABASE_SERVICE_ROLE_KEY` kun i `@/lib/supabase/admin`.** Aldri i klient-kode. Kun for admin-flyter som bevisst skal omgå RLS.
+12. **Route handlers returnerer `Response` eller `NextResponse`.** Ingen direkte `res.json(...)`.
+13. **Typesafe navigation via `@/i18n/navigation`.** Bruk `Link`/`redirect`/`useRouter` derfra — ikke `next/link`/`next/navigation` direkte, siden de ikke er locale-aware.
 
 ## Hvor ting hører hjemme
 
