@@ -97,6 +97,7 @@ Se `.claude/commands/README.md` for full oversikt. Gruppert: `0.x` = bootstrap, 
 - `/4.0-ui <beskrivelse>` — start UI-arbeid med garantert MASTER + ui-ux-pro-max-konsultering
 - `/6.0-audit [scope]` — full audit (security + a11y + performance + design-system)
 - `/6.1-a11y`, `/6.2-security`, `/6.3-performance` — enkelt-audits
+- `/7.0-discovery [idé]` — omfattende prosjekt-planlegging (10 dokumenter fra ide til roadmap)
 
 ### Skill-precedence ved UI-arbeid
 
@@ -169,16 +170,17 @@ Unntak (hardkoding OK): logging, feilmeldinger i server-kode som ikke eksponeres
 1. **Server Components by default.** Bruk `"use client"` kun når nødvendig (interaktivitet, hooks, browser-API).
 2. **Før DB-arbeid: les `teknisk/dokumentasjon/supabase-snapshot.md`** for full oversikt over tabeller, RLS-policies, triggers, edge functions. Hvis filen ikke finnes eller er utdatert (sjekk `Generert:`-dato): kjør `pnpm db:snapshot`. For live-data bruk Supabase MCP.
 3. **Ved sesjonsstart: les `teknisk/dokumentasjon/session-state.md` hvis den finnes.** Filen dumpes av PreCompact-hook og inneholder gjenstående sjekkliste-punkter, git-state, ucommittede endringer fra forrige sesjon. Hvis bruker har startet en spesifikk oppgave, fortsett der — ikke begynn på scratch.
-4. **All brukervendt tekst via `next-intl`.** Aldri hardkode strenger. Bruk `useTranslations()` / `getTranslations()`. Legg til keys i **alle** `messages/*.json`.
-5. **Zod for all input.** Alle Server Actions og route handlers skal validere input med Zod før videre prosessering.
-6. **Ingen `any`.** Bruk `unknown` + narrowing hvis typen er ukjent.
-7. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod.
-8. **`createClient` fra riktig fil.** `@/lib/supabase/client` i Client Components, `@/lib/supabase/server` i Server Components/Actions/Route Handlers.
-9. **Alltid `supabase.auth.getUser()` server-side.** Ikke `getSession()` — den verifiserer ikke JWT.
-10. **RLS på alle tabeller med brukerdata.** Publishable key er offentlig — tilgangskontroll er RLS.
-11. **`SUPABASE_SERVICE_ROLE_KEY` kun i `@/lib/supabase/admin`.** Aldri i klient-kode. Kun for admin-flyter som bevisst skal omgå RLS.
-12. **Route handlers returnerer `Response` eller `NextResponse`.** Ingen direkte `res.json(...)`.
-13. **Typesafe navigation via `@/i18n/navigation`.** Bruk `Link`/`redirect`/`useRouter` derfra — ikke `next/link`/`next/navigation` direkte, siden de ikke er locale-aware.
+4. **Ved større oppgaver: les `teknisk/dokumentasjon/prosjekt/00-visjon.md` + `03-funksjonelle-krav.md` hvis de finnes.** Sikrer at nye features passer inn i prosjektets scope og visjon. Ved scope-konflikt: stopp og sjekk med bruker før du koder.
+5. **All brukervendt tekst via `next-intl`.** Aldri hardkode strenger. Bruk `useTranslations()` / `getTranslations()`. Legg til keys i **alle** `messages/*.json`.
+6. **Zod for all input.** Alle Server Actions og route handlers skal validere input med Zod før videre prosessering.
+7. **Ingen `any`.** Bruk `unknown` + narrowing hvis typen er ukjent.
+8. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod.
+9. **`createClient` fra riktig fil.** `@/lib/supabase/client` i Client Components, `@/lib/supabase/server` i Server Components/Actions/Route Handlers.
+10. **Alltid `supabase.auth.getUser()` server-side.** Ikke `getSession()` — den verifiserer ikke JWT.
+11. **RLS på alle tabeller med brukerdata.** Publishable key er offentlig — tilgangskontroll er RLS.
+12. **`SUPABASE_SERVICE_ROLE_KEY` kun i `@/lib/supabase/admin`.** Aldri i klient-kode. Kun for admin-flyter som bevisst skal omgå RLS.
+13. **Route handlers returnerer `Response` eller `NextResponse`.** Ingen direkte `res.json(...)`.
+14. **Typesafe navigation via `@/i18n/navigation`.** Bruk `Link`/`redirect`/`useRouter` derfra — ikke `next/link`/`next/navigation` direkte, siden de ikke er locale-aware.
 
 ## Hvor ting hører hjemme
 

@@ -2,7 +2,7 @@
 
 Prosjekt-spesifikke slash-kommandoer for Claude Code. Aktiveres med `/<navn>` i Claude Code-sessionen.
 
-Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace, `4.x` = UI/UX, `6.x` = audits.
+Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace, `4.x` = UI/UX, `6.x` = audits, `7.x` = planlegging/discovery.
 
 ## 0. Bootstrap
 
@@ -49,6 +49,12 @@ Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = wo
 | `/6.1-a11y [scope]` | Kun a11y-audit (WCAG 2.2 AA) |
 | `/6.2-security [scope]` | Kun security-audit (OWASP + RLS + secrets) |
 | `/6.3-performance [scope]` | Kun performance-audit (bundle, caching, bilder/fonts) |
+
+## 7. Planlegging / discovery
+
+| Kommando | Beskrivelse |
+|----------|-------------|
+| `/7.0-discovery [idé]` | Komplett prosjekt-discovery — produserer 10 planleggingsdokumenter (visjon, målgruppe, scope, features, datamodell, arkitektur, roadmap) i `teknisk/dokumentasjon/prosjekt/`. Kjøres én gang ved prosjektstart, eller flere ganger ved scope-endringer. |
 
 ## Konvensjoner disse kommandoene antar
 
