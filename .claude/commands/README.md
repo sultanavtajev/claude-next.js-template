@@ -2,7 +2,7 @@
 
 Prosjekt-spesifikke slash-kommandoer for Claude Code. Aktiveres med `/<navn>` i Claude Code-sessionen.
 
-Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace.
+Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace, `4.x` = UI/UX.
 
 ## 0. Bootstrap
 
@@ -34,6 +34,12 @@ Nummerering gruppe: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = wo
 | `/3.2-workspace-reload <navn>` | Gjenåpne eksisterende workspace i VS Code |
 | `/3.3-workspace-discard <navn>` | Forkast workspace uten merge, slett worktree og branch |
 | `/3.4-workspace-finish <navn>` | Sjekk ucommittede endringer, merge til feature, rydd opp workspace |
+
+## 4. UI/UX
+
+| Kommando | Beskrivelse |
+|----------|-------------|
+| `/4.0-ui <beskrivelse>` | Start UI-arbeid med garantert kall til `ui-ux-pro-max` + MASTER-konsultering. Bruk for ny side, komponent, eller større styling-endring. |
 
 ## Konvensjoner disse kommandoene antar
 

@@ -81,7 +81,7 @@ teknisk/
 
 ### Slash-kommandoer (Claude Code)
 
-Se `.claude/commands/README.md` for full oversikt. Gruppert: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace.
+Se `.claude/commands/README.md` for full oversikt. Gruppert: `0.x` = bootstrap, `1.x` = git, `2.x` = oppgaver, `3.x` = workspace, `4.x` = UI/UX.
 
 - `/0.0-oppstart` — kjør bootstrap (oppstart/CHECKLIST.md) for nytt prosjekt
 - `/1.0-commit` — commit alle endringer med beskrivende melding
@@ -94,6 +94,18 @@ Se `.claude/commands/README.md` for full oversikt. Gruppert: `0.x` = bootstrap, 
 - `/3.2-workspace-reload <navn>` — gjenåpne eksisterende workspace
 - `/3.3-workspace-discard <navn>` — forkast workspace uten merge
 - `/3.4-workspace-finish <navn>` — merge workspace tilbake, rydd opp
+- `/4.0-ui <beskrivelse>` — start UI-arbeid med garantert MASTER + ui-ux-pro-max-konsultering
+
+### Skill-precedence ved UI-arbeid
+
+Når du jobber med UI:
+
+1. **`/4.0-ui <beskrivelse>`** (manuell trigger) eller **`design-system-retrieval`-skill** (auto) → leser MASTER + page-overrides FØRST
+2. **`ui-ux-pro-max`-skill** → konsulteres for design-intelligens (palletter, fonts, komponent-eksempler)
+3. **`shadcn-component`-skill** → bruker shadcn-baselinen ved komponent-bygging
+4. **`i18n-translations`-skill** → all brukervendt tekst gjennom `useTranslations()`
+
+**MASTER vinner alltid**: hvis `ui-ux-pro-max` foreslår noe utenfor MASTER (f.eks. glassmorphism når MASTER er minimalism), avvis forslaget. Bruker kan eksplisitt godkjenne avvik — da opprettes side-override via `python3 .claude/skills/ui-ux-pro-max/scripts/search.py ... --page <slug>`.
 
 **Branch-konvensjon**: `feature` er utviklingsbranch, `main` er release. Workspace-kommandoene forutsetter dette — endre i `.claude/commands/*.md` hvis prosjektet bruker annen modell.
 
