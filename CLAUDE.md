@@ -98,14 +98,16 @@ Se `.claude/commands/README.md` for full oversikt. Gruppert: `0.x` = bootstrap, 
 
 ### Skill-precedence ved UI-arbeid
 
-Når du jobber med UI:
+Når du jobber med UI — uansett oppgavestørrelse, uansett om brukeren kalte `/4.0-ui` eller bare sa "endre den knappen":
 
-1. **`/4.0-ui <beskrivelse>`** (manuell trigger) eller **`design-system-retrieval`-skill** (auto) → leser MASTER + page-overrides FØRST
-2. **`ui-ux-pro-max`-skill** → konsulteres for design-intelligens (palletter, fonts, komponent-eksempler)
-3. **`shadcn-component`-skill** → bruker shadcn-baselinen ved komponent-bygging
-4. **`i18n-translations`-skill** → all brukervendt tekst gjennom `useTranslations()`
+1. **Les `design-system/MASTER.md` FØRST.** Sjekk om `design-system/pages/<slug>.md` finnes for siden du endrer.
+2. **Konsulter `ui-ux-pro-max`-skillen** for design-intelligens (palletter, fonts, komponent-eksempler) — innenfor MASTER-rammene.
+3. **Bruk `shadcn-component`-skillen** ved nye komponenter.
+4. **`i18n-translations`-skillen** håndterer at all brukervendt tekst går gjennom `useTranslations()`.
 
 **MASTER vinner alltid**: hvis `ui-ux-pro-max` foreslår noe utenfor MASTER (f.eks. glassmorphism når MASTER er minimalism), avvis forslaget. Bruker kan eksplisitt godkjenne avvik — da opprettes side-override via `python3 .claude/skills/ui-ux-pro-max/scripts/search.py ... --page <slug>`.
+
+**Bruk `/4.0-ui <beskrivelse>`** når du vil ha eksplisitt garanti for at hele workflow-en kjøres i riktig rekkefølge.
 
 **Branch-konvensjon**: `feature` er utviklingsbranch, `main` er release. Workspace-kommandoene forutsetter dette — endre i `.claude/commands/*.md` hvis prosjektet bruker annen modell.
 
