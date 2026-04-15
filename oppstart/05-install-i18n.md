@@ -39,7 +39,7 @@ Etabler **typesafe, Server Component-native i18n** før Supabase-steget. Dette e
 
 ### Del 5 — Proxy-oppsett
 - [ ] `src/proxy.ts` opprettet med next-intl-middleware
-- [ ] Klar for at steg 06 chainer Supabase session-refresh etterpå
+- [ ] Klar for at steg 07 chainer Supabase session-refresh etterpå
 
 ### Del 6 — CLAUDE.md
 - [ ] Ny seksjon "Internasjonalisering (låst)" med valgte locales + regel om at brukervendt tekst aldri hardkodes
@@ -223,7 +223,7 @@ export default function Home({
 
 ## Del 5 — Proxy-oppsett
 
-Opprett `src/proxy.ts` med next-intl sin middleware. Denne filen utvides i steg 06 til å chainer Supabase session-refresh.
+Opprett `src/proxy.ts` med next-intl sin middleware. Denne filen utvides i steg 07 til å chainer Supabase session-refresh.
 
 ```typescript
 import createMiddleware from "next-intl/middleware";
@@ -239,10 +239,10 @@ export const config = {
 };
 ```
 
-**Viktig for steg 06**: dette blir erstattet av en chained versjon når Supabase-proxy legges til:
+**Viktig for steg 07**: dette blir erstattet av en chained versjon når Supabase-proxy legges til:
 
 ```typescript
-// Steg 06 vil oppdatere dette til noe slikt:
+// Steg 07 vil oppdatere dette til noe slikt:
 import createMiddleware from "next-intl/middleware";
 import { updateSession } from "@/lib/supabase/proxy";
 import { routing } from "@/i18n/routing";

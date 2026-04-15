@@ -219,7 +219,7 @@ python3 .claude/skills/ui-ux-pro-max/scripts/search.py "checkout minimalism comp
   --page "checkout"
 ```
 
-Dette oppretter `design-system/pages/checkout.md` — inneholder **kun avvik** fra MASTER. `design-system-retrieval`-skillen i `.claude/skills/` leser alltid MASTER først og merger inn side-overrides etterpå.
+Dette oppretter `design-system/pages/checkout.md` — inneholder **kun avvik** fra MASTER. Per regelen i `CLAUDE.md` "Skill-precedence ved UI-arbeid" leser Claude alltid MASTER først og merger inn side-overrides etterpå før kode genereres.
 
 Dette steget kan hoppes over ved bootstrap — sider legges til etter behov senere.
 
@@ -238,7 +238,7 @@ git add design-system/
 - `design-system/pages/` eksisterer som tom mappe (eller med én fil hvis del D ble gjort).
 - `src/app/globals.css` har CSS-variabler som matcher MASTER.
 - `CLAUDE.md` "Design system (låst)"-seksjon peker til MASTER + retrieval-regel.
-- `.claude/skills/design-system-retrieval/` finnes (kommer fra templaten — ingen handling nødvendig) — denne skillen aktiveres automatisk når Claude skal lage UI.
+- `CLAUDE.md` "Skill-precedence ved UI-arbeid"-regelen er på plass — Claude leser MASTER og kaller `ui-ux-pro-max` ved alle UI-endringer. `/4.0-ui <beskrivelse>` brukes som eksplisitt trigger for større jobber.
 
 ## Feilsøking
 

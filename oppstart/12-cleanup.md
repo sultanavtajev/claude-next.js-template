@@ -14,7 +14,7 @@ Slett `oppstart/`-mappen og `TEMPLATE.md`, lag final commit uten template-artefa
 - [ ] (Hvis feature-branch) synket og pushet til `origin/feature`
 - [ ] IDE/Claude-restart-instruksjoner gitt til bruker (lukk + åpne, `/mcp`-verifisering)
 
-Kryss av hver `[ ]` → `[x]` fortløpende. Siste boks er symbolsk siden mappen slettes i samme steg — når alle bokser er `[x]`, marker steg 11 i master-CHECKLIST.md som ferdig. Bootstrap er da fullført.
+Kryss av hver `[ ]` → `[x]` fortløpende. Siste boks er symbolsk siden mappen slettes i samme steg — når alle bokser er `[x]`, marker steg 12 i master-CHECKLIST.md som ferdig. Bootstrap er da fullført.
 
 ## Kommandoer
 

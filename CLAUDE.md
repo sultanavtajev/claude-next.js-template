@@ -134,7 +134,7 @@ Når du skal generere UI for en side:
 3. Hvis ja: side-spesifikke regler overstyrer MASTER.
 4. Hvis nei: bruk MASTER eksklusivt.
 
-`design-system-retrieval`-skillen aktiveres automatisk og håndterer dette.
+Bruk `/4.0-ui <beskrivelse>` for eksplisitt trigger, eller følg regelen i "Skill-precedence ved UI-arbeid" over for små styling-endringer.
 
 ### Stil-regel
 

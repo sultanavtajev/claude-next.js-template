@@ -113,9 +113,9 @@ Søk-og-erstatt `{{GITHUB_REPO}}` med `<brukernavn>/<repo-navn>` i:
 - `CLAUDE.md`
 - `.claude/mcp-servers.json`
 
-Commit denne endringen (blir siste commit i steg 10):
+Commit denne endringen (blir siste commit i steg 12):
 ```bash
-# ikke commit nå — samler opp til steg 10
+# ikke commit nå — samler opp til steg 12
 ```
 
 ## Del 3 — Vercel-gjennomgang (valgfritt)
