@@ -1,4 +1,4 @@
-# Steg 06 — Environment
+# Steg 07 — Environment
 
 ## Pre-flight: sjekk docs
 
@@ -18,10 +18,10 @@ Opprett `.env.example` med alle Supabase-nøkler dokumentert, og en typesafe `sr
 - [ ] `@t3-oss/env-nextjs` og `zod` installert
 - [ ] `.env.example` opprettet med Supabase + (valgfri) Resend-nøkler
 - [ ] `src/env.ts` opprettet med typesikker `createEnv`-oppsett (server + client + runtimeEnv)
-- [ ] `.env.local` verifisert: finnes lokalt og er ignorert av git (nøkler ble skrevet inn i steg 05 for Supabase)
+- [ ] `.env.local` verifisert: finnes lokalt og er ignorert av git (nøkler ble skrevet inn i steg 06 for Supabase)
 - [ ] Verifisert at importstien `@/env` fungerer — ingen `process.env` direkte utenfor `src/env.ts`
 
-Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 06 i `oppstart/CHECKLIST.md` og gå til steg 07.
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 07 i `oppstart/CHECKLIST.md` og gå til steg 08.
 
 ## Kommandoer
 
@@ -95,4 +95,4 @@ Kopier `.env.example` → `.env.local` og fyll inn faktiske verdier. Brukeren m�
 
 ## Avkrysning
 
-Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 06 i `oppstart/CHECKLIST.md`.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 07 i `oppstart/CHECKLIST.md`.

@@ -14,6 +14,7 @@ agent-instrukser leses inn sammen med CLAUDE.md.
 - **Next.js** (seneste) — App Router, TypeScript, Turbopack
 - **Tailwind CSS** — styling
 - **shadcn/ui** — komponentbibliotek (basert på Radix + Tailwind)
+- **next-intl** — internasjonalisering (i18n) med Server Components-støtte
 - **Supabase** — database (Postgres), auth, storage, realtime, edge functions
 - **@supabase/ssr** — server-side Supabase-klient for Next.js
 - **Zod** — runtime-validering av input
@@ -23,24 +24,33 @@ agent-instrukser leses inn sammen med CLAUDE.md.
 
 ```
 src/
-├── app/                     # App Router — Server Components by default
-│   ├── (auth)/              # route group for auth-sider
-│   ├── login/               # login/signup med Server Actions
-│   ├── auth/callback/       # OAuth callback-route
-│   ├── api/                 # route handlers
-│   └── layout.tsx
+├── app/
+│   └── [locale]/            # locale-scoped routes (next-intl)
+│       ├── (auth)/
+│       ├── login/           # login/signup med Server Actions
+│       ├── auth/callback/   # OAuth callback-route
+│       ├── api/             # route handlers
+│       └── layout.tsx
 ├── components/
 │   ├── ui/                  # shadcn-komponenter
 │   └── ...
+├── i18n/
+│   ├── routing.ts           # locale-konfig + defaultLocale
+│   ├── navigation.ts        # typesafe Link/redirect/router
+│   └── request.ts           # getRequestConfig (message-loading per locale)
 ├── lib/
 │   └── supabase/
 │       ├── client.ts        # createBrowserClient (Client Components)
 │       ├── server.ts        # createServerClient (Server Components/Actions)
-│       ├── proxy.ts         # updateSession-helper (kalt fra proxy.ts)
+│       ├── proxy.ts         # updateSession-helper (chained etter i18n i proxy.ts)
 │       ├── admin.ts         # service role-klient (server-only, bypass RLS)
 │       └── database.types.ts # generert via `pnpm db:types`
 ├── env.ts                   # typesikker env-validering
-└── proxy.ts                 # Next.js 16+ (tidligere middleware.ts)
+└── proxy.ts                 # chainer next-intl + Supabase session (Next.js 16+)
+messages/
+├── no.json                  # norske oversettelser
+├── en.json                  # engelske
+└── ...                      # flere locales etter behov
 supabase/
 ├── migrations/              # SQL-migrasjoner
 └── config.toml              # lokal Supabase CLI-config
@@ -111,17 +121,41 @@ Når du skal generere UI for en side:
 
 Ikke introduser brutalism, claymorphism, neumorphism eller andre stiler utenfor MASTER med mindre brukeren eksplisitt ber om det. Fargepalette hentes fra CSS-variablene i `src/app/globals.css` — aldri hardkode hex/rgb i komponenter.
 
+## Internasjonalisering (låst)
+
+<!--
+Verdiene fylles inn i oppstart-steg 05 basert på locale-valg fra brukeren.
+-->
+
+- **Default locale**: <fylles inn i steg 05>
+- **Støttede locales**: <fylles inn i steg 05>
+- **Message-filer**: `messages/<locale>.json`
+- **Routing**: `src/app/[locale]/...` med `localePrefix: "as-needed"`
+
+**Regel (streng)**: all brukervendt tekst skal gå gjennom `next-intl`. Aldri hardkode strenger i JSX.
+
+```tsx
+// ✅ const t = useTranslations("Home"); return <h1>{t("title")}</h1>;
+// ❌ return <h1>Velkommen</h1>;
+```
+
+Ved ny UI-tekst: legg til key i **alle** `messages/*.json`-filer (ikke bare default). `i18n-translations`-skillen aktiveres automatisk og håndhever dette.
+
+Unntak (hardkoding OK): logging, feilmeldinger i server-kode som ikke eksponeres til bruker, kommentarer, og konstanter som ikke er oversettelsesmål (URLer, DB-feltnavn).
+
 ## Harde regler
 
 1. **Server Components by default.** Bruk `"use client"` kun når nødvendig (interaktivitet, hooks, browser-API).
-2. **Zod for all input.** Alle Server Actions og route handlers skal validere input med Zod før videre prosessering.
-3. **Ingen `any`.** Bruk `unknown` + narrowing hvis typen er ukjent.
-4. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod.
-5. **`createClient` fra riktig fil.** `@/lib/supabase/client` i Client Components, `@/lib/supabase/server` i Server Components/Actions/Route Handlers.
-6. **Alltid `supabase.auth.getUser()` server-side.** Ikke `getSession()` — den verifiserer ikke JWT.
-7. **RLS på alle tabeller med brukerdata.** Publishable key er offentlig — tilgangskontroll er RLS.
-8. **`SUPABASE_SERVICE_ROLE_KEY` kun i `@/lib/supabase/admin`.** Aldri i klient-kode. Kun for admin-flyter som bevisst skal omgå RLS.
-9. **Route handlers returnerer `Response` eller `NextResponse`.** Ingen direkte `res.json(...)`.
+2. **All brukervendt tekst via `next-intl`.** Aldri hardkode strenger. Bruk `useTranslations()` / `getTranslations()`. Legg til keys i **alle** `messages/*.json`.
+3. **Zod for all input.** Alle Server Actions og route handlers skal validere input med Zod før videre prosessering.
+4. **Ingen `any`.** Bruk `unknown` + narrowing hvis typen er ukjent.
+5. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod.
+6. **`createClient` fra riktig fil.** `@/lib/supabase/client` i Client Components, `@/lib/supabase/server` i Server Components/Actions/Route Handlers.
+7. **Alltid `supabase.auth.getUser()` server-side.** Ikke `getSession()` — den verifiserer ikke JWT.
+8. **RLS på alle tabeller med brukerdata.** Publishable key er offentlig — tilgangskontroll er RLS.
+9. **`SUPABASE_SERVICE_ROLE_KEY` kun i `@/lib/supabase/admin`.** Aldri i klient-kode. Kun for admin-flyter som bevisst skal omgå RLS.
+10. **Route handlers returnerer `Response` eller `NextResponse`.** Ingen direkte `res.json(...)`.
+11. **Typesafe navigation via `@/i18n/navigation`.** Bruk `Link`/`redirect`/`useRouter` derfra — ikke `next/link`/`next/navigation` direkte, siden de ikke er locale-aware.
 
 ## Hvor ting hører hjemme
 

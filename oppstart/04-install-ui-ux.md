@@ -26,7 +26,7 @@ Resultat: én valgt kombinasjon av (stil + palette + fonts) som skrives inn i `s
 - [ ] `CLAUDE.md` "Design system (låst)"-seksjon fylt inn med konkrete verdier
 - [ ] `design-system/`-mappen stage-klar for commit
 
-Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 04 i `oppstart/CHECKLIST.md` og gå til steg 05.
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 04 i `oppstart/CHECKLIST.md` og gå til steg 05 (i18n).
 
 ## Forutsetninger
 

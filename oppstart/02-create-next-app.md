@@ -62,7 +62,7 @@ mv CLAUDE.md /tmp/template-backup/
 
 ### 2. Kjør `create-next-app`
 
-`--skip-git` hindrer create-next-app fra å initialisere git (steg 08 gjør det):
+`--skip-git` hindrer create-next-app fra å initialisere git (steg 09 gjør det):
 
 ```bash
 npx create-next-app@latest . \
@@ -127,7 +127,7 @@ Riktig mønster:
 - **`create-next-app` avbryter med "The directory contains files that could conflict"**: du hoppet over steg 1 (flytt til `/tmp/template-backup/`). `cp`-basert backup virker ikke — create-next-app sjekker filsystemet. Flytt filene faktisk ut, kjør create-next-app, og flytt tilbake.
 - **Backup-filer ble liggende i `/tmp/template-backup/`**: du hoppet over steg 4 (flytt tilbake). Kjør `mv /tmp/template-backup/* .` og `rmdir /tmp/template-backup`.
 - **`pnpm: command not found` / `not recognized`**: installér med `npm install -g pnpm`, verifiser med `pnpm --version`, og prøv steget på nytt. (Burde vært fanget i `/0.0-oppstart`-kommandoens forutsetnings-sjekk.)
-- **create-next-app opprettet `.git/` likevel**: `--skip-git` var ikke med. Kjør `rm -rf .git` — steg 08 oppretter git-repo på riktig måte senere.
+- **create-next-app opprettet `.git/` likevel**: `--skip-git` var ikke med. Kjør `rm -rf .git` — steg 09 oppretter git-repo på riktig måte senere.
 - **`CLAUDE.md` har fortsatt Next.js-innhold, ikke vår**: steg 3 eller 4 feilet. Slett Next.js-versjonen (`rm CLAUDE.md`) og flytt vår tilbake (`mv /tmp/template-backup/CLAUDE.md .`).
 - **`AGENTS.md` mangler**: create-next-app genererte den ikke (kanskje eldre versjon). Ikke noe problem — hopp over `@AGENTS.md`-referansen i CLAUDE.md.
 - **Port 3000 opptatt**: kjør med `pnpm dev -- -p 3001`.

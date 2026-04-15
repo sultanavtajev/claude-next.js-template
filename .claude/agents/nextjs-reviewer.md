@@ -73,25 +73,34 @@ Du reviewer Next.js App Router-kode med Supabase-backend for korrekthet og beste
 - Introduseres stiler utenfor MASTER (glassmorphism, neumorphism, etc.) uten eksplisitt bruker-bestilling? Flagg.
 - Er komponenter som duplikerer shadcn-funksjonalitet (egen button/dialog/card) laget i stedet for å bruke eksisterende? Flagg.
 
-### 10. Accessibility
+### 10. i18n-etterlevelse
+
+- Er all brukervendt tekst i JSX gått gjennom `useTranslations()` / `getTranslations()`? Flagg hardkodede strenger i tags, props, attributter (alt, aria-label, placeholder, title).
+- Er nye keys lagt til i **alle** `messages/*.json`-filer (ikke bare default-locale)?
+- Er string-konkatenering unngått? (`t("greeting") + ", " + name` er feil — bruk ICU-placeholder: `t("greeting", { name })`.)
+- Er `fallback` i koden unngått? (`t("key") ?? "default"` gjemmer manglende oversettelser — fix messages-filen i stedet.)
+- Er `Link`/`redirect`/`useRouter` importert fra `@/i18n/navigation` (ikke `next/link` eller `next/navigation`)? Next-native-versjoner er ikke locale-aware og bryter routing.
+- I Server Actions: brukes `getTranslations` hvis action returnerer brukermeldinger, eller returneres kun translation-keys som klienten oversetter?
+
+### 11. Accessibility
 
 - Har interaktive elementer riktig role/aria? (`<button>` ikke `<div onClick>`).
 - Har `<img>` / `<Image>` alt-tekst?
 - Er form-inputs knyttet til `<label>`?
 - Har overskrifter logisk hierarki (h1 → h2 → h3)?
 
-### 11. Performance
+### 12. Performance
 
 - Brukes `next/image` (ikke `<img>`)?
 - Brukes `next/font` (ikke `<link>` til Google Fonts)?
 - Er store client-bundles unngått? (Sjekk at tunge komponenter er i server eller dynamic-importert.)
 
-### 12. Env og secrets
+### 13. Env og secrets
 
 - Brukes `env` fra `@/env` (ikke `process.env`)?
 - Er `SUPABASE_SERVICE_ROLE_KEY` kun importert fra `@/lib/supabase/admin` og aldri i komponent-kode?
 
-### 13. Proxy
+### 14. Proxy
 
 - Er `src/proxy.ts` (ikke `middleware.ts` — Next.js 16 deprecated) til stede?
 - Kaller den `updateSession` fra `@/lib/supabase/proxy`?

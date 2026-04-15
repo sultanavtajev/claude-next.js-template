@@ -1,4 +1,4 @@
-# Steg 05 — Supabase (prosjekt, klienter, auth)
+# Steg 06 — Supabase (prosjekt, klienter, auth)
 
 ## Pre-flight: sjekk docs
 
@@ -45,7 +45,7 @@ Ett samlet steg for alt Supabase-arbeid:
 - [ ] `npx supabase link --project-ref <ref>` kjørt
 - [ ] `db:types`, `db:push`, `db:new`-scripts lagt til i `package.json`
 
-Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle relevante bokser er `[x]` (Del 4 er valgfri), marker steg 05 i `oppstart/CHECKLIST.md` og gå til steg 06. Hvis bruker valgte "hopp-over" i Del 1, hoppes Del 2–4 over også.
+Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle relevante bokser er `[x]` (Del 4 er valgfri), marker steg 06 i `oppstart/CHECKLIST.md` og gå til steg 07. Hvis bruker valgte "hopp-over" i Del 1, hoppes Del 2–4 over også.
 
 ## Del 1 — Supabase-prosjekt-gjennomgang
 
@@ -150,16 +150,19 @@ export async function createClient() {
 }
 ```
 
-### `src/lib/supabase/proxy.ts` — Session-refresh (kalt fra proxy.ts i roten)
+### `src/lib/supabase/proxy.ts` — Session-refresh (chained fra src/proxy.ts)
+
+Denne funksjonen tar en eksisterende `response` (fra i18n-middleware) og refresher Supabase-session på den. Signaturen er **annerledes** enn standard Supabase-dokumentasjon fordi vi må chainer fra next-intl.
 
 ```typescript
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextRequest, type NextResponse as NextResponseType } from "next/server";
 import { env } from "@/env";
 
-export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next({ request });
-
+export async function updateSession(
+  request: NextRequest,
+  response: NextResponseType = NextResponse.next({ request })
+) {
   const supabase = createServerClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
     env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
@@ -172,7 +175,6 @@ export async function updateSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
-          response = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
           );
@@ -188,22 +190,31 @@ export async function updateSession(request: NextRequest) {
 }
 ```
 
-### `src/proxy.ts` — Next.js 16+ proxy (roten av `src/`)
+### `src/proxy.ts` — Chainer i18n + Supabase (erstatter steg 05 sin standalone-versjon)
+
+I steg 05 opprettet vi en standalone i18n-proxy. Nå erstatter vi den med en chained versjon som først kjører locale-routing, deretter Supabase session-refresh:
 
 ```typescript
+import createMiddleware from "next-intl/middleware";
 import { type NextRequest } from "next/server";
+import { routing } from "@/i18n/routing";
 import { updateSession } from "@/lib/supabase/proxy";
 
-export async function proxy(request: NextRequest) {
-  return await updateSession(request);
+const handleI18nRouting = createMiddleware(routing);
+
+export default async function proxy(request: NextRequest) {
+  const response = handleI18nRouting(request);
+  return updateSession(request, response);
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
 ```
+
+**Viktig**: rekkefølgen er kritisk — i18n først (router til riktig locale), deretter session-refresh (skriver cookies på responsen). Hvis du gjør omvendt, går Supabase-cookiene tapt når i18n returnerer ny response.
 
 ## Del 3 — Supabase Auth (login, signup, logout, RLS)
 
@@ -383,4 +394,4 @@ Legg til i `package.json`:
 
 ## Avkrysning
 
-Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]` (Del 4 er valgfri), kryss av steg 05 i `oppstart/CHECKLIST.md`.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]` (Del 4 er valgfri), kryss av steg 06 i `oppstart/CHECKLIST.md`.

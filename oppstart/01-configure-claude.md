@@ -31,9 +31,9 @@ Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle er `[x]`, m
 | Kort beskrivelse (én setning)? | Beskrivelse | Bruker velger "Other" og skriver inn |
 
 `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}` og `{{SUPABASE_PROJECT_REF}}` blir fylt inn i sine respektive steg:
-- `{{SUPABASE_PROJECT_REF}}` → steg 05 (Supabase-prosjekt-gjennomgang)
-- `{{GITHUB_REPO}}` → steg 08 (git + GitHub-repo-opprettelse)
-- `{{VERCEL_PROJECT}}` → steg 08 (Vercel-linking)
+- `{{SUPABASE_PROJECT_REF}}` → steg 06 (Supabase-prosjekt-gjennomgang)
+- `{{GITHUB_REPO}}` → steg 09 (git + GitHub-repo-opprettelse)
+- `{{VERCEL_PROJECT}}` → steg 09 (Vercel-linking)
 
 Ikke spør brukeren om disse nå — de krever login/ressursopprettelse og håndteres best som dedikerte gjennomganger.
 
@@ -45,7 +45,7 @@ Gjør erstatning i disse filene:
 
 **Ikke** rør:
 - `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}` — fylles inn i senere steg.
-- `TEMPLATE.md` — dokumentasjon for selve templaten, slettes i steg 09.
+- `TEMPLATE.md` — dokumentasjon for selve templaten, slettes i steg 10.
 
 ### 3. Verifiser at bare de riktige placeholders gjenstår
 
@@ -55,7 +55,7 @@ grep -r "{{" . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=oppst
 
 Forventet: treff **kun** på `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`. Ingen `{{PROJECT_NAME}}` eller `{{PROJECT_DESCRIPTION}}`.
 
-Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om templaten (inklusive eksempel-placeholders), og slettes uansett i steg 09.
+Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om templaten (inklusive eksempel-placeholders), og slettes uansett i steg 10.
 
 ## Forventet resultat
 
@@ -83,8 +83,8 @@ Informér brukeren at disse må settes for at MCP-serverne skal virke. Fjern eve
 
 ## Feilsøking
 
-- **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 09.
-- **Grep finner `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`**: forventet — de fylles inn i steg 05 og 08.
+- **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 10.
+- **Grep finner `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`**: forventet — de fylles inn i steg 06 og 09.
 - **Bruker bruker ikke Supabase/Resend/Vercel**: disse kan enten fjernes fra `.claude/mcp-servers.json` (i relevant steg) eller beholdes med `TBD` — MCP-serveren vil da ikke fungere før verdien er fylt inn.
 
 ## Avkrysning

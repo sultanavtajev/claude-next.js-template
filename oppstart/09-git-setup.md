@@ -1,4 +1,4 @@
-# Steg 08 — Remote-oppsett (Git, GitHub, Vercel)
+# Steg 09 — Remote-oppsett (Git, GitHub, Vercel)
 
 ## Mål
 
@@ -26,7 +26,7 @@ Reset template-repoets git-historikk, opprett fersk lokal historikk, opprett Git
 - [ ] (Hvis ja) `vercel link` kjørt; `.vercel/project.json` finnes
 - [ ] (Hvis ja) `{{VERCEL_PROJECT}}` erstattet i `CLAUDE.md` og `.claude/mcp-servers.json`
 
-Kryss av hver `[ ]` → `[x]` fortløpende. Når Del 1 + Del 2 er `[x]` (Del 3 er valgfri), marker steg 08 i `oppstart/CHECKLIST.md` og gå til steg 09.
+Kryss av hver `[ ]` → `[x]` fortløpende. Når Del 1 + Del 2 er `[x]` (Del 3 er valgfri), marker steg 09 i `oppstart/CHECKLIST.md` og gå til steg 10.
 
 ## Pre-flight
 
@@ -181,4 +181,4 @@ Etter link genereres `.vercel/project.json` lokalt. Les feltet `projectId` eller
 
 ## Avkrysning
 
-Se `## Sjekkliste` øverst i denne filen. Når Del 1 + Del 2 er fullført (Del 3 Vercel er valgfri), kryss av steg 08 i `oppstart/CHECKLIST.md`.
+Se `## Sjekkliste` øverst i denne filen. Når Del 1 + Del 2 er fullført (Del 3 Vercel er valgfri), kryss av steg 09 i `oppstart/CHECKLIST.md`.
