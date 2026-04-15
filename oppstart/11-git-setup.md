@@ -21,9 +21,10 @@ Initialisér fersk git-historikk (prosjektet er lastet med degit, så ingen `.gi
 
 ### Del 3 — Vercel (valgfri)
 - [ ] `AskUserQuestion`: skal Vercel linkes nå?
+- [ ] (Hvis ja) Vercel MCP autorisert via `/mcp` → vercel i Claude Code (OAuth-flow fullført)
 - [ ] (Hvis ja) `vercel whoami` OK (bruker har kjørt `vercel login` om nødvendig)
 - [ ] (Hvis ja) `vercel link` kjørt; `.vercel/project.json` finnes
-- [ ] (Hvis ja) `{{VERCEL_PROJECT}}` erstattet i `CLAUDE.md` og `.claude/mcp-servers.json`
+- [ ] (Hvis ja) `{{VERCEL_PROJECT}}` erstattet i `CLAUDE.md`
 
 Kryss av hver `[ ]` → `[x]` fortløpende. Når Del 1 + Del 2 er `[x]` (Del 3 er valgfri), marker steg 11 i `oppstart/CHECKLIST.md` og gå til steg 12.
 
@@ -118,9 +119,24 @@ Bruk `AskUserQuestion`:
 
 Behold `{{VERCEL_PROJECT}}`-placeholderen og hopp til "Forventet resultat". Bruker kan kjøre `vercel link` senere.
 
-### 3. Hvis "Ja"
+### 3. Hvis "Ja" — autoriser offisiell Vercel MCP
 
-Verifiser vercel-autentisering:
+Vercel har en offisiell remote MCP-server på `https://mcp.vercel.com` med OAuth-basert autentisering. Templaten har den allerede i `.claude/mcp-servers.json`, men brukeren må autorisere den første gang:
+
+1. **Instruér brukeren** til å kjøre disse kommandoene i en separat terminal etter at denne steget er ferdig (eller gjøre det nå og pause):
+   ```bash
+   # Verifiser at MCP er registrert (hopp over hvis .claude/mcp-servers.json allerede har oppføringen — templaten gjør)
+   claude mcp list | grep vercel
+
+   # Autorisér via /mcp i Claude Code
+   # (i Claude Code-sessionen: skriv /mcp → velg vercel → følg OAuth-flow i browser)
+   ```
+
+2. Etter autorisering får Claude tilgang til: docs-søk, team/project-håndtering, deployments, logs.
+
+### 4. Link Vercel-prosjekt lokalt (CLI)
+
+Verifiser vercel-CLI-autentisering:
 
 ```bash
 vercel whoami
@@ -132,7 +148,7 @@ Hvis ikke autentisert, si til brukeren:
 
 Vent på bekreftelse.
 
-### 4. Link prosjektet
+### 5. Link prosjektet
 
 ```bash
 vercel link
@@ -140,11 +156,12 @@ vercel link
 
 Dette er interaktivt — Vercel spør hvilken scope (org/team) og prosjektnavn. Brukeren må svare selv i terminalen. Be dem velge prosjektnavn som matcher GitHub-repo-navnet for konsistens.
 
-### 5. Hent Vercel-prosjektnavn fra `.vercel/project.json`
+### 6. Hent Vercel-prosjektnavn fra `.vercel/project.json`
 
 Etter link genereres `.vercel/project.json` lokalt. Les feltet `projectId` eller spør brukeren hva de kalte prosjektet. Fyll inn `{{VERCEL_PROJECT}}`-placeholder i:
 - `CLAUDE.md`
-- `.claude/mcp-servers.json`
+
+(Vercel MCP-configen i `.claude/mcp-servers.json` trenger ikke prosjektnavn — OAuth gir access til alle autoriserte prosjekter.)
 
 `.vercel/` er allerede i `.gitignore` — lokal-only.
 
@@ -159,7 +176,9 @@ Etter link genereres `.vercel/project.json` lokalt. Les feltet `projectId` eller
 ## Feilsøking
 
 - **`gh: command not found`**: installer GitHub CLI og `gh auth login`.
-- **`vercel: command not found`**: `pnpm add -g vercel`.
+- **`vercel: command not found`**: `pnpm add -g vercel` (trengs for CLI-kommandoene; MCP-serveren fungerer uavhengig).
+- **`/mcp vercel` viser "Needs authentication"**: bruker må fullføre OAuth-flyten i browser. Browser åpnes automatisk ved første kall.
+- **Vercel MCP returnerer 401**: autorisering utløpt — kjør `/mcp` → vercel → re-auth.
 - **`repository <navn> already exists`**: velg nytt navn via AskUserQuestion og prøv igjen.
 - **`Permission denied` ved `rm -rf .git`**: lukk IDE eller andre prosesser som kan ha lås på `.git/`-filer. På Windows kan VS Codes Git-extension holde filer åpne.
 - **`gh auth login` krever manuell input**: Claude kan ikke fullføre OAuth-flyten — bruker må gjøre det selv i terminalen.

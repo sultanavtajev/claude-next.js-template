@@ -68,7 +68,7 @@ Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om
 MCP-serverne i `.claude/mcp-servers.json` refererer til disse env-variablene (må finnes i brukerens shell eller `.env.local`):
 
 - `GITHUB_TOKEN` — personlig access token fra GitHub
-- `VERCEL_TOKEN` — access token fra Vercel dashboard
+- Vercel: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
 - `SUPABASE_ACCESS_TOKEN` — personlig access token fra Supabase (kun hvis Supabase brukes)
 - `RESEND_API_KEY` — API-nøkkel fra Resend dashboard (kun hvis Resend brukes)
 - `CONTEXT7_API_KEY` — API-nøkkel fra context7.com/dashboard (valgfri, men gir høyere rate limits)

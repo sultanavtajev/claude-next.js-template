@@ -11,12 +11,8 @@
       }
     },
     "vercel": {
-      "command": "npx",
-      "args": ["-y", "@vercel/mcp-adapter"],
-      "env": {
-        "VERCEL_TOKEN": "${VERCEL_TOKEN}",
-        "VERCEL_PROJECT": "{{VERCEL_PROJECT}}"
-      }
+      "type": "http",
+      "url": "https://mcp.vercel.com"
     },
     "supabase": {
       "type": "http",
