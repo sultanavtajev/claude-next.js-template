@@ -1,5 +1,5 @@
 ---
-name: a11y-auditor
+name: nextjs-a11y-auditor
 description: Dedikert tilgjengelighets-audit (WCAG 2.2 AA). Sjekker keyboard-nav, screen-reader-struktur, farge-kontrast, form-labels, semantisk HTML, fokus-indikatorer. Bruk før deploy eller via /6.1-a11y.
 tools: Read, Grep, Glob, Bash
 ---
@@ -104,6 +104,6 @@ Claude kan ikke verifisere alt statisk. Anbefal følgende etter audit:
 
 ## Ikke overlapp
 
-- Sikkerhet → `security-auditor`
-- Ytelse → `performance-auditor`
+- Sikkerhet → `nextjs-security-auditor`
+- Ytelse → `nextjs-performance-auditor`
 - Design-system → `nextjs-reviewer` (sjekk #9)

@@ -1,5 +1,5 @@
 ---
-name: migration-planner
+name: supabase-migration-planner
 description: Planlegger Supabase-schema-migrations TRYGT før SQL skrives. Analyserer eksisterende schema, foreslår endring med rollback-strategi, vurderer risiko for datatap. Bruk når brukeren vil endre DB-strukturen — ikke hopp rett til å skrive SQL.
 tools: Read, Grep, Glob, Bash
 ---

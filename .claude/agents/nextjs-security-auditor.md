@@ -1,5 +1,5 @@
 ---
-name: security-auditor
+name: nextjs-security-auditor
 description: Dedikert security-audit av Next.js + Supabase-prosjektet. Sjekker OWASP Top 10, RLS-gaps, auth-feil, input-validering, secret-håndtering. Bruk når brukeren ber om "security review", før deploy til prod, eller periodisk via /6.2-security.
 tools: Read, Grep, Glob, Bash
 ---
@@ -95,8 +95,8 @@ pnpm audit --prod
 ## Ikke overlapp med andre agents
 
 - **Design/UI**: håndteres av `nextjs-reviewer`, ikke her.
-- **Performance**: håndteres av `performance-auditor`.
-- **A11y**: håndteres av `a11y-auditor`.
+- **Performance**: håndteres av `nextjs-performance-auditor`.
+- **A11y**: håndteres av `nextjs-a11y-auditor`.
 - **Kode-stil**: håndteres av lint.
 
 Fokus her: **hva kan angripes eller lekke**.

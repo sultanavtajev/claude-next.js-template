@@ -1,5 +1,5 @@
 ---
-name: performance-auditor
+name: nextjs-performance-auditor
 description: Dedikert ytelses-audit av Next.js-prosjektet. Sjekker bundle-størrelse, unødvendig client-JS, caching, Server Components-bruk, Image/Font-optimalisering. Bruk før deploy, ved ytelsesproblemer, eller via /6.3-performance.
 tools: Read, Grep, Glob, Bash
 ---
