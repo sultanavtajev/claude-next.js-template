@@ -1,8 +1,8 @@
-# Steg 11 — Cleanup
+# Steg 12 — Cleanup
 
 ## Mål
 
-Slett `oppstart/`-mappen og `TEMPLATE.md`, lag final commit uten template-artefaktene, og push til remote (hvis opprettet i steg 10).
+Slett `oppstart/`-mappen og `TEMPLATE.md`, lag final commit uten template-artefaktene, og push til remote (hvis opprettet i steg 11).
 
 ## Sjekkliste
 
@@ -10,11 +10,11 @@ Slett `oppstart/`-mappen og `TEMPLATE.md`, lag final commit uten template-artefa
 - [ ] `rm TEMPLATE.md` kjørt (templatens egen dokumentasjon — ikke en del av prosjektet)
 - [ ] `git status` viser at `oppstart/` og `TEMPLATE.md` er fjernet, ingen andre uventede endringer
 - [ ] Final commit laget: `"chore: fjern template-artefakter etter bootstrap"`
-- [ ] (Hvis remote fra steg 10) `git push origin main` kjørt
+- [ ] (Hvis remote fra steg 11) `git push origin main` kjørt
 - [ ] (Hvis feature-branch) synket og pushet til `origin/feature`
 - [ ] IDE/Claude-restart-instruksjoner gitt til bruker (lukk + åpne, `/mcp`-verifisering)
 
-Kryss av hver `[ ]` → `[x]` fortløpende. Siste boks er symbolsk siden mappen slettes i samme steg — når alle bokser er `[x]`, marker steg 10 i master-CHECKLIST.md som ferdig. Bootstrap er da fullført.
+Kryss av hver `[ ]` → `[x]` fortløpende. Siste boks er symbolsk siden mappen slettes i samme steg — når alle bokser er `[x]`, marker steg 11 i master-CHECKLIST.md som ferdig. Bootstrap er da fullført.
 
 ## Kommandoer
 
@@ -31,12 +31,12 @@ git add -A
 git commit -m "chore: fjern template-artefakter etter bootstrap"
 ```
 
-## Push til remote (hvis steg 10 opprettet GitHub-repo)
+## Push til remote (hvis steg 11 opprettet GitHub-repo)
 
 ```bash
 git push origin main
 
-# Hvis feature-branch ble opprettet i steg 10
+# Hvis feature-branch ble opprettet i steg 11
 git checkout feature
 git merge main --ff-only
 git push origin feature
@@ -48,7 +48,7 @@ git checkout main
 - `oppstart/`-mappen er borte.
 - `TEMPLATE.md` er borte.
 - To commits i loggen:
-  1. `"chore: bootstrap fra claude-next.js-template"` (fra steg 10)
+  1. `"chore: bootstrap fra claude-next.js-template"` (fra steg 11)
   2. `"chore: fjern template-artefakter etter bootstrap"` (fra dette steget)
 - `git status` viser ren working tree.
 - (Hvis remote satt opp) Begge branches pushet til GitHub.
@@ -84,4 +84,4 @@ Disse skrittene gjøres utenfor oppstart-flyten fordi de krever eksterne ressurs
 
 ## Avkrysning
 
-Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, marker steg 11 i `oppstart/CHECKLIST.md` som ferdig — avkrysningen er symbolsk siden mappen slettes i samme steg. Bootstrap er da fullført.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, marker steg 12 i `oppstart/CHECKLIST.md` som ferdig — avkrysningen er symbolsk siden mappen slettes i samme steg. Bootstrap er da fullført.

@@ -59,6 +59,10 @@ design-system/
 ├── MASTER.md                # global source of truth (farger, typografi, spacing)
 └── pages/                   # side-spesifikke overrides (kun avvik fra MASTER)
     └── <page-slug>.md
+teknisk/
+├── README.md
+├── dokumentasjon/           # prosjekt-docs + chat-sammendrag fra Claude-sesjoner
+└── sjekkliste/              # sjekklister opprettet av /2.0-task og /2.1-task-team
 ```
 
 ## Kommandoer

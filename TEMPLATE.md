@@ -1,6 +1,6 @@
 # Next.js Template — dokumentasjon
 
-Denne filen beskriver **selve templaten** (`claude-next.js-template`). Den slettes automatisk i oppstart-steg 11, slik at det klonede prosjektet ikke ender opp med template-dokumentasjon.
+Denne filen beskriver **selve templaten** (`claude-next.js-template`). Den slettes automatisk i oppstart-steg 12, slik at det klonede prosjektet ikke ender opp med template-dokumentasjon.
 
 For prosjekt-spesifikk dokumentasjon (som følger med klonen): se `README.md` og `CLAUDE.md`.
 
@@ -21,7 +21,7 @@ cd mitt-nye-prosjekt
 claude
 ```
 
-`mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten kopiert inn — **uten** templatens git-historikk. Du starter med en ren mappe som steg 10 initialiserer git på.
+`mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten kopiert inn — **uten** templatens git-historikk. Du starter med en ren mappe som steg 11 initialiserer git på.
 
 Hvis `degit` ikke er tilgjengelig: bruk `git clone` i stedet:
 
@@ -29,7 +29,7 @@ Hvis `degit` ikke er tilgjengelig: bruk `git clone` i stedet:
 git clone https://github.com/sultanavtajev/claude-next.js-template.git mitt-nye-prosjekt
 ```
 
-Steg 10 kjører `rm -rf .git && git init` i dette tilfellet, som gir samme sluttresultat (fersk historikk) — bare litt mer trafikk ved kloning.
+Steg 11 kjører `rm -rf .git && git init` i dette tilfellet, som gir samme sluttresultat (fersk historikk) — bare litt mer trafikk ved kloning.
 
 I Claude Code, kjør: **`/0.0-oppstart`**
 
@@ -44,8 +44,9 @@ Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 7. Gjennomgår Supabase: prosjekt-opprettelse, klienter, Auth (login/signup/RLS), CLI for migrations, chainer session-proxy etter i18n-proxy
 8. Lager `.env.example` med dokumenterte nøkler
 9. Verifiserer at `dev`, `build`, `lint`, `typecheck` er grønne
-10. Resetter git-historikk, gjennomgår `gh auth` + repo-opprettelse, (valgfritt) Vercel-linking
-11. Rydder opp (sletter `oppstart/` + TEMPLATE.md, final commit, pusher)
+10. Etablerer `teknisk/`-mappa for prosjekt-dokumentasjon og sjekklister
+11. Resetter git-historikk, gjennomgår `gh auth` + repo-opprettelse, (valgfritt) Vercel-linking
+12. Rydder opp (sletter `oppstart/` + TEMPLATE.md, final commit, pusher)
 
 ## Hva ligger i templaten
 
