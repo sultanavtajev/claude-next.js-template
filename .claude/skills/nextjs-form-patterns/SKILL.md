@@ -1,5 +1,5 @@
 ---
-name: form-patterns
+name: nextjs-form-patterns
 description: Standard-mønster for forms i Next.js — react-hook-form + Zod + shadcn Form + Server Actions + useActionState. Bruk hver gang du skal lage en form (login, signup, create-post, edit-profile, osv.).
 ---
 
@@ -176,7 +176,7 @@ export function CreatePostForm() {
 }
 ```
 
-Samme keys i `en.json`, `sv.json` osv. (se `i18n-translations`-skill).
+Samme keys i `en.json`, `sv.json` osv. (se `nextjs-i18n`-skill).
 
 ## Vanlige variasjoner
 

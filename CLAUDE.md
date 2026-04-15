@@ -106,7 +106,7 @@ Når du jobber med UI — uansett oppgavestørrelse, uansett om brukeren kalte `
 1. **Les `design-system/MASTER.md` FØRST.** Sjekk om `design-system/pages/<slug>.md` finnes for siden du endrer.
 2. **Konsulter `ui-ux-pro-max`-skillen** for design-intelligens (palletter, fonts, komponent-eksempler) — innenfor MASTER-rammene.
 3. **Bruk `shadcn-component`-skillen** ved nye komponenter.
-4. **`i18n-translations`-skillen** håndterer at all brukervendt tekst går gjennom `useTranslations()`.
+4. **`nextjs-i18n`-skillen** håndterer at all brukervendt tekst går gjennom `useTranslations()`.
 
 **MASTER vinner alltid**: hvis `ui-ux-pro-max` foreslår noe utenfor MASTER (f.eks. glassmorphism når MASTER er minimalism), avvis forslaget. Bruker kan eksplisitt godkjenne avvik — da opprettes side-override via `python3 .claude/skills/ui-ux-pro-max/scripts/search.py ... --page <slug>`.
 
@@ -161,7 +161,7 @@ Verdiene fylles inn i oppstart-steg 05 basert på locale-valg fra brukeren.
 // ❌ return <h1>Velkommen</h1>;
 ```
 
-Ved ny UI-tekst: legg til key i **alle** `messages/*.json`-filer (ikke bare default). `i18n-translations`-skillen aktiveres automatisk og håndhever dette.
+Ved ny UI-tekst: legg til key i **alle** `messages/*.json`-filer (ikke bare default). `nextjs-i18n`-skillen aktiveres automatisk og håndhever dette.
 
 Unntak (hardkoding OK): logging, feilmeldinger i server-kode som ikke eksponeres til bruker, kommentarer, og konstanter som ikke er oversettelsesmål (URLer, DB-feltnavn).
 

@@ -1,5 +1,5 @@
 ---
-name: server-action
+name: nextjs-server-action
 description: Lag Server Action med Supabase auth + Zod-validering + strukturert feil-respons. Bruk når brukeren ber om en mutation (opprett/oppdater/slett) som skal kjøres fra en form.
 ---
 

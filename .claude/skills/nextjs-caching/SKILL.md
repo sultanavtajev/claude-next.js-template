@@ -1,5 +1,5 @@
 ---
-name: caching-strategy
+name: nextjs-caching
 description: Next.js 15+ caching-semantikk — fetch-cache, unstable_cache, revalidateTag/Path, dynamic/static, ISR. Bruk når du skal bestemme cache-strategi for en rute, eller feilsøke "hvorfor vises stale data?".
 ---
 

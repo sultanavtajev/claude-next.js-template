@@ -1,5 +1,5 @@
 ---
-name: search-first
+name: nextjs-search-first
 description: Forsk før du koder — sjekk eksisterende kode og offisielle Next.js/React/Supabase/shadcn-docs før du implementerer. Bruk når du skal lage noe nytt, endre stack-spesifikk kode, eller er usikker på moderne beste praksis.
 ---
 
@@ -62,7 +62,7 @@ Ikke gjør dette:
 - Bruke `<img>` i stedet for `next/image` uten eksplisitt grunn.
 - Lage egen Supabase-klient-instans i stedet for å importere fra `@/lib/supabase/{client,server}`.
 
-## Når du IKKE skal aktivere search-first
+## Når du IKKE skal aktivere nextjs-search-first
 
 - Trivielle ting (rename variabel, fikse typo, oppdatere én CSS-klasse).
 - Brukeren har eksplisitt gitt implementasjonsdetaljer ("bruk X").

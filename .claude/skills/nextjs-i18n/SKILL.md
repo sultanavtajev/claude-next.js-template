@@ -1,5 +1,5 @@
 ---
-name: i18n-translations
+name: nextjs-i18n
 description: Tving at all brukervendt tekst går gjennom next-intl og at nye keys legges til i alle messages/<locale>.json-filer. Bruk når du lager/endrer UI-tekst, lager en ny side, eller når brukeren ber om "legg til oversettelse for X".
 ---
 

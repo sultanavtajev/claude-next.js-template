@@ -1,5 +1,5 @@
 ---
-name: route-handler
+name: nextjs-route-handler
 description: Lag Next.js route handler (app/api/*/route.ts) med Supabase auth, typesikker input, og NextResponse. Bruk når brukeren ber om et API-endepunkt — f.eks. for webhooks, tredjeparts klienter, eller ikke-form data.
 ---
 
