@@ -31,8 +31,8 @@ Generer Next.js-boilerplate i nåværende mappe med standard stack.
 - [ ] `@AGENTS.md` lagt til øverst i `CLAUDE.md` (referanse til Next.js' agent-instrukser)
 - [ ] `.claude/`, `oppstart/`, `TEMPLATE.md` urørt
 - [ ] Ingen `.git/`-mappe opprettet av create-next-app (`--skip-git` fungerte)
-- [ ] `pnpm dev` viser standard Next.js-velkomstside på `http://localhost:3000`
-- [ ] Dev-server stoppet
+- [ ] `pnpm dev` startet via `run_in_background: true`, `curl http://localhost:3000/` svarte `HTTP 200`
+- [ ] Dev-server stoppet (background-task avsluttet)
 
 Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 02 i `oppstart/CHECKLIST.md` og gå til steg 03.
 
@@ -110,11 +110,17 @@ Hvis `CLAUDE.md` allerede har en `@AGENTS.md`-linje: hopp over.
 
 ## Verifisering
 
-```bash
-pnpm dev
-```
+Start dev-serveren som **background-prosess** og test med `curl`. **Ikke bruk `sleep N && curl ...`** — Claude Code-miljøet blokkerer `sleep ≥ 2s` før en annen kommando.
 
-Åpne `http://localhost:3000` — standard Next.js-velkomstside skal vises. Stopp dev-serveren (`Ctrl+C`).
+Riktig mønster:
+
+1. Start `pnpm dev` via Bash-verktøyet med `run_in_background: true`. Dette returnerer umiddelbart med en task-ID; dev-serveren kjører i bakgrunnen.
+2. Verifiser at serveren svarer:
+   ```bash
+   curl -s -o /dev/null -w "HTTP %{http_code}\n" http://localhost:3000/
+   ```
+   Forventet: `HTTP 200`. Hvis curl returnerer connection-feil fordi serveren ikke er klar ennå: vent på stdout-event fra background-tasken som indikerer "Ready" (bruk `Monitor`-verktøyet på task-ID-en), deretter curl på nytt. Alternativt: prøv curl to–tre ganger — Turbopack starter oftest innen ett sekund.
+3. Stopp background-tasken når serveren svarer `HTTP 200` (via `KillShell` eller "Stop Task").
 
 ## Feilsøking
 
@@ -125,6 +131,7 @@ pnpm dev
 - **`CLAUDE.md` har fortsatt Next.js-innhold, ikke vår**: steg 3 eller 4 feilet. Slett Next.js-versjonen (`rm CLAUDE.md`) og flytt vår tilbake (`mv /tmp/template-backup/CLAUDE.md .`).
 - **`AGENTS.md` mangler**: create-next-app genererte den ikke (kanskje eldre versjon). Ikke noe problem — hopp over `@AGENTS.md`-referansen i CLAUDE.md.
 - **Port 3000 opptatt**: kjør med `pnpm dev -- -p 3001`.
+- **`sleep N && curl ...` blokkeres med "Run blocking commands in the background"**: Claude Code-miljøet blokkerer `sleep ≥ 2s` før en annen kommando. Start `pnpm dev` med `run_in_background: true`, vent på "Ready"-event via `Monitor`-verktøyet (eller bare kjør curl direkte — dev-serveren er oftest klar innen ett sekund), og stopp tasken etterpå.
 
 ## Avkrysning
 
