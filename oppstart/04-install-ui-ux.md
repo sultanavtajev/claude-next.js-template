@@ -20,10 +20,11 @@ Resultat: én valgt kombinasjon av (stil + palette + fonts) som skrives inn i `s
 - [ ] Discovery-spørsmål stilt via `AskUserQuestion`: prosjekttype, målgruppe, vibe, farger
 - [ ] Discovery-spørsmål stilt: dark mode-strategi
 - [ ] 2–3 anbefalte kombinasjoner presentert; bruker har valgt én
-- [ ] `design-system/MASTER.md` generert via `python3 .claude/skills/ui-ux-pro-max/scripts/search.py ... --design-system --persist`
-- [ ] `src/app/globals.css` oppdatert med CSS-variabler fra MASTER
-- [ ] `tailwind.config.ts` + `src/app/layout.tsx` oppdatert hvis custom fonts
-- [ ] `CLAUDE.md` "Design system (låst)"-seksjon fylt inn med konkrete verdier
+- [ ] `design-system/MASTER.md` opprettet — enten via `search.py --design-system --persist` (uten `-p`-flagget), eller manuelt (fallback) hvis search.py ikke gir brukbart output
+- [ ] Verifisert at MASTER.md ligger direkte under `design-system/`, ikke under `design-system/<prosjektnavn>/`
+- [ ] `src/app/globals.css` oppdatert med OKLCH-variabler fra valgt palette (shadcn-standard-paletter hentes fra `ui.shadcn.com/themes`)
+- [ ] `src/app/[locale]/layout.tsx` oppdatert: valgt font via `next/font/google`, `metadata.title` + `description` fra prosjekt, `html lang={locale}`
+- [ ] `CLAUDE.md` "Design system (låst)"-seksjon fylt inn med konkrete verdier (stil, palette, fonts, dark mode)
 - [ ] `design-system/`-mappen stage-klar for commit
 
 Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 04 i `oppstart/CHECKLIST.md` og gå til steg 05 (i18n).
@@ -103,9 +104,10 @@ Når bruker har valgt én kombinasjon fra anbefalingene, bygg en spørringstreng
 ```bash
 python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query basert på svarene>" \
   --design-system \
-  --persist \
-  -p "{{PROJECT_NAME}}"
+  --persist
 ```
+
+**Viktig**: ikke bruk `-p "<prosjektnavn>"` — det plasserer MASTER.md i `design-system/<prosjektnavn>/` i stedet for rett under `design-system/`, som bryter vår konvensjon. Hvis `-p` ble brukt ved feil: `mv design-system/<prosjektnavn>/MASTER.md design-system/MASTER.md && rmdir design-system/<prosjektnavn>`.
 
 Dette oppretter `design-system/MASTER.md` — **global source of truth** for farger, typografi, spacing, komponenter, tilstander.
 
@@ -114,9 +116,72 @@ Eksempel-spørringer basert på discovery-svar:
 - `"ecommerce landing bold warm"` → E-handel, B2C, bold, varm
 - `"portfolio minimalism serif"` → Portfolio, kreativ, minimalistisk
 
+### A.1 Fallback: hvis `search.py` ikke gir brukbart output
+
+I praksis kan `search.py` returnere "ingen match" eller ustrukturert output. I så fall: **skriv `design-system/MASTER.md` manuelt** basert på brukerens valgte kombinasjon + shadcn-standard som baseline.
+
+For **shadcn-standard-paletter** (slate, zinc, stone, gray, neutral, red, rose, orange, blue, green, yellow, violet): hent eksakte OKLCH-verdier fra `https://ui.shadcn.com/themes` eller fra en fersk `npx shadcn@latest init` på en annen palette og kopier `:root` / `.dark`-blokkene derfra.
+
+Minimal `MASTER.md`-struktur:
+```markdown
+# Design System — {{PROJECT_NAME}} (MASTER)
+
+**Stil:** <valgt stil, f.eks. "Minimalism (shadcn-default-baseline)">
+**Palette:** <valgt, f.eks. "Slate (OKLCH)">
+**Fonts:** <f.eks. "Inter (body + heading), Geist Mono (code)">
+**Dark mode:** <ja/nei/begge>
+
+## Fargevariabler
+Se `src/app/globals.css` — `:root` og `.dark`. Aldri hardkod farger i komponenter.
+
+## Typografi-skala
+- H1: text-4xl font-semibold
+- H2: text-3xl font-semibold
+- H3: text-2xl font-medium
+- Body: text-base
+- Small: text-sm
+
+## Spacing
+Tailwind-default-skala (0, 1, 2, 4, 6, 8, 12, 16, 24).
+
+## Komponenter
+Baseline: shadcn/ui. Ikke dupliser eksisterende komponenter.
+
+## Tilstander
+- Hover: `hover:bg-accent`
+- Focus: `focus-visible:ring-2 focus-visible:ring-ring`
+- Disabled: `disabled:opacity-50`
+```
+
+Rapportér tydelig: "search.py ga ikke brukbart output — MASTER.md skrevet manuelt basert på bruker-valg".
+
 ### B. Oppdater `src/app/globals.css`
 
-`MASTER.md` inneholder konkrete HSL-verdier. Overfør dem til `:root` og `.dark` i `src/app/globals.css`, slik at shadcn-komponenter plukker dem opp automatisk. Custom fonts (hvis valgt) legges til via `next/font` i `src/app/layout.tsx` + `tailwind.config.ts`.
+`MASTER.md` peker til `globals.css` som source of truth for CSS-variabler. Oppdater `:root` og `.dark` i `src/app/globals.css` med OKLCH-verdier fra valgt palette. For shadcn-standard-paletter: kopier fra `https://ui.shadcn.com/themes` eller fra en fersk `shadcn@latest init` i en sandbox.
+
+### B.1 Oppdater `src/app/[locale]/layout.tsx` med valgt font
+
+create-next-app leverer `Geist`-fonten som default. Hvis brukeren valgte en annen font (Inter er vanlig for minimalism):
+
+```tsx
+// src/app/[locale]/layout.tsx
+import { Inter, Geist_Mono } from "next/font/google";
+
+const inter = Inter({
+  variable: "--font-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+});
+
+// I <html>-taggen:
+<html lang={locale} className={`${inter.variable} ${geistMono.variable} h-full antialiased`}>
+```
+
+Og oppdater `metadata` med ekte prosjektnavn (ikke `"Create Next App"`).
 
 ### C. Oppdater `CLAUDE.md` → "Design system (låst)"-seksjon
 

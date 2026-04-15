@@ -59,4 +59,8 @@ Canonical doc-URLer for denne stacken:
 - **Alle spørsmål til brukeren skal stilles via `AskUserQuestion`-verktøyet** — ikke fritekst-spørsmål. Gruppér relaterte spørsmål i samme kall (maks 4 spørsmål per kall, 2–4 svaralternativer per spørsmål).
 - Stegfilene kan be deg stille enkeltvise spørsmål (f.eks. design-discovery i steg 04). Samle dem i ett eller flere `AskUserQuestion`-kall der det gir mening.
 - Noen steg har deler markert som **valgfri** (f.eks. Del 4 i steg 06, Del 3 i steg 09). Valgfrie deler krever ikke avkrysning for at steget regnes som ferdig — men dokumentér i rapport hvis du hopper over dem.
+- **Ikke bruk `sleep`-workarounds** for å vente på at servere/prosesser skal starte. Claude Code-miljøet blokkerer `sleep ≥ 2s`, og `sleep 1 && sleep 1 && sleep 1 && ...`-kjeder er en stygg omvei. Riktig mønster:
+  - Start langvarige prosesser (f.eks. `pnpm dev`, `supabase start`) med `run_in_background: true`.
+  - Bruk `Monitor`-verktøyet på task-ID-en for å vente på en spesifikk stdout-event (f.eks. "Ready", "Compiled", "Listening").
+  - For HTTP-sjekker: kjør `curl` direkte — dev-servere er som regel oppe innen et sekund. Hvis connection-feil, retry en gang etter et kort `Monitor`-kall, ikke sleep-kjede.
 - Etter steg 10 er alt ferdig — ikke gjør noe ekstra.
