@@ -89,7 +89,7 @@ export async function GET() {
 ## Providers
 
 ### E-post + passord
-Default, ingen config. Brukes via `signInWithPassword`/`signUp` som vist i oppstart-steg 06 (Del 3 — Supabase Auth).
+Default, ingen config. Brukes via `signInWithPassword`/`signUp` som vist i oppstart-steg 07 (Del 3 — Supabase Auth).
 
 ### OAuth (GitHub/Google/etc.)
 

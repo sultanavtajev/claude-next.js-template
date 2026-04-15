@@ -1,4 +1,4 @@
-# Steg 06 — Supabase (prosjekt, klienter, auth)
+# Steg 07 — Supabase (prosjekt, klienter, auth)
 
 ## Pre-flight: sjekk docs
 
@@ -45,7 +45,7 @@ Ett samlet steg for alt Supabase-arbeid:
 - [ ] `npx supabase link --project-ref <ref>` kjørt
 - [ ] `db:types`, `db:push`, `db:new`-scripts lagt til i `package.json`
 
-Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle relevante bokser er `[x]` (Del 4 er valgfri), marker steg 06 i `oppstart/CHECKLIST.md` og gå til steg 07. Hvis bruker valgte "hopp-over" i Del 1, hoppes Del 2–4 over også.
+Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle relevante bokser er `[x]` (Del 4 er valgfri), marker steg 07 i `oppstart/CHECKLIST.md` og gå til steg 08. Hvis bruker valgte "hopp-over" i Del 1, hoppes Del 2–4 over også.
 
 ## Del 1 — Supabase-prosjekt-gjennomgang
 
@@ -394,4 +394,4 @@ Legg til i `package.json`:
 
 ## Avkrysning
 
-Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]` (Del 4 er valgfri), kryss av steg 06 i `oppstart/CHECKLIST.md`.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]` (Del 4 er valgfri), kryss av steg 07 i `oppstart/CHECKLIST.md`.

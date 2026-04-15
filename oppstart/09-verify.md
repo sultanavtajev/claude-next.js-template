@@ -1,4 +1,4 @@
-# Steg 08 — Verify
+# Steg 09 — Verify
 
 ## Mål
 
@@ -13,7 +13,7 @@ Bekreft at alle deler av oppsettet fungerer: dev-server, bygg, lint, typecheck.
 - [ ] `pnpm build`: lykkes (env-variabel-advarsler rapporteres, men blokkerer ikke)
 - [ ] (Valgfritt) `pnpm dev` testet mot `http://localhost:3000`, dev-server stoppet
 
-Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]` (valgfritt-punkt unntatt), marker steg 08 i `oppstart/CHECKLIST.md` og gå til steg 09.
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]` (valgfritt-punkt unntatt), marker steg 09 i `oppstart/CHECKLIST.md` og gå til steg 10.
 
 ## Kommandoer (i rekkefølge)
 
@@ -52,4 +52,4 @@ pnpm dev
 
 ## Avkrysning
 
-Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]` (dev-sjekk er valgfri), kryss av steg 08 i `oppstart/CHECKLIST.md`.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]` (dev-sjekk er valgfri), kryss av steg 09 i `oppstart/CHECKLIST.md`.

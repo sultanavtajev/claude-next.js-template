@@ -17,6 +17,7 @@ agent-instrukser leses inn sammen med CLAUDE.md.
 - **next-intl** — internasjonalisering (i18n) med Server Components-støtte
 - **Supabase** — database (Postgres), auth, storage, realtime, edge functions
 - **@supabase/ssr** — server-side Supabase-klient for Next.js
+- **@sultanavtajev/element-picker** — dev-only inspector (Ctrl+Shift+X) for AI-assistert UI-utvikling
 - **Zod** — runtime-validering av input
 - **ESLint + Prettier** — linting og formatering
 
