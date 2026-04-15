@@ -53,7 +53,7 @@ if (log) {
 const snapshotPath = path.join(projectRoot, "teknisk/dokumentasjon/supabase-snapshot.md");
 if (existsSync(snapshotPath)) {
   const age = Math.floor((Date.now() - statSync(snapshotPath).mtimeMs) / 1000 / 60 / 60);
-  lines.push(`\n**Supabase-snapshot**: ${age}t gammel (`teknisk/dokumentasjon/supabase-snapshot.md`)`);
+  lines.push(`\n**Supabase-snapshot**: ${age}t gammel (\`teknisk/dokumentasjon/supabase-snapshot.md\`)`);
   if (age > 24) {
     lines.push(`⚠ Utdatert. Kjør \`pnpm db:snapshot\` hvis migrasjoner er endret.`);
   }
