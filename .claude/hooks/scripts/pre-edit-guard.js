@@ -19,7 +19,6 @@ process.stdin.on("end", () => {
     const rel = path.relative(projectRoot, filePath).replace(/\\/g, "/");
 
     const blocked = [
-      { pattern: /^\.env(\..*)?$/, reason: "env-filer skal ikke redigeres av Claude — bruk .env.example" },
       { pattern: /^\.next\//, reason: ".next/ er build-output" },
       { pattern: /^node_modules\//, reason: "node_modules/ er dependencies" },
       { pattern: /^\.git\//, reason: ".git/ er git interne filer" },

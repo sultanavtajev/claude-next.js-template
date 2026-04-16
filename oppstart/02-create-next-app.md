@@ -30,6 +30,7 @@ Generer Next.js-boilerplate i nåværende mappe med standard stack.
 - [ ] Next.js' `CLAUDE.md` slettet (`rm CLAUDE.md`)
 - [ ] Templatens `README.md`, `.gitignore`, `CLAUDE.md`, `oppstart/`, `TEMPLATE.md` flyttet tilbake fra `/tmp/template-backup/`
 - [ ] `/tmp/template-backup/` fjernet
+- [ ] `pnpm.onlyBuiltDependencies` lagt til i `package.json` med `["supabase", "esbuild", "@swc/core", "@parcel/watcher", "msw"]` (forebygger `pnpm approve-builds`-prompts senere)
 - [ ] `@AGENTS.md` lagt til øverst i `CLAUDE.md` (referanse til Next.js' agent-instrukser)
 - [ ] `.claude/` urørt (dotdir — kolliderer ikke)
 - [ ] Ingen `.git/`-mappe finnes etter `rm -rf .git`
@@ -106,7 +107,27 @@ mv /tmp/template-backup/TEMPLATE.md .
 rmdir /tmp/template-backup
 ```
 
-### 6. Referer AGENTS.md fra CLAUDE.md
+### 6. Konfigurer `pnpm.onlyBuiltDependencies` i `package.json`
+
+pnpm blokkerer postinstall-scripts som standard (sikkerhetstiltak). Supabase-CLI, esbuild, @swc/core og lignende trenger build-scripts for å fungere — uten denne listen får du `pnpm approve-builds`-prompts hver gang en dep installeres. Legg til følgende i `package.json`:
+
+```json
+{
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "supabase",
+      "esbuild",
+      "@swc/core",
+      "@parcel/watcher",
+      "msw"
+    ]
+  }
+}
+```
+
+Dette gjøres **nå** (rett etter create-next-app og filflytting) slik at alle senere `pnpm add -D`-kommandoer (shadcn i steg 03, supabase i steg 07, dotenv-cli i steg 09) slipper unna prompts.
+
+### 7. Referer AGENTS.md fra CLAUDE.md
 
 Legg til `@AGENTS.md` øverst i `CLAUDE.md` rett under `## Beskrivelse`-blokken. Dette sier til Claude Code at AGENTS.md skal leses inn som kontekst sammen med CLAUDE.md.
 
