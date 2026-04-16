@@ -7,6 +7,9 @@
  * Leser transcript_path fra hook-payload (Claude Code sin JSONL-logg)
  * og konverterer til pent formatert markdown.
  *
+ * Secrets (API keys, JWT) redactes før skriving — brukeren kan lime
+ * inn tokens i samtalen uten at det lekker til committet chat-arkiv.
+ *
  * Exit 0 alltid — skal aldri blokkere Claude.
  */
 
@@ -108,13 +111,18 @@ process.stdin.on("end", () => {
       }
     }
 
+    // Redact secrets før skriving
+    md = redactSecrets(md);
+
     writeFileSync(path.join(rawDir, filename), md);
 
     // Appender til månedsindeks
     const monthPath = path.join(chatsDir, monthFile);
-    const firstUserText = extractText(
-      sessionMessages[0].content || sessionMessages[0].message?.content || ""
-    ).slice(0, 80).replace(/\n/g, " ");
+    const firstUserText = redactSecrets(
+      extractText(
+        sessionMessages[0].content || sessionMessages[0].message?.content || ""
+      ).slice(0, 80).replace(/\n/g, " ")
+    );
     const indexEntry = `\n## ${dateStr} ${timeStr}\n[Full sesjon](./raw/${filename}) · ${Math.round((endTs - startTs) / 60000)} min\n${firstUserText}${firstUserText.length >= 80 ? "…" : ""}\n`;
 
     if (!existsSync(monthPath)) {
@@ -147,4 +155,49 @@ function extractToolUses(content) {
   return content
     .filter((c) => c && c.type === "tool_use")
     .map((c) => c.name || "unknown");
+}
+
+/**
+ * Erstatt kjente secret-mønstre med ***REDACTED***-placeholder.
+ * Brukeren kan lime inn tokens/keys i samtalen — disse skal aldri havne
+ * i committet chat-arkiv.
+ *
+ * Patterns dekket:
+ * - Resend API-keys: re_XXXX
+ * - Supabase access tokens: sbp_XXXX
+ * - Supabase secret keys (ny format): sb_secret_XXXX
+ * - Supabase publishable keys (ny format, ikke sensitive men standardisert): sb_publishable_XXXX
+ * - Stripe secret keys: sk_live_XXXX, sk_test_XXXX
+ * - Generiske JWT-tokens: eyJ... (Supabase anon/service role, signert JWT)
+ * - GitHub tokens: ghp_XXXX, gho_XXXX, ghu_XXXX, ghs_XXXX, ghr_XXXX
+ * - OpenAI/Anthropic keys: sk-ant-..., sk-proj-...
+ * - Vercel tokens: vercel_XXXX (ikke offisielt format, men dekker edge case)
+ */
+function redactSecrets(text) {
+  if (typeof text !== "string") return text;
+
+  const patterns = [
+    // Resend
+    { re: /\bre_[A-Za-z0-9_]{20,}\b/g, label: "resend-key" },
+    // Supabase tokens (personal access + project service)
+    { re: /\bsbp_[A-Za-z0-9_]{20,}\b/g, label: "supabase-access-token" },
+    { re: /\bsb_secret_[A-Za-z0-9_]{20,}\b/g, label: "supabase-secret" },
+    { re: /\bsb_publishable_[A-Za-z0-9_]{20,}\b/g, label: "supabase-publishable" },
+    // Stripe
+    { re: /\bsk_(live|test)_[A-Za-z0-9]{20,}\b/g, label: "stripe-key" },
+    // GitHub
+    { re: /\bgh[pousr]_[A-Za-z0-9_]{36,}\b/g, label: "github-token" },
+    // Anthropic / OpenAI
+    { re: /\bsk-ant-[A-Za-z0-9_-]{20,}\b/g, label: "anthropic-key" },
+    { re: /\bsk-proj-[A-Za-z0-9_-]{20,}\b/g, label: "openai-key" },
+    // JWT (eyJ...). Matcher tre base64url-sections separert av `.`. Treffer
+    // Supabase anon/service role-keys og andre signerte tokens.
+    { re: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g, label: "jwt" },
+  ];
+
+  let result = text;
+  for (const { re, label } of patterns) {
+    result = result.replace(re, `***REDACTED-${label}***`);
+  }
+  return result;
 }
