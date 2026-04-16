@@ -3,7 +3,7 @@
 ## Pre-flight: sjekk docs
 
 Hent `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` og bekreft:
-- Gjeldende CLI-kommando (`npx uipro-cli init --ai claude` eller nyere).
+- Gjeldende CLI-install-kommando. Per observasjon fra faktisk bootstrap: `npm install -g uipro-cli && uipro init --ai claude` — `uipro-cli` krever global install før `uipro init` er tilgjengelig (`npx uipro-cli init` virker ikke i alle versjoner).
 - Om pakkenavnet `uipro-cli` fortsatt er riktig.
 - Liste over tilgjengelige stiler, palletter, font-pairings.
 
@@ -16,13 +16,13 @@ Resultat: én valgt kombinasjon av (stil + palette + fonts) som skrives inn i `s
 ## Sjekkliste
 
 - [ ] Pre-flight docs-sjekk kjørt
-- [ ] `npx uipro-cli init --ai claude` kjørt; `.claude/skills/ui-ux-pro-max/` finnes
+- [ ] `npm install -g uipro-cli` kjørt (CLI tilgjengelig globalt); `uipro init --ai claude` kjørt; `.claude/skills/ui-ux-pro-max/` finnes
 - [ ] Discovery-spørsmål stilt via `AskUserQuestion`: prosjekttype, målgruppe, vibe, farger
 - [ ] Discovery-spørsmål stilt: dark mode-strategi
 - [ ] 2–3 anbefalte kombinasjoner presentert; bruker har valgt én
-- [ ] `design-system/MASTER.md` opprettet — enten via `search.py --design-system --persist` (uten `-p`-flagget), eller manuelt (fallback) hvis search.py ikke gir brukbart output
-- [ ] Verifisert at MASTER.md ligger direkte under `design-system/`, ikke under `design-system/<prosjektnavn>/`
-- [ ] `src/app/globals.css` oppdatert med OKLCH-variabler fra valgt palette (shadcn-standard-paletter hentes fra `ui.shadcn.com/themes`)
+- [ ] `design-system/MASTER.md` opprettet — typisk via `search.py --design-system --persist`, men forvent å måtte overskrive manuelt basert på brukervalg (search.py matcher på category, gir ofte generisk palette)
+- [ ] `mv design-system/<slug>/...`-steg kjørt hvis search.py la output i subdir — MASTER.md skal ligge direkte under `design-system/`
+- [ ] `src/app/globals.css` oppdatert med OKLCH-variabler fra valgt palette (shadcn-standard-paletter hentes fra `ui.shadcn.com/themes`) — via `@theme inline`-blokk (Tailwind v4)
 - [ ] `src/app/[locale]/layout.tsx` oppdatert: valgt font via `next/font/google`, `metadata.title` + `description` fra prosjekt, `html lang={locale}`
 - [ ] `CLAUDE.md` "Design system (låst)"-seksjon fylt inn med konkrete verdier (stil, palette, fonts, dark mode)
 - [ ] `design-system/`-mappen stage-klar for commit
@@ -37,8 +37,11 @@ Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 04 i
 
 ## Del 1 — Installer skillen
 
+`uipro-cli` må være globalt installert før `uipro init` er tilgjengelig — `npx uipro-cli init` fungerer ikke i alle versjoner:
+
 ```bash
-npx uipro-cli init --ai claude
+npm install -g uipro-cli
+uipro init --ai claude
 ```
 
 Dette kopierer skill-filer til `.claude/skills/ui-ux-pro-max/`. Verifiser at mappen finnes:
@@ -107,9 +110,22 @@ python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query basert på svaren
   --persist
 ```
 
-**Viktig**: ikke bruk `-p "<prosjektnavn>"` — det plasserer MASTER.md i `design-system/<prosjektnavn>/` i stedet for rett under `design-system/`, som bryter vår konvensjon. Hvis `-p` ble brukt ved feil: `mv design-system/<prosjektnavn>/MASTER.md design-system/MASTER.md && rmdir design-system/<prosjektnavn>`.
+**Kjent oppførsel fra faktisk bootstrap** (så du vet hva som venter):
 
-Dette oppretter `design-system/MASTER.md` — **global source of truth** for farger, typografi, spacing, komponenter, tilstander.
+1. **Palette-mismatch**: `search.py` matcher på *category* (f.eks. "minimalism"), ikke på brukerens spesifikke palette-valg. Resultatet gir ofte en *generisk* palette som ikke stemmer med det brukeren valgte i discovery. **Forvent å overskrive `MASTER.md` manuelt** med rett palette/fonts basert på brukervalg.
+
+2. **MASTER.md-plassering**: hvis `search.py` lager `design-system/<slug>/MASTER.md` (slug fra query), flytt den opp:
+   ```bash
+   # Finn faktisk plassering
+   ls design-system/
+
+   # Hvis MASTER.md ligger i subdir:
+   mv design-system/<slug>/MASTER.md design-system/MASTER.md
+   mv design-system/<slug>/pages design-system/ 2>/dev/null || true
+   rmdir design-system/<slug>
+   ```
+
+   Denne flyttingen er **obligatorisk** — CLAUDE.md "Design system (låst)"-retrieval-regel forutsetter at `design-system/MASTER.md` ligger direkte under `design-system/`.
 
 Eksempel-spørringer basert på discovery-svar:
 - `"SaaS dashboard minimalism slate"` → SaaS, B2B, profesjonell, nøytral
@@ -242,8 +258,11 @@ git add design-system/
 
 ## Feilsøking
 
-- **`npx uipro-cli init` feiler med "command not found"**: pakken kan ha byttet navn — sjekk docs og GitHub.
+- **`uipro: command not found` etter `npm install -g uipro-cli`**: PATH inkluderer ikke global bin. Finn den med `npm bin -g` og enten legg til PATH, eller kall `$(npm bin -g)/uipro init --ai claude` direkte.
+- **`npx uipro-cli init` feiler med "command not found"**: `npx` finner ikke pakken i dette bootstrap-scenariet. Bruk global install-rute: `npm install -g uipro-cli && uipro init --ai claude`.
 - **Skill-mappen mangler SKILL.md**: re-kjør `uipro update` eller reinstaller.
+- **MASTER.md havnet i `design-system/<slug>/` i stedet for `design-system/`**: forventet — `search.py` slår slug fra query. Flytt opp: `mv design-system/<slug>/MASTER.md design-system/MASTER.md && rmdir design-system/<slug>`.
+- **search.py-paletten matcher ikke brukervalget**: forventet — `search.py` gir category-match, ikke palette-match. Overskriv `MASTER.md` manuelt med rett OKLCH-farger fra `ui.shadcn.com/themes`.
 - **Claude ignorerer stil-valget senere**: sjekk at CLAUDE.md faktisk har "Design system"-seksjonen og at skill-frontmatter er korrekt.
 
 ## Avkrysning
