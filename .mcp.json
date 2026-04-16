@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/mcp-servers.json",
-  "_comment": "MCP-servere for dette prosjektet. {{PLACEHOLDERS}} fylles inn i oppstart-steg 01. Env-variabler som ${TOKEN_NAME} må finnes i brukerens shell eller .env.local. VIKTIG: stdio-entries bruker cmd /c npx ... som Windows-kompatibel wrapper — ikke-Windows-brukere kan bytte til direkte npx (fjern 'cmd' + '/c' fra command/args).",
+  "_comment": "MCP-servere for dette prosjektet. {{PLACEHOLDERS}} fylles inn i oppstart-steg 01. Secrets leses fra .env.local via dotenv-cli-wrapper (ingen env-blokker her). VIKTIG: stdio-entries bruker cmd /c npx ... som Windows-kompatibel wrapper — ikke-Windows-brukere kan bytte til direkte npx (fjern 'cmd' + '/c' fra command/args).",
   "mcpServers": {
     "github": {
       "type": "http",
@@ -19,10 +19,7 @@
     },
     "resend": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "resend-mcp"],
-      "env": {
-        "RESEND_API_KEY": "${RESEND_API_KEY}"
-      }
+      "args": ["/c", "npx", "-y", "dotenv-cli", "-e", ".env.local", "--", "npx", "-y", "resend-mcp"]
     },
     "playwright": {
       "command": "cmd",
@@ -34,10 +31,7 @@
     },
     "context7": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@upstash/context7-mcp"],
-      "env": {
-        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
-      }
+      "args": ["/c", "npx", "-y", "dotenv-cli", "-e", ".env.local", "--", "npx", "-y", "@upstash/context7-mcp"]
     },
     "shadcn": {
       "command": "cmd",

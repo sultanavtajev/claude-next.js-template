@@ -65,13 +65,13 @@ Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om
 
 ## Env-variabler MCP-serverne trenger
 
-MCP-serverne i `.mcp.json` refererer til disse env-variablene. Templaten bruker `.env.local` som single source of truth (settes opp i steg 09 med `dotenv-cli`). Variabler som settes der plukkes opp av Claude Code ved oppstart og injiseres i MCP-server-prosessene via `${VAR_NAME}`-interpolering:
+MCP-serverne i `.mcp.json` refererer til disse env-variablene. Templaten bruker `.env.local` som single source of truth (settes opp i steg 09 med `dotenv-cli`). **Stdio-MCP-er** som trenger secrets wraps med `dotenv-cli -e .env.local --` så `.env.local` lastes inn i prosess-environmentet før child-prosessen starter — ingen `"env": { ... }`-blokker i `.mcp.json` selv.
 
 - GitHub: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
 - Vercel: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
-- `SUPABASE_ACCESS_TOKEN` — personlig access token fra Supabase (kun hvis Supabase brukes)
-- `RESEND_API_KEY` — API-nøkkel fra Resend dashboard (kun hvis Resend brukes)
-- `CONTEXT7_API_KEY` — API-nøkkel fra context7.com/dashboard (valgfri, men gir høyere rate limits)
+- `SUPABASE_ACCESS_TOKEN` — personlig access token fra Supabase (kun hvis Supabase brukes; HTTP-entry)
+- `RESEND_API_KEY` — API-nøkkel fra Resend dashboard (kun hvis Resend brukes; stdio m/dotenv-wrapper)
+- `CONTEXT7_API_KEY` — API-nøkkel fra context7.com/dashboard (valgfri, men gir høyere rate limits; stdio m/dotenv-wrapper)
 
 Disse krever ingen env-variabel:
 - `playwright` (@playwright/mcp) — browser-automasjon og E2E-testing
@@ -102,6 +102,26 @@ Alle stdio-baserte MCP-er i `.mcp.json` bruker `"command": "cmd"` + `"args": ["/
 ```
 
 HTTP-baserte MCP-er (github, vercel, supabase) er plattform-uavhengige — ingen endring trengs.
+
+### Secrets via `dotenv-cli`-wrapper (stdio-MCP-er)
+
+Stdio-MCP-er som trenger secrets (resend, context7) wraps med `dotenv-cli` så `.env.local` lastes inn før child-prosessen starter. Mønster:
+
+```json
+"resend": {
+  "command": "cmd",
+  "args": ["/c", "npx", "-y", "dotenv-cli", "-e", ".env.local", "--", "npx", "-y", "resend-mcp"]
+}
+```
+
+Det som skjer:
+1. `cmd /c npx -y dotenv-cli -e .env.local --` starter `dotenv-cli` som laster `.env.local` inn i sitt eget process-env.
+2. `--` skiller `dotenv-cli`-args fra child-kommandoen.
+3. `npx -y resend-mcp` starter faktisk MCP-server og arver env (inkl. `RESEND_API_KEY`).
+
+**Fordel**: ingen `"env": { "VAR": "${VAR}" }`-blokker trengs i `.mcp.json`. Alt ligger i `.env.local` som allerede er single source of truth.
+
+**HTTP-MCP-er** kan ikke wraps med dotenv-cli (ingen child-prosess). Hvis en HTTP-MCP krever secrets i headers, må Claude Code lese `.env.local` selv ved oppstart — dette virker i praksis siden Claude Code typisk plukker opp prosjektets `.env.local` ved session-start.
 
 ## Feilsøking
 
