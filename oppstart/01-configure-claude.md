@@ -81,6 +81,28 @@ Disse krever ingen env-variabel:
 
 Informér brukeren at disse må settes i `.env.local` for at MCP-serverne skal virke. Variablene fylles inn i sine respektive steg (`SUPABASE_ACCESS_TOKEN` i steg 09, `RESEND_API_KEY` i steg 08, `CONTEXT7_API_KEY` manuelt). Fjern eventuelt MCP-servere som ikke er aktuelle fra `.mcp.json`.
 
+### Windows-kompatibilitet: `cmd /c`-wrapper
+
+Alle stdio-baserte MCP-er i `.mcp.json` bruker `"command": "cmd"` + `"args": ["/c", "npx", ...]` som wrapper. Uten dette feiler de silent på Windows (Node.js klarer ikke å spawn `npx`-binary direkte på Windows pga `.cmd`-extension-håndtering).
+
+**Ikke-Windows-brukere** (mac/Linux): `cmd` finnes ikke. Fjern `"command": "cmd"` og de to første args-elementene (`"/c", "npx"`) så du sitter igjen med `"command": "npx"` + originale args. Eksempel:
+
+```json
+// Før (Windows-default):
+"playwright": {
+  "command": "cmd",
+  "args": ["/c", "npx", "-y", "@playwright/mcp@latest"]
+}
+
+// Etter (mac/Linux):
+"playwright": {
+  "command": "npx",
+  "args": ["-y", "@playwright/mcp@latest"]
+}
+```
+
+HTTP-baserte MCP-er (github, vercel, supabase) er plattform-uavhengige — ingen endring trengs.
+
 ## Feilsøking
 
 - **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 14.
