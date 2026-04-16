@@ -10,8 +10,9 @@ Før du kjører kommandoen, hent `https://nextjs.org/docs/app/getting-started/in
 
 ### Kjent gotcha (per Next.js 16.2+)
 
-- `create-next-app .` **nekter å kjøre** i en mappe med kolliderende filer (tidligere prompt for "continue" er fjernet). Du må flytte konflikt-filene ut først.
-- Konflikt-filer: `README.md`, `.gitignore`, og fra v16+ også `CLAUDE.md` og `AGENTS.md`.
+- `create-next-app .` **nekter å kjøre** i en mappe med kolliderende filer (tidligere prompt for "continue" er fjernet). Du må flytte **alle** konflikt-filer/mapper ut først.
+- Konflikt-liste (v16.2+): `README.md`, `.gitignore`, `CLAUDE.md`, `AGENTS.md`, **pluss** `oppstart/` og `TEMPLATE.md` som templaten bringer med. Dotfiler/-mapper (`.claude/`) ignoreres typisk, men flytt dem hvis create-next-app fortsatt klager.
+- **`--skip-git`-flagget ignoreres** i praksis av v16.2+ — create-next-app oppretter `.git/` uansett. Vi må fjerne den eksplisitt med `rm -rf .git` etter kjøringen.
 - `AGENTS.md` er en ny konvensjon fra Next.js v16 (på linje med CLAUDE.md for Claude Code) — den inneholder Next.js-spesifikke agent-instruksjoner og breaking-change-advarsler. **Behold Next.js sin AGENTS.md**; vår CLAUDE.md bør referere til den via `@AGENTS.md` etter create-next-app er ferdig.
 
 ## Mål
@@ -21,16 +22,17 @@ Generer Next.js-boilerplate i nåværende mappe med standard stack.
 ## Sjekkliste
 
 - [ ] Pre-flight docs-sjekk kjørt (se seksjonen over) — bekreftet at create-next-app-oppførselen ikke har endret seg
-- [ ] Templatens kolliderende filer flyttet til `/tmp/template-backup/`: `README.md`, `.gitignore`, `CLAUDE.md`
+- [ ] Templatens kolliderende filer/mapper flyttet til `/tmp/template-backup/`: `README.md`, `.gitignore`, `CLAUDE.md`, `oppstart/`, `TEMPLATE.md`
 - [ ] `npx create-next-app@latest . ... --skip-git` kjørt uten feil
 - [ ] `package.json`, `tsconfig.json`, `next.config.ts`, `src/app/` opprettet
+- [ ] `rm -rf .git` kjørt (create-next-app v16.2+ oppretter `.git/` tross `--skip-git`)
 - [ ] `AGENTS.md` fra create-next-app finnes (beholdes)
 - [ ] Next.js' `CLAUDE.md` slettet (`rm CLAUDE.md`)
-- [ ] Templatens `README.md`, `.gitignore`, `CLAUDE.md` flyttet tilbake fra `/tmp/template-backup/`
+- [ ] Templatens `README.md`, `.gitignore`, `CLAUDE.md`, `oppstart/`, `TEMPLATE.md` flyttet tilbake fra `/tmp/template-backup/`
 - [ ] `/tmp/template-backup/` fjernet
 - [ ] `@AGENTS.md` lagt til øverst i `CLAUDE.md` (referanse til Next.js' agent-instrukser)
-- [ ] `.claude/`, `oppstart/`, `TEMPLATE.md` urørt
-- [ ] Ingen `.git/`-mappe opprettet av create-next-app (`--skip-git` fungerte)
+- [ ] `.claude/` urørt (dotdir — kolliderer ikke)
+- [ ] Ingen `.git/`-mappe finnes etter `rm -rf .git`
 - [ ] `pnpm dev` startet via `run_in_background: true`, `curl http://localhost:3000/` svarte `HTTP 200`
 - [ ] Dev-server stoppet (background-task avsluttet)
 
@@ -54,15 +56,17 @@ mkdir -p /tmp/template-backup
 mv README.md /tmp/template-backup/
 mv .gitignore /tmp/template-backup/
 mv CLAUDE.md /tmp/template-backup/
+mv oppstart /tmp/template-backup/
+mv TEMPLATE.md /tmp/template-backup/
 ```
 
 (`/tmp/template-backup` virker i Git Bash på Windows. Alternativt: `../template-backup` hvis du foretrekker nærmere.)
 
-`.claude/`, `oppstart/`, `TEMPLATE.md` kolliderer ikke — de forblir i prosjektmappa.
+`.claude/` er en dotdir og kolliderer typisk ikke — den blir i prosjektmappa. Hvis create-next-app likevel klager på `.claude/`, flytt den også midlertidig.
 
 ### 2. Kjør `create-next-app`
 
-`--skip-git` hindrer create-next-app fra å initialisere git (steg 12 gjør det):
+`--skip-git` er tenkt å hindre git-init, men blir ofte ignorert av v16.2+ (neste steg fjerner `.git/` uansett):
 
 ```bash
 npx create-next-app@latest . \
@@ -72,7 +76,15 @@ npx create-next-app@latest . \
 
 Hvis create-next-app spør om et flagg interaktivt (Yarn/pnpm/npm-valg osv.): svar slik at flaggsettet over reflekteres.
 
-### 3. Håndtér Next.js' nye AGENTS.md (og eventuelt CLAUDE.md)
+### 3. Fjern `.git/` eksplisitt
+
+create-next-app v16.2+ oppretter `.git/`-mappe tross `--skip-git`-flagget. Vi initialiserer fersk git-historikk i steg 12, så `.git/` skal være borte nå:
+
+```bash
+rm -rf .git
+```
+
+### 4. Håndtér Next.js' nye AGENTS.md (og eventuelt CLAUDE.md)
 
 create-next-app v16+ oppretter:
 - `AGENTS.md` — **behold denne**. Inneholder Next.js-spesifikke instruksjoner og breaking-change-notater.
@@ -83,16 +95,18 @@ create-next-app v16+ oppretter:
 rm CLAUDE.md
 ```
 
-### 4. Flytt templatens filer tilbake
+### 5. Flytt templatens filer/mapper tilbake
 
 ```bash
 mv /tmp/template-backup/README.md .
 mv /tmp/template-backup/.gitignore .
 mv /tmp/template-backup/CLAUDE.md .
+mv /tmp/template-backup/oppstart .
+mv /tmp/template-backup/TEMPLATE.md .
 rmdir /tmp/template-backup
 ```
 
-### 5. Referer AGENTS.md fra CLAUDE.md
+### 6. Referer AGENTS.md fra CLAUDE.md
 
 Legg til `@AGENTS.md` øverst i `CLAUDE.md` rett under `## Beskrivelse`-blokken. Dette sier til Claude Code at AGENTS.md skal leses inn som kontekst sammen med CLAUDE.md.
 
@@ -103,10 +117,10 @@ Hvis `CLAUDE.md` allerede har en `@AGENTS.md`-linje: hopp over.
 - `package.json`, `tsconfig.json`, `next.config.ts`, `tailwind.config.ts`, `src/app/` opprettet.
 - `src/app/layout.tsx` og `src/app/page.tsx` er Next.js-standard boilerplate.
 - `node_modules/` installert.
-- `README.md`, `.gitignore` og `CLAUDE.md` er templatens versjoner (flyttet tilbake fra `/tmp/template-backup/`).
+- `README.md`, `.gitignore`, `CLAUDE.md`, `oppstart/`, `TEMPLATE.md` er templatens versjoner (flyttet tilbake fra `/tmp/template-backup/`).
 - `AGENTS.md` fra Next.js 16+ beholdt — Claude Code leser den sammen med CLAUDE.md via `@AGENTS.md`.
-- Ingen `.git/`-mappe er opprettet (vi brukte `--skip-git`).
-- `.claude/`, `oppstart/`, `TEMPLATE.md` urørt.
+- Ingen `.git/`-mappe eksisterer (fjernet eksplisitt i steg 3 siden `--skip-git` er upålitelig).
+- `.claude/` urørt.
 
 ## Verifisering
 
@@ -124,11 +138,11 @@ Riktig mønster:
 
 ## Feilsøking
 
-- **`create-next-app` avbryter med "The directory contains files that could conflict"**: du hoppet over steg 1 (flytt til `/tmp/template-backup/`). `cp`-basert backup virker ikke — create-next-app sjekker filsystemet. Flytt filene faktisk ut, kjør create-next-app, og flytt tilbake.
-- **Backup-filer ble liggende i `/tmp/template-backup/`**: du hoppet over steg 4 (flytt tilbake). Kjør `mv /tmp/template-backup/* .` og `rmdir /tmp/template-backup`.
+- **`create-next-app` avbryter med "The directory contains files that could conflict"**: du hoppet over steg 1 (flytt til `/tmp/template-backup/`). `cp`-basert backup virker ikke — create-next-app sjekker filsystemet. Flytt filene/mappene faktisk ut (inkl. `oppstart/` og `TEMPLATE.md`), kjør create-next-app, og flytt tilbake.
+- **Backup-filer ble liggende i `/tmp/template-backup/`**: du hoppet over steg 5 (flytt tilbake). Kjør `mv /tmp/template-backup/* .` (inkludert `.gitignore` og mappe-innhold) og `rmdir /tmp/template-backup`.
 - **`pnpm: command not found` / `not recognized`**: installér med `npm install -g pnpm`, verifiser med `pnpm --version`, og prøv steget på nytt. (Burde vært fanget i `/0.0-oppstart`-kommandoens forutsetnings-sjekk.)
-- **create-next-app opprettet `.git/` likevel**: `--skip-git` var ikke med. Kjør `rm -rf .git` — steg 12 oppretter git-repo på riktig måte senere.
-- **`CLAUDE.md` har fortsatt Next.js-innhold, ikke vår**: steg 3 eller 4 feilet. Slett Next.js-versjonen (`rm CLAUDE.md`) og flytt vår tilbake (`mv /tmp/template-backup/CLAUDE.md .`).
+- **`.git/` finnes etter create-next-app**: forventet — `--skip-git` er upålitelig i v16.2+. Steg 3 (`rm -rf .git`) fjerner den eksplisitt.
+- **`CLAUDE.md` har fortsatt Next.js-innhold, ikke vår**: steg 4 eller 5 feilet. Slett Next.js-versjonen (`rm CLAUDE.md`) og flytt vår tilbake (`mv /tmp/template-backup/CLAUDE.md .`).
 - **`AGENTS.md` mangler**: create-next-app genererte den ikke (kanskje eldre versjon). Ikke noe problem — hopp over `@AGENTS.md`-referansen i CLAUDE.md.
 - **Port 3000 opptatt**: kjør med `pnpm dev -- -p 3001`.
 - **`sleep N && curl ...` blokkeres med "Run blocking commands in the background"**: Claude Code-miljøet blokkerer `sleep ≥ 2s` før en annen kommando. Start `pnpm dev` med `run_in_background: true`, vent på "Ready"-event via `Monitor`-verktøyet (eller bare kjør curl direkte — dev-serveren er oftest klar innen ett sekund), og stopp tasken etterpå.
