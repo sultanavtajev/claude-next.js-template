@@ -9,20 +9,24 @@ Supabase CLI gir migrasjonsflyt som ligner Prisma/Rails — SQL-filer versjonere
 
 ## Arbeidsflyt
 
+Alle Supabase CLI-kall går via `pnpm db:*`-scripts (som wrapper med `dotenv -e .env.local --` for å laste `SUPABASE_ACCESS_TOKEN`):
+
 ```bash
 # 1. Opprett ny migrasjonsfil
-npx supabase migration new <beskrivende_navn>
+pnpm db:new <beskrivende_navn>
 
 # 2. Rediger supabase/migrations/<timestamp>_<navn>.sql
 #    NB: Claude Code-hook auto-regenererer snapshoten etter denne editen
 
 # 3. Push til hosted database
-npx supabase db push
+pnpm db:push
 
 # 4. Regenerer TypeScript-typer + snapshot
 pnpm db:types      # src/lib/supabase/database.types.ts
 pnpm db:snapshot   # teknisk/dokumentasjon/supabase-snapshot.md
 ```
+
+For ad-hoc-kommandoer som ikke har dedikert script: prefix med `dotenv -e .env.local -- npx supabase ...` (f.eks. `dotenv -e .env.local -- npx supabase db reset` for å nullstille lokalt). Direkte `npx supabase ...` uten dotenv-prefix vil feile med "Access token not provided".
 
 **Før du lager en ny migrasjon**: les `teknisk/dokumentasjon/supabase-snapshot.md` for å forstå eksisterende tabellstruktur, RLS-policies, triggers og functions. Dette hindrer duplikasjon og inkonsistenser.
 
@@ -112,20 +116,20 @@ create policy "Team-medlemmer leser" on public.team_posts for select
 ## Nullstille lokalt (destruktivt)
 
 ```bash
-npx supabase db reset
+dotenv -e .env.local -- npx supabase db reset
 ```
 
 Dette sletter ALT og kjører alle migrations fra scratch. Kun for lokal utvikling — aldri mot produksjon.
 
 ## Produksjonsmigrering
 
-`supabase db push` kjører mot *linked* prosjekt (det du koblet til med `supabase link`). For safe deploy:
+`pnpm db:push` kjører mot *linked* prosjekt (det du koblet til med `supabase link`). For safe deploy:
 
-1. Kjør migrasjon mot staging/dev-prosjekt først.
+1. Kjør migrasjon mot staging/dev-prosjekt først (`pnpm db:push`).
 2. Bekreft alt virker.
-3. Deretter `supabase link --project-ref <prod-ref>` og `db push`.
+3. Deretter `dotenv -e .env.local -- npx supabase link --project-ref <prod-ref>` og `pnpm db:push`.
 
-Vercel/CI: `supabase db push` i deploy-script, eller kjør manuelt før deploy.
+Vercel/CI: `pnpm db:push` i deploy-script, eller kjør manuelt før deploy. CI-miljøer må ha `SUPABASE_ACCESS_TOKEN` i sin secret-store.
 
 ## Helper-funksjoner
 
@@ -163,5 +167,6 @@ const { data } = await supabase.from("posts").select("*");
 
 - ❌ Redigere eksisterende migrasjoner som allerede er kjørt i produksjon — lag ny migrasjon.
 - ❌ Bruke `supabase db push` uten å linke prosjekt først.
+- ❌ Kalle `npx supabase ...` direkte uten `dotenv -e .env.local --`-prefix (eller `pnpm db:*`-script som har det innbygd) — feiler med "Access token not provided".
 - ❌ Committe tabeller uten RLS — data eksponeres.
 - ❌ Bruke `SUPABASE_SERVICE_ROLE_KEY` for å omgå RLS i UI-kode — bruk riktig policy i stedet.

@@ -92,7 +92,7 @@ git push -u origin feature
 Søk-og-erstatt `{{GITHUB_REPO}}` med `<brukernavn>/<repo-navn>` i:
 - `CLAUDE.md`
 
-(`.claude/mcp-servers.json` trenger ikke dette — GitHub MCP bruker OAuth og gir access til alle autoriserte repoer.)
+(`.mcp.json` trenger ikke dette — GitHub MCP bruker OAuth og gir access til alle autoriserte repoer.)
 
 Commit denne endringen (blir siste commit i steg 14):
 ```bash
@@ -101,7 +101,7 @@ Commit denne endringen (blir siste commit i steg 14):
 
 ### 6. Autoriser GitHub MCP (OAuth)
 
-GitHub har offisiell MCP-server på `https://api.githubcopilot.com/mcp/` med 70+ verktøy for issues, PRs, Actions, security, discussions, gists, orgs og projects. Templaten har den registrert i `.claude/mcp-servers.json`, men brukeren må autorisere den første gang:
+GitHub har offisiell MCP-server på `https://api.githubcopilot.com/mcp/` med 70+ verktøy for issues, PRs, Actions, security, discussions, gists, orgs og projects. Templaten har den registrert i `.mcp.json`, men brukeren må autorisere den første gang:
 
 1. I Claude Code-sessionen: kjør `/mcp`
 2. Velg `github`
@@ -123,7 +123,7 @@ Etter autorisering får Claude tilgang til hele GitHub-API-et via MCP (issues, P
 - **`gh: command not found`**: installer GitHub CLI og `gh auth login`.
 - **`/mcp github` viser "Needs authentication"**: bruker må fullføre OAuth-flyten i browser. Browser åpnes automatisk ved første kall.
 - **GitHub MCP returnerer 401/403**: autorisering utløpt eller manglende scope — kjør `/mcp` → github → re-auth.
-- **GitHub-account uten Copilot-tilgang**: hosted MCP krever Copilot-abonnement. Fallback er å kjøre Docker-versjonen lokalt med PAT: erstatt `github`-oppføringen i `.claude/mcp-servers.json` med `{"command": "docker", "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"], "env": {"GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"}}` og sett `GITHUB_TOKEN` i `.env.local`.
+- **GitHub-account uten Copilot-tilgang**: hosted MCP krever Copilot-abonnement. Fallback er å kjøre Docker-versjonen lokalt med PAT: erstatt `github`-oppføringen i `.mcp.json` med `{"command": "docker", "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"], "env": {"GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"}}` og sett `GITHUB_TOKEN` i `.env.local`.
 - **`repository <navn> already exists`**: velg nytt navn via AskUserQuestion og prøv igjen.
 - **`Permission denied` ved `rm -rf .git`**: lukk IDE eller andre prosesser som kan ha lås på `.git/`-filer. På Windows kan VS Codes Git-extension holde filer åpne.
 - **`gh auth login` krever manuell input**: Claude kan ikke fullføre OAuth-flyten — bruker må gjøre det selv i terminalen.

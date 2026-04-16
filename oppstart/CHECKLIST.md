@@ -37,7 +37,7 @@ Canonical doc-URLer for denne stacken:
 
 ## Steg
 
-- [ ] [01 — Configure Claude](./01-configure-claude.md) — fyll inn prosjektnavn, GitHub-repo, Vercel-prosjekt i `CLAUDE.md` + `.claude/mcp-servers.json`
+- [ ] [01 — Configure Claude](./01-configure-claude.md) — fyll inn prosjektnavn, GitHub-repo, Vercel-prosjekt i `CLAUDE.md` + `.mcp.json`
 - [ ] [02 — create-next-app](./02-create-next-app.md) — generer Next.js-boilerplate
 - [ ] [03 — shadcn/ui](./03-install-shadcn.md) — init shadcn og legg til basiskomponenter
 - [ ] [04 — UI/UX design system](./04-install-ui-ux.md) — installer ui-ux-pro-max og lås stil/palette/fonts

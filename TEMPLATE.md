@@ -58,7 +58,7 @@ Claude leser `oppstart/CHECKLIST.md` og utfører stegene i rekkefølge:
 - `.claude/agents/` — delegerbare subagents (reviewer, build-resolver)
 - `.claude/commands/` — slash-kommandoer (workspace, git, task-workflows)
 - `.claude/hooks/` — automatisk formatering + guard mot sensitive filer
-- `.claude/mcp-servers.json` — Vercel + GitHub + Supabase + Resend + Playwright + Context7 + shadcn + Chrome DevTools + next-devtools
+- `.mcp.json` — Vercel + GitHub + Supabase + Resend + Playwright + Context7 + shadcn + Chrome DevTools + next-devtools
 - `oppstart/` — engangs-instruksjoner som slettes etter bootstrap
 - **Claude Code-hooks** for automatisk konsistens:
   - **SessionStart-briefing** — ved `claude`-start: gir Claude git-status, siste commits, snapshot-alder, aktive sjekklister, manglende env-vars

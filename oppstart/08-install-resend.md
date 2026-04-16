@@ -42,10 +42,10 @@ Bruk `AskUserQuestion`:
 
 ## 2. Hvis "hopp over" eller "bruker Supabase Auth-mails"
 
-Behold `RESEND_API_KEY` som valgfri env-variabel (`.env.example` har den allerede), men skriv ingen kode. Fjern `resend`-oppføringen fra `.claude/mcp-servers.json` siden serveren vil feile uten API-nøkkel:
+Behold `RESEND_API_KEY` som valgfri env-variabel (`.env.example` har den allerede), men skriv ingen kode. Fjern `resend`-oppføringen fra `.mcp.json` siden serveren vil feile uten API-nøkkel:
 
 ```bash
-# Åpne .claude/mcp-servers.json og slett "resend"-blokken (linjene 20-26)
+# Åpne .mcp.json og slett "resend"-blokken (linjene 20-26)
 ```
 
 Hopp til "Forventet resultat".
@@ -164,7 +164,7 @@ export async function sendWelcomeEmail(formData: FormData) {
 
 ## 8. Autoriser Resend MCP
 
-Templaten har Resend MCP-serveren i `.claude/mcp-servers.json` (npx-basert, stdio). For at Claude Code skal få tilgang må MCP-serveren plukke opp `RESEND_API_KEY`:
+Templaten har Resend MCP-serveren i `.mcp.json` (npx-basert, stdio). For at Claude Code skal få tilgang må MCP-serveren plukke opp `RESEND_API_KEY`:
 
 1. Sjekk at `RESEND_API_KEY` finnes i `.env.local` (fra steg 4).
 2. Informér brukeren: "Restart Claude Code etter bootstrap (steg 14) for at Resend MCP skal laste API-nøkkelen fra env."
@@ -182,7 +182,7 @@ Hvis Resend valgt:
 - Resend MCP tilgjengelig etter Claude-restart.
 
 Hvis hoppet over:
-- `resend`-oppføringen fjernet fra `.claude/mcp-servers.json`.
+- `resend`-oppføringen fjernet fra `.mcp.json`.
 - `RESEND_API_KEY` forblir valgfri env-variabel i `.env.example` (dokumentasjon for framtidig bruk).
 
 ## Sikkerhet

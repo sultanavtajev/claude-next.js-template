@@ -2,7 +2,7 @@
 
 ## Mål
 
-Fyll inn prosjektspesifikk metadata i `CLAUDE.md` og `.claude/mcp-servers.json` slik at Claude-konfigurasjonen reflekterer dette prosjektet.
+Fyll inn prosjektspesifikk metadata i `CLAUDE.md` og `.mcp.json` slik at Claude-konfigurasjonen reflekterer dette prosjektet.
 
 ## Sjekkliste
 
@@ -16,7 +16,7 @@ Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle er `[x]`, m
 
 ## Forutsetninger
 
-- `CLAUDE.md` og `.claude/mcp-servers.json` finnes i prosjektroten (lagt inn fra templaten).
+- `CLAUDE.md` og `.mcp.json` finnes i prosjektroten (lagt inn fra templaten).
 - De inneholder placeholders på formen `{{UPPERCASE_SNAKE}}`.
 
 ## Kommandoer
@@ -65,7 +65,7 @@ Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om
 
 ## Env-variabler MCP-serverne trenger
 
-MCP-serverne i `.claude/mcp-servers.json` refererer til disse env-variablene (må finnes i brukerens shell eller `.env.local`):
+MCP-serverne i `.mcp.json` refererer til disse env-variablene. Templaten bruker `.env.local` som single source of truth (settes opp i steg 09 med `dotenv-cli`). Variabler som settes der plukkes opp av Claude Code ved oppstart og injiseres i MCP-server-prosessene via `${VAR_NAME}`-interpolering:
 
 - GitHub: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
 - Vercel: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
@@ -79,13 +79,13 @@ Disse krever ingen env-variabel:
 - `shadcn` (shadcn@latest mcp) — søk og hent shadcn-komponenter fra registries
 - `chrome-devtools` (chrome-devtools-mcp) — live Chrome-debugging mot åpen browser (komplementerer Playwright)
 
-Informér brukeren at disse må settes for at MCP-serverne skal virke. Fjern eventuelt servere som ikke er aktuelle fra `.claude/mcp-servers.json`.
+Informér brukeren at disse må settes i `.env.local` for at MCP-serverne skal virke. Variablene fylles inn i sine respektive steg (`SUPABASE_ACCESS_TOKEN` i steg 09, `RESEND_API_KEY` i steg 08, `CONTEXT7_API_KEY` manuelt). Fjern eventuelt MCP-servere som ikke er aktuelle fra `.mcp.json`.
 
 ## Feilsøking
 
 - **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 14.
 - **Grep finner `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`**: forventet — de fylles inn i steg 07, 12 og 13.
-- **Bruker bruker ikke Supabase/Resend/Vercel**: disse kan enten fjernes fra `.claude/mcp-servers.json` (i relevant steg) eller beholdes med `TBD` — MCP-serveren vil da ikke fungere før verdien er fylt inn.
+- **Bruker bruker ikke Supabase/Resend/Vercel**: disse kan enten fjernes fra `.mcp.json` (i relevant steg) eller beholdes med `TBD` — MCP-serveren vil da ikke fungere før verdien er fylt inn.
 
 ## Avkrysning
 

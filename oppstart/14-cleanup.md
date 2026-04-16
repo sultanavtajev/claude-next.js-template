@@ -57,7 +57,7 @@ git checkout main
 
 **Viktig**: før brukeren begynner å jobbe i prosjektet, må både IDE og Claude Code restartes for at endringene skal tre i kraft:
 
-- **MCP-servere** i `.claude/mcp-servers.json` plukkes kun opp ved oppstart — nye servere blir ikke tilgjengelige før Claude starter på nytt.
+- **MCP-servere** i `.mcp.json` plukkes kun opp ved oppstart — nye servere blir ikke tilgjengelige før Claude starter på nytt.
 - **`settings.json`** og **permissions** leses inn ved oppstart.
 - **Nye skills og agents** registreres ved oppstart.
 

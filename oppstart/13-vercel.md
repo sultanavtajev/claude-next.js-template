@@ -23,7 +23,7 @@ Link prosjektet til Vercel for deploy, autoriser Vercel MCP, push env-variabler 
 
 ### Del 3 — Supabase Auth URL Configuration (hvis Supabase ble satt opp i steg 07)
 - [ ] (Hvis ja) Production-URL hentet fra Vercel (`vercel ls` eller `.vercel/project.json` + API)
-- [ ] (Hvis ja) `SUPABASE_ACCESS_TOKEN` verifisert å finnes i `.env.local` eller bruker-shell
+- [ ] (Hvis ja) `SUPABASE_ACCESS_TOKEN` verifisert å finnes i `.env.local`
 - [ ] (Hvis ja) `AskUserQuestion`: konfigurer Supabase Auth URLs automatisk?
 - [ ] (Hvis bruker valgte konfigurering) Site URL + Redirect URLs PATCH-et via Supabase Management API
 
@@ -32,7 +32,8 @@ Kryss av hver `[ ]` → `[x]` fortløpende. Hele steget er valgfritt — hvis br
 ## Pre-flight
 
 - `vercel` CLI installert. Sjekk med `vercel --version`. Hvis ikke: `pnpm add -g vercel`.
-- For Del 3 (Supabase Auth URLs): `SUPABASE_ACCESS_TOKEN` må være tilgjengelig. Enten i `.env.local` eller som shell-variabel. Hvis ikke: be bruker hente personal access token fra `https://supabase.com/dashboard/account/tokens` og legge i `.env.local`.
+- `dotenv-cli` installert lokalt (kommer fra steg 09). Sjekk med `pnpm dotenv --version`. Brukes til å laste `.env.local` inn i bash-blokkene under cross-platform.
+- For Del 3 (Supabase Auth URLs): `SUPABASE_ACCESS_TOKEN` må finnes i `.env.local`. Hvis ikke: be bruker hente personal access token fra `https://supabase.com/dashboard/account/tokens` og legge i `.env.local`.
 
 ## Del 1 — Link Vercel-prosjekt
 
@@ -50,7 +51,7 @@ Behold `{{VERCEL_PROJECT}}`-placeholderen og hopp til "Forventet resultat". Bruk
 
 ### 3. Hvis "Ja" — autoriser offisiell Vercel MCP
 
-Vercel har en offisiell remote MCP-server på `https://mcp.vercel.com` med OAuth-basert autentisering. Templaten har den allerede i `.claude/mcp-servers.json`, men brukeren må autorisere den første gang:
+Vercel har en offisiell remote MCP-server på `https://mcp.vercel.com` med OAuth-basert autentisering. Templaten har den allerede i `.mcp.json`, men brukeren må autorisere den første gang:
 
 1. I Claude Code-sessionen: kjør `/mcp` → velg `vercel` → følg OAuth-flow i browser.
 2. Etter autorisering får Claude tilgang til: docs-søk, team/project-håndtering, deployments, logs.
@@ -108,41 +109,37 @@ List opp variablene klart i prompt-teksten slik at bruker ser hva som blir pushe
 
 ### 3. Hvis "Ja" — push via CLI
 
-For hver variabel, kjør tre ganger (én per environment). `vercel env add` tar value fra stdin når piped:
+`vercel env add` tar value fra stdin når piped. Vi wraps hele loop-en med `dotenv -e .env.local --` så `.env.local`-vars blir tilgjengelig i bash-prosessen (cross-platform — fungerer i bash, PowerShell, cmd):
 
 ```bash
-# Ikke-sensitive (alle tre environments)
-printf "%s" "$NEXT_PUBLIC_SUPABASE_URL" | vercel env add NEXT_PUBLIC_SUPABASE_URL production
-printf "%s" "$NEXT_PUBLIC_SUPABASE_URL" | vercel env add NEXT_PUBLIC_SUPABASE_URL preview
-printf "%s" "$NEXT_PUBLIC_SUPABASE_URL" | vercel env add NEXT_PUBLIC_SUPABASE_URL development
+dotenv -e .env.local -- bash -c '
+  # Liste over vars vi vil pushe (les fra Bash sin env etter dotenv-load)
+  VARS="NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY SUPABASE_SERVICE_ROLE_KEY RESEND_API_KEY"
 
-# Sensitive (hopp over development — Vercel blokkerer)
-printf "%s" "$SUPABASE_SERVICE_ROLE_KEY" | vercel env add SUPABASE_SERVICE_ROLE_KEY production
-printf "%s" "$SUPABASE_SERVICE_ROLE_KEY" | vercel env add SUPABASE_SERVICE_ROLE_KEY preview
-```
+  for key in $VARS; do
+    value="${!key}"
+    [ -z "$value" ] && continue  # skip tomme
 
-Hent faktiske verdier fra `.env.local` i farta (bruk et bash-script eller inline-loop), ikke hardkod. Eksempel-loop (tilpass til Claude Code-miljøet):
+    case "$key" in
+      SUPABASE_SERVICE_ROLE_KEY)
+        envs="production preview" ;;  # sensitive — Vercel blokkerer i development
+      *)
+        envs="production preview development" ;;
+    esac
 
-```bash
-# Les .env.local, skip linjer som er kommentarer eller tomme
-while IFS='=' read -r key value; do
-  [[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
-  value="${value%\"}"; value="${value#\"}"  # strip quotes
-
-  case "$key" in
-    SUPABASE_SERVICE_ROLE_KEY)
-      envs="production preview" ;;
-    *)
-      envs="production preview development" ;;
-  esac
-
-  for env in $envs; do
-    printf "%s" "$value" | vercel env add "$key" "$env" --force
+    for env in $envs; do
+      printf "%s" "$value" | vercel env add "$key" "$env" --force
+    done
   done
-done < .env.local
+'
 ```
 
-`--force` overskriver hvis variabelen finnes fra før.
+`--force` overskriver hvis variabelen finnes fra før. Listen `VARS` justeres etter hva templaten faktisk bruker (les fra `src/env.ts` for sannheten).
+
+Alternativ for én og én var manuelt:
+```bash
+dotenv -e .env.local -- bash -c 'printf "%s" "$NEXT_PUBLIC_SUPABASE_URL" | vercel env add NEXT_PUBLIC_SUPABASE_URL production --force'
+```
 
 Rapportér til bruker hvilke vars som ble satt per environment.
 
@@ -230,34 +227,36 @@ Bruk `AskUserQuestion`:
 
 ### 4. Hvis "Ja" — kall Supabase Management API
 
-Hent `SUPABASE_PROJECT_REF` fra `.env.local` eller `CLAUDE.md` (ble fylt inn i steg 07).
+Hent `SUPABASE_PROJECT_REF` fra `.env.local` eller `CLAUDE.md` (ble fylt inn i steg 07). Wrap hele bash-blokken med `dotenv -e .env.local --` så `SUPABASE_ACCESS_TOKEN` og `SUPABASE_PROJECT_REF` blir tilgjengelig:
 
 ```bash
-# Last env
-source .env.local
-PROD_URL="https://mitt-prosjekt.vercel.app"  # fra steg 1 over
-TEAM=$(jq -r .orgId .vercel/project.json | cut -d_ -f2)  # f.eks. "sultanavtajevs"
+dotenv -e .env.local -- bash -c '
+  PROD_URL="https://mitt-prosjekt.vercel.app"  # fra steg 1 over
+  TEAM=$(jq -r .orgId .vercel/project.json | cut -d_ -f2)  # f.eks. "sultanavtajevs"
 
-# Bygg redirect-liste (komma-separert streng)
-REDIRECTS="${PROD_URL}/**,https://*-${TEAM}.vercel.app/**,http://localhost:3000/**"
+  # Bygg redirect-liste (komma-separert streng)
+  REDIRECTS="${PROD_URL}/**,https://*-${TEAM}.vercel.app/**,http://localhost:3000/**"
 
-# PATCH auth config
-curl -X PATCH "https://api.supabase.com/v1/projects/${SUPABASE_PROJECT_REF}/config/auth" \
-  -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"site_url\": \"${PROD_URL}\",
-    \"uri_allow_list\": \"${REDIRECTS}\"
-  }"
+  # PATCH auth config
+  curl -X PATCH "https://api.supabase.com/v1/projects/${SUPABASE_PROJECT_REF}/config/auth" \
+    -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"site_url\": \"${PROD_URL}\",
+      \"uri_allow_list\": \"${REDIRECTS}\"
+    }"
+'
 ```
 
-**Merk**: feltnavnet for redirect-URL-er er `uri_allow_list` (komma-separert streng) i Management API-et. Hvis API-et returnerer 400 med "unknown field": kjør `curl https://api.supabase.com/v1/projects/${SUPABASE_PROJECT_REF}/config/auth -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}"` først for å inspisere aktuelt schema.
+**Merk**: feltnavnet for redirect-URL-er er `uri_allow_list` (komma-separert streng) i Management API-et. Hvis API-et returnerer 400 med "unknown field": GET først for å inspisere aktuelt schema (se neste steg).
 
 ### 5. Verifiser
 
 ```bash
-curl -s "https://api.supabase.com/v1/projects/${SUPABASE_PROJECT_REF}/config/auth" \
-  -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}" | jq '{site_url, uri_allow_list}'
+dotenv -e .env.local -- bash -c '
+  curl -s "https://api.supabase.com/v1/projects/${SUPABASE_PROJECT_REF}/config/auth" \
+    -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}" | jq "{site_url, uri_allow_list}"
+'
 ```
 
 Forventet: begge feltene satt til de nye verdiene.

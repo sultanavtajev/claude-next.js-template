@@ -121,7 +121,7 @@ Bruk `AskUserQuestion`:
 
 Først **etter** approve:
 1. Opprett `.sql`-fil i `supabase/migrations/`
-2. `supabase db push` (lokalt)
+2. `pnpm db:push` (wrapper med dotenv — kjør aldri `npx supabase db push` direkte)
 3. Oppdater client-kode
 4. `pnpm db:types` + `pnpm db:snapshot`
 5. Verifiser build + tester

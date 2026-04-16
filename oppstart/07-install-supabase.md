@@ -24,7 +24,7 @@ Ett samlet steg for alt Supabase-arbeid:
 - [ ] `AskUserQuestion` stilt: har-prosjekt / må-opprette / hopp-over
 - [ ] (Hvis må-opprette) bruker har bekreftet at prosjekt er klart i Supabase dashboard
 - [ ] Project ref, URL, publishable key, service role key samlet via `AskUserQuestion`
-- [ ] `{{SUPABASE_PROJECT_REF}}` erstattet i `CLAUDE.md` og `.claude/mcp-servers.json`
+- [ ] `{{SUPABASE_PROJECT_REF}}` erstattet i `CLAUDE.md` og `.mcp.json`
 - [ ] Nøkler skrevet til `.env.local`
 
 ### Del 2 — Klienter
@@ -45,7 +45,7 @@ Ett samlet steg for alt Supabase-arbeid:
 - [ ] `npx supabase link --project-ref <ref>` kjørt
 - [ ] `tsx` installert som dev-dependency (for snapshot-script)
 - [ ] `scripts/supabase-snapshot.ts` opprettet
-- [ ] `db:types`, `db:push`, `db:new`, `db:snapshot`-scripts lagt til i `package.json`
+- [ ] `db:types`, `db:push`, `db:new`, `db:snapshot`-scripts lagt til i `package.json` med `dotenv -e .env.local --`-prefix (krever `dotenv-cli` fra steg 09 — kan installeres her hvis steg 09 ikke er kjørt)
 - [ ] `pnpm db:snapshot` kjørt én gang, genererte `teknisk/dokumentasjon/supabase-snapshot.md`
 
 Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle relevante bokser er `[x]` (Del 4 er valgfri), marker steg 07 i `oppstart/CHECKLIST.md` og gå til steg 08. Hvis bruker valgte "hopp-over" i Del 1, hoppes Del 2–4 over også.
@@ -84,7 +84,7 @@ Bruk "Other"-opsjonen for fritekst:
 
 Søk-og-erstatt `{{SUPABASE_PROJECT_REF}}` i:
 - `CLAUDE.md`
-- `.claude/mcp-servers.json`
+- `.mcp.json`
 
 Skriv nøklene til `.env.local` (opprett filen hvis den ikke finnes — den er allerede i `.gitignore`):
 
@@ -347,26 +347,26 @@ Og en callback-route: `src/app/auth/callback/route.ts` som håndterer code excha
 
 ## Del 4 — Migrations (valgfritt, men anbefalt)
 
-Installer Supabase CLI for lokale migrasjoner og link til prosjektet:
+Installer Supabase CLI og `dotenv-cli` for lokale migrasjoner og link til prosjektet:
 
 ```bash
-pnpm add -D supabase
+pnpm add -D supabase dotenv-cli
 npx supabase init
-npx supabase link --project-ref <project-ref fra Del 1>
+dotenv -e .env.local -- npx supabase link --project-ref <project-ref fra Del 1>
 ```
 
-Når du kjører `link`, bruk den faktiske project ref brukeren oppga (ikke placeholder).
+Når du kjører `link`, bruk den faktiske project ref brukeren oppga (ikke placeholder). `dotenv -e .env.local --`-prefiksen sørger for at `SUPABASE_ACCESS_TOKEN` er tilgjengelig for CLI-en (Supabase CLI leser ikke `.env.local` selv). Hvis steg 09 allerede er kjørt og installerte `dotenv-cli`, kan `dotenv-cli` droppes fra `pnpm add`-linjen her.
 
 Opprett migrasjon:
 ```bash
-npx supabase migration new <navn>
+dotenv -e .env.local -- npx supabase migration new <navn>
 # rediger generert .sql-fil i supabase/migrations/
-npx supabase db push
+dotenv -e .env.local -- npx supabase db push
 ```
 
 Generer TypeScript-typer fra schema:
 ```bash
-npx supabase gen types typescript --linked > src/lib/supabase/database.types.ts
+dotenv -e .env.local -- npx supabase gen types typescript --linked > src/lib/supabase/database.types.ts
 ```
 
 Installer `tsx` som dev-dependency (brukes av snapshot-scriptet):
@@ -449,13 +449,15 @@ writeFileSync("teknisk/dokumentasjon/supabase-snapshot.md", md);
 console.log("✓ Snapshot skrevet til teknisk/dokumentasjon/supabase-snapshot.md");
 ```
 
-Legg til i `package.json` scripts:
+Legg til i `package.json` scripts (alle wraps med `dotenv -e .env.local --` så CLI-tooling plukker opp `SUPABASE_ACCESS_TOKEN` og andre vars fra `.env.local`):
 ```json
-"db:types": "supabase gen types typescript --linked > src/lib/supabase/database.types.ts",
-"db:push": "supabase db push",
-"db:new": "supabase migration new",
-"db:snapshot": "tsx scripts/supabase-snapshot.ts"
+"db:types": "dotenv -e .env.local -- supabase gen types typescript --linked > src/lib/supabase/database.types.ts",
+"db:push": "dotenv -e .env.local -- supabase db push",
+"db:new": "dotenv -e .env.local -- supabase migration new",
+"db:snapshot": "dotenv -e .env.local -- tsx scripts/supabase-snapshot.ts"
 ```
+
+`db:snapshot` trenger dotenv-prefiks fordi snapshot-scriptet spawner `npx supabase`-child-prosesser som arver env fra parent. Uten prefiks ville `supabase db dump --linked` feile med "Access token not provided".
 
 Kjør én gang for å verifisere:
 ```bash
