@@ -77,7 +77,27 @@ teknisk/
 - `pnpm db:new <navn>` — ny Supabase-migrasjon
 - `pnpm db:push` — kjør migrasjoner mot linket prosjekt
 - `pnpm db:types` — generer TypeScript-typer fra schema
-- `npx supabase start` — kjør Supabase lokalt (Docker) — valgfritt
+- `dotenv -e .env.local -- npx supabase start` — kjør Supabase lokalt (Docker) — valgfritt
+
+> **Env-loading**: alle Supabase CLI- og custom scripts wraps med `dotenv -e .env.local --`-prefix (konfigurert i `package.json` scripts). Next.js auto-laster `.env.local`, men Supabase CLI gjør ikke det selv. Se steg 09 (`oppstart/09-configure-env.md`) for full forklaring.
+
+### MCP-servere
+
+Konfigurasjon ligger i `.mcp.json` ved prosjektroten (Claude Code sin standard-plassering — ikke i `.claude/`). Default-sett:
+
+- **supabase** (HTTP, OAuth) — DB-verktøy, migrations, logs
+- **resend** (stdio, dotenv-wrapper) — e-post (kun hvis brukt)
+- **playwright** (stdio) — browser-automasjon / E2E
+- **next-devtools** (stdio) — Next.js dev-server build/runtime-info
+- **shadcn** (stdio) — søk og hent komponenter fra registries
+- **chrome-devtools** (stdio) — live Chrome-debugging
+
+**To wrapper-patterns** i stdio-entries (se `.mcp.json._comment`):
+
+1. **`cmd /c`-wrapper** — alle stdio-MCP-er starter med `"command": "cmd", "args": ["/c", "npx", ...]`. Uten `cmd /c` feiler MCP-en silent på Windows. Mac/Linux-brukere kan droppe `cmd` + `/c` og bruke `"command": "npx"` direkte.
+2. **`dotenv-cli`-wrapper** — MCP-er som trenger secrets (resend) får env fra `.env.local` via `dotenv-cli -e .env.local --`-prefix i args. Ingen `"env": { "VAR": "${VAR}" }`-blokker — `.env.local` er single source of truth.
+
+**Bevisst utelatt**: GitHub MCP (`gh` CLI dekker det), Vercel MCP (`vercel` CLI + plugin dekker det), Context7 MCP (krever API-key, `WebFetch` dekker det meste). Se steg 01 i `oppstart/CHECKLIST.md` for opt-in-oppsett.
 
 ### Slash-kommandoer (Claude Code)
 
@@ -174,7 +194,7 @@ Unntak (hardkoding OK): logging, feilmeldinger i server-kode som ikke eksponeres
 5. **All brukervendt tekst via `next-intl`.** Aldri hardkode strenger. Bruk `useTranslations()` / `getTranslations()`. Legg til keys i **alle** `messages/*.json`.
 6. **Zod for all input.** Alle Server Actions og route handlers skal validere input med Zod før videre prosessering.
 7. **Ingen `any`.** Bruk `unknown` + narrowing hvis typen er ukjent.
-8. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod.
+8. **Env-variabler gjennom `src/env.ts`.** Aldri bruk `process.env` direkte utenfor env-fil — valider med Zod. `.env.local` er single source of truth; CLI-tooling (Supabase CLI, custom scripts, Vercel-env-push) wraps med `dotenv -e .env.local --`.
 9. **`createClient` fra riktig fil.** `@/lib/supabase/client` i Client Components, `@/lib/supabase/server` i Server Components/Actions/Route Handlers.
 10. **Alltid `supabase.auth.getUser()` server-side.** Ikke `getSession()` — den verifiserer ikke JWT.
 11. **RLS på alle tabeller med brukerdata.** Publishable key er offentlig — tilgangskontroll er RLS.
@@ -198,10 +218,10 @@ Unntak (hardkoding OK): logging, feilmeldinger i server-kode som ikke eksponeres
 
 ### Prosjekt
 
-- GitHub: `{{GITHUB_REPO}}`
-- Vercel: `{{VERCEL_PROJECT}}`
-- Supabase: `{{SUPABASE_PROJECT_REF}}`
-- Resend: API-nøkkel i `RESEND_API_KEY`
+- GitHub: `{{GITHUB_REPO}}` (workflow via `gh` CLI — ingen MCP i default-sett)
+- Vercel: `{{VERCEL_PROJECT}}` (workflow via `vercel` CLI + plugin — ingen MCP i default-sett)
+- Supabase: `{{SUPABASE_PROJECT_REF}}` (via HTTP-MCP + `.mcp.json`-URL-interpolering fra `.env.local`)
+- Resend: `RESEND_API_KEY` i `.env.local` (via stdio-MCP m/dotenv-wrapper, kun hvis brukt)
 
 ### Stack-dokumentasjon
 
