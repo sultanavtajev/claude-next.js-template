@@ -1,4 +1,4 @@
-# Steg 08 — Environment
+# Steg 09 — Environment
 
 ## Pre-flight: sjekk docs
 
@@ -21,7 +21,7 @@ Opprett `.env.example` med alle Supabase-nøkler dokumentert, og en typesafe `sr
 - [ ] `.env.local` verifisert: finnes lokalt og er ignorert av git (nøkler ble skrevet inn i steg 07 for Supabase)
 - [ ] Verifisert at importstien `@/env` fungerer — ingen `process.env` direkte utenfor `src/env.ts`
 
-Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 08 i `oppstart/CHECKLIST.md` og gå til steg 09.
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 09 i `oppstart/CHECKLIST.md` og gå til steg 10.
 
 ## Kommandoer
 
@@ -38,6 +38,10 @@ pnpm add @t3-oss/env-nextjs zod
 NEXT_PUBLIC_SUPABASE_URL="https://your-project-ref.supabase.co"
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="" # tidligere anon key — trygg å eksponere
 SUPABASE_SERVICE_ROLE_KEY=""            # SERVER-ONLY — gir full DB-tilgang, ALDRI eksponer
+
+# Supabase Management API (kun for Claude — brukes i steg 13 for å sette Auth URLs)
+# Hent fra https://supabase.com/dashboard/account/tokens
+SUPABASE_ACCESS_TOKEN=""
 
 # (Valgfritt) Resend for e-post
 RESEND_API_KEY=""
@@ -95,4 +99,4 @@ Kopier `.env.example` → `.env.local` og fyll inn faktiske verdier. Brukeren m�
 
 ## Avkrysning
 
-Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 08 i `oppstart/CHECKLIST.md`.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 09 i `oppstart/CHECKLIST.md`.

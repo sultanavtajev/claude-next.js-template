@@ -32,8 +32,8 @@ Kryss av hver `[ ]` → `[x]` fortløpende mens du jobber. Når alle er `[x]`, m
 
 `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}` og `{{SUPABASE_PROJECT_REF}}` blir fylt inn i sine respektive steg:
 - `{{SUPABASE_PROJECT_REF}}` → steg 07 (Supabase-prosjekt-gjennomgang)
-- `{{GITHUB_REPO}}` → steg 11 (git + GitHub-repo-opprettelse)
-- `{{VERCEL_PROJECT}}` → steg 11 (Vercel-linking)
+- `{{GITHUB_REPO}}` → steg 12 (git + GitHub-repo-opprettelse)
+- `{{VERCEL_PROJECT}}` → steg 13 (Vercel-linking)
 
 Ikke spør brukeren om disse nå — de krever login/ressursopprettelse og håndteres best som dedikerte gjennomganger.
 
@@ -45,7 +45,7 @@ Gjør erstatning i disse filene:
 
 **Ikke** rør:
 - `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}` — fylles inn i senere steg.
-- `TEMPLATE.md` — dokumentasjon for selve templaten, slettes i steg 12.
+- `TEMPLATE.md` — dokumentasjon for selve templaten, slettes i steg 14.
 
 ### 3. Verifiser at bare de riktige placeholders gjenstår
 
@@ -55,7 +55,7 @@ grep -r "{{" . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=oppst
 
 Forventet: treff **kun** på `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`. Ingen `{{PROJECT_NAME}}` eller `{{PROJECT_DESCRIPTION}}`.
 
-Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om templaten (inklusive eksempel-placeholders), og slettes uansett i steg 12.
+Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om templaten (inklusive eksempel-placeholders), og slettes uansett i steg 14.
 
 ## Forventet resultat
 
@@ -67,7 +67,7 @@ Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om
 
 MCP-serverne i `.claude/mcp-servers.json` refererer til disse env-variablene (må finnes i brukerens shell eller `.env.local`):
 
-- `GITHUB_TOKEN` — personlig access token fra GitHub
+- GitHub: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
 - Vercel: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
 - `SUPABASE_ACCESS_TOKEN` — personlig access token fra Supabase (kun hvis Supabase brukes)
 - `RESEND_API_KEY` — API-nøkkel fra Resend dashboard (kun hvis Resend brukes)
@@ -83,8 +83,8 @@ Informér brukeren at disse må settes for at MCP-serverne skal virke. Fjern eve
 
 ## Feilsøking
 
-- **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 12.
-- **Grep finner `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`**: forventet — de fylles inn i steg 07 og 11.
+- **Grep finner treff i `oppstart/`**: det er OK — denne mappen slettes i steg 14.
+- **Grep finner `{{GITHUB_REPO}}`, `{{VERCEL_PROJECT}}`, `{{SUPABASE_PROJECT_REF}}`**: forventet — de fylles inn i steg 07, 12 og 13.
 - **Bruker bruker ikke Supabase/Resend/Vercel**: disse kan enten fjernes fra `.claude/mcp-servers.json` (i relevant steg) eller beholdes med `TBD` — MCP-serveren vil da ikke fungere før verdien er fylt inn.
 
 ## Avkrysning

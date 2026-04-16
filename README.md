@@ -4,7 +4,7 @@
 
 <!--
 Denne README fylles ut i oppstart-steg 01 (prosjektnavn + beskrivelse).
-Templatens egen dokumentasjon ligger i TEMPLATE.md, som slettes i steg 12.
+Templatens egen dokumentasjon ligger i TEMPLATE.md, som slettes i steg 14.
 -->
 
 ## Kom i gang

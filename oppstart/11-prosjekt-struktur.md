@@ -1,4 +1,4 @@
-# Steg 10 — Prosjekt-struktur (`teknisk/`-mappa)
+# Steg 11 — Prosjekt-struktur (`teknisk/`-mappa)
 
 ## Mål
 
@@ -17,7 +17,7 @@ Opprett `teknisk/`-mappestrukturen med `dokumentasjon/` og `sjekkliste/`-underma
 - [ ] `teknisk/sjekkliste/README.md` opprettet med forklaring + eksempler
 - [ ] Verifisert med `git status` at 4 nye filer er klare til stage (og teknisk/ ikke er ignorert)
 
-Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 10 i `oppstart/CHECKLIST.md` og gå til steg 11.
+Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 11 i `oppstart/CHECKLIST.md` og gå til steg 12.
 
 ## Kommandoer
 
@@ -135,7 +135,7 @@ Dette gir en rask visuell oversikt over hva som er arkivert vs aktivt.
 
 - `teknisk/README.md` eksisterer og forklarer strukturen.
 - `teknisk/dokumentasjon/README.md` og `teknisk/sjekkliste/README.md` eksisterer med egne formål.
-- `git status` viser 4 nye filer klare til stage (de commites i steg 12 som del av bootstrap-commit).
+- `git status` viser 4 nye filer klare til stage (de commites i steg 14 som del av bootstrap-commit).
 
 ## Feilsøking
 
@@ -144,4 +144,4 @@ Dette gir en rask visuell oversikt over hva som er arkivert vs aktivt.
 
 ## Avkrysning
 
-Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 10 i `oppstart/CHECKLIST.md`.
+Se `## Sjekkliste` øverst i denne filen. Når alle interne bokser er `[x]`, kryss av steg 11 i `oppstart/CHECKLIST.md`.

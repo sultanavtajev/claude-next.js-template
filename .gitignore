@@ -51,8 +51,8 @@ test-results/
 # Claude local overrides (hold per-prosjekt)
 .claude/settings.local.json
 
-# Template-only: teknisk/ opprettes av oppstart-steg 10 hos brukeren.
+# Template-only: teknisk/ opprettes av oppstart-steg 11 hos brukeren.
 # Når Stop-hooken kjører mens vi utvikler templaten selv, lager den
 # chat-filer her som ikke skal committes til template-repoet.
-# Steg 10 fjerner denne linjen så user-prosjekter sporer teknisk/.
+# Steg 11 fjerner denne linjen så user-prosjekter sporer teknisk/.
 teknisk/

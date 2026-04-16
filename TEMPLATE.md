@@ -1,6 +1,6 @@
 # Next.js Template — dokumentasjon
 
-Denne filen beskriver **selve templaten** (`claude-next.js-template`). Den slettes automatisk i oppstart-steg 12, slik at det klonede prosjektet ikke ender opp med template-dokumentasjon.
+Denne filen beskriver **selve templaten** (`claude-next.js-template`). Den slettes automatisk i oppstart-steg 14, slik at det klonede prosjektet ikke ender opp med template-dokumentasjon.
 
 For prosjekt-spesifikk dokumentasjon (som følger med klonen): se `README.md` og `CLAUDE.md`.
 
@@ -21,7 +21,7 @@ cd mitt-nye-prosjekt
 claude
 ```
 
-`mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten kopiert inn — **uten** templatens git-historikk. Du starter med en ren mappe som steg 11 initialiserer git på.
+`mitt-nye-prosjekt` blir en ny undermappe av `C:\Kodeprosjekter\` med templaten kopiert inn — **uten** templatens git-historikk. Du starter med en ren mappe som steg 12 initialiserer git på.
 
 ### Om degit
 
