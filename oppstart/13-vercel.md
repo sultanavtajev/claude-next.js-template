@@ -30,7 +30,7 @@ Kryss av hver `[ ]` → `[x]` fortløpende. Hele steget er valgfritt — hvis br
 
 ## Pre-flight
 
-- `vercel` CLI installert. Sjekk med `vercel --version`. Hvis ikke: `pnpm add -g vercel`.
+- `vercel` CLI installert. Sjekk med `vercel --version`. Hvis ikke: **`npm install -g vercel`** (anbefalt — `pnpm add -g vercel` feiler på Windows uten at `pnpm setup` er kjørt først for å konfigurere PNPM_HOME).
 - `dotenv-cli` installert lokalt (kommer fra steg 09). Sjekk med `pnpm dotenv --version`. Brukes til å laste `.env.local` inn i bash-blokkene under cross-platform.
 - For Del 3 (Supabase Auth URLs): `SUPABASE_ACCESS_TOKEN` må finnes i `.env.local`. Hvis ikke: be bruker hente personal access token fra `https://supabase.com/dashboard/account/tokens` og legge i `.env.local`.
 
@@ -134,6 +134,28 @@ dotenv -e .env.local -- bash -c 'printf "%s" "$NEXT_PUBLIC_SUPABASE_URL" | verce
 ```
 
 Rapportér til bruker hvilke vars som ble satt per environment.
+
+### Preview-environment: branch-spesifikk vs "all preview branches"
+
+`vercel env add <NAME> preview` krever at du spesifiserer *hvilken* branch variabelen gjelder for — CLI-en prompter etter branch-navn. To varianter:
+
+1. **Spesifikk branch (CLI, default)** — variabelen gjelder kun når preview-deploys bygges fra den gitte branchen (f.eks. `feature`):
+
+   ```bash
+   # CLI spør etter branch når du kjører:
+   printf "%s" "$NEXT_PUBLIC_SUPABASE_URL" | vercel env add NEXT_PUBLIC_SUPABASE_URL preview --force
+   # → Git branch: feature   (skriv inn branch-navn)
+   ```
+
+   For non-interactive (f.eks. i loopen over): legg til `--git-branch feature` som arg. Men `vercel env add` har begrenset støtte for dette i enkelte CLI-versjoner — fallbacken er dashboard.
+
+2. **Alle preview-branches (dashboard)** — om du vil at variabelen skal gjelde for **alle** preview-deploys uansett branch (vanligst for SUPABASE_URL-type vars), gjøres dette kun via dashboard:
+
+   > Vercel dashboard → Project → Settings → Environment Variables → rediger variabelen → Environment: **Preview** (alle branches, ikke spesifikk).
+
+   CLI-en har ikke flagget "all preview branches" per 2026-04.
+
+**Praktisk anbefaling**: kjør loopen i avsnitt 3 over for spesifikk preview-branch (`feature`), og hvis brukeren senere oppretter flere preview-branches, be dem switche til "all preview" via dashboard.
 
 ### 4. Redeploy hvis siste deploy feilet
 
@@ -269,8 +291,10 @@ Informér bruker:
 
 ## Feilsøking
 
-- **`vercel: command not found`**: `pnpm add -g vercel`.
+- **`vercel: command not found`**: `npm install -g vercel` (eller `pnpm add -g vercel` hvis `pnpm setup` er kjørt tidligere for å konfigurere PNPM_HOME).
+- **`pnpm add -g vercel` feiler med "ERR_PNPM_GLOBAL_DIR_MISSING" / PNPM_HOME-advarsel på Windows**: pnpm sin globale bin-mappe er ikke satt opp. Enten kjør `pnpm setup` og restart shell, eller bytt til `npm install -g vercel` (enklere).
 - **`vercel link` krever interaktiv input**: bruker må klikke gjennom selv — Claude kan ikke fullføre interaktive CLI-prompts.
+- **`vercel env add preview` prompter for branch**: forventet — spesifisér `feature` (eller hva branch heter) for å bootstrape. Hvis du vil ha "alle preview-branches", bytt til dashboard-flyten etterpå.
 - **`vercel env add` feiler med "already exists"**: variabelen finnes fra før for den environmenten. Legg til `--force` for å overskrive.
 - **`SUPABASE_SERVICE_ROLE_KEY` feiler i development**: forventet — Vercel blokkerer sensitive vars der. Hopp over development-environment for den.
 - **Første deploy etter push til GitHub feilet**: env-vars ble satt etter push. Kjør `vercel redeploy <failed-url>` eller `git commit --allow-empty -m "redeploy" && git push`.

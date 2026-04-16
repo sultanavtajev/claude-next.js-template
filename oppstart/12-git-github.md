@@ -8,7 +8,7 @@ Initialisér fersk git-historikk (prosjektet er lastet med degit, så ingen `.gi
 
 ### Del 1 — Initialisér git-historikk
 - [ ] Pre-flight: `gh --version` OK
-- [ ] Verifisert at ingen `.git/`-mappe finnes (degit-flyten — standard)
+- [ ] `rm -rf .git` kjørt defensivt (uansett om `.git/` finnes — create-next-app v16.2+ og eventuell `git clone`-fallback kan ha opprettet den)
 - [ ] `git init` + `git branch -M main` kjørt
 - [ ] Første commit laget: `"chore: bootstrap fra claude-next.js-template"`
 
@@ -27,25 +27,29 @@ Kryss av hver `[ ]` → `[x]` fortløpende. Når alle er `[x]`, marker steg 12 i
 
 ## Del 1 — Initialisér git-historikk
 
-Prosjektet ble lastet ned med `degit` (per `TEMPLATE.md`-instruks), så det finnes ingen `.git/`-mappe. Initialisér fersk historikk:
+Prosjektet ble lastet ned med `degit` og `.git/` ble fjernet eksplisitt i steg 02 — så det skal ikke finnes `.git/`-mappe nå. Men siden create-next-app v16.2+ og `git clone`-fallback kan ha sneket inn en `.git/`-mappe likevel, gjør vi en defensiv `rm -rf .git` før init:
 
 ```bash
+# Defensiv — fjern eventuell stale .git/ uansett hvordan den kom dit
+rm -rf .git
+
+# Fersk init
 git init
 git branch -M main
 git add .
 git commit -m "chore: bootstrap fra claude-next.js-template"
 ```
 
-### Hvis `.git/` uventet finnes
+### Hvis brukeren har eksisterende git-historikk de vil beholde
 
-Kjør først:
+Skulle brukeren eksplisitt ha sagt at de vil beholde en eksisterende `.git/` (f.eks. videreføring av et annet prosjekt), **hopp over `rm -rf .git`** og sjekk status:
 
 ```bash
 git log --oneline 2>/dev/null | head -3
 ```
 
-- Commits med "claude-next.js-template"-historikk → bruker brukte `git clone` i stedet for degit. Stopp og spør: skal vi `rm -rf .git` og starte med fersk historikk? (Anbefalt: ja.)
-- Helt andre commits → bruker har eksisterende repo de vil beholde. Stopp og avklar med bruker før noe gjøres.
+- Commits med "claude-next.js-template"-historikk → bruker brukte `git clone` i stedet for degit og glemte steg 02 — bekreft `rm -rf .git` + fersk init.
+- Helt andre commits → bruker har eksisterende repo. Stopp og avklar med bruker om de vil beholde historikken (dette er uvanlig ved `/0.0-oppstart` på ferskt prosjekt).
 
 ## Del 2 — GitHub-repo-gjennomgang
 
