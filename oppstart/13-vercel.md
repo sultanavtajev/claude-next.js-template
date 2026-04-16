@@ -2,14 +2,13 @@
 
 ## Mål
 
-Link prosjektet til Vercel for deploy, autoriser Vercel MCP, push env-variabler automatisk, konfigurer Supabase Auth URLs mot production, og fyll inn `{{VERCEL_PROJECT}}`-placeholder. Valgfri — hopp over hvis brukeren ikke deployer til Vercel.
+Link prosjektet til Vercel for deploy, push env-variabler automatisk, konfigurer Supabase Auth URLs mot production, og fyll inn `{{VERCEL_PROJECT}}`-placeholder. Valgfri — hopp over hvis brukeren ikke deployer til Vercel. Vercel-workflow håndteres gjennom `vercel` CLI + Vercel-plugin — ingen MCP trengs (se steg 01 "Bevisst utelatte MCP-er" om du likevel vil legge til Vercel MCP manuelt).
 
 ## Sjekkliste
 
 ### Del 1 — Link
 - [ ] `AskUserQuestion`: skal Vercel linkes nå?
 - [ ] (Hvis ja) Pre-flight: `vercel --version` OK
-- [ ] (Hvis ja) Vercel MCP autorisert via `/mcp` → vercel i Claude Code (OAuth-flow fullført)
 - [ ] (Hvis ja) `vercel whoami` OK (bruker har kjørt `vercel login` om nødvendig)
 - [ ] (Hvis ja) `vercel link` kjørt; `.vercel/project.json` finnes
 - [ ] (Hvis ja) `{{VERCEL_PROJECT}}` erstattet i `CLAUDE.md`
@@ -49,14 +48,7 @@ Bruk `AskUserQuestion`:
 
 Behold `{{VERCEL_PROJECT}}`-placeholderen og hopp til "Forventet resultat". Bruker kan kjøre `vercel link` senere.
 
-### 3. Hvis "Ja" — autoriser offisiell Vercel MCP
-
-Vercel har en offisiell remote MCP-server på `https://mcp.vercel.com` med OAuth-basert autentisering. Templaten har den allerede i `.mcp.json`, men brukeren må autorisere den første gang:
-
-1. I Claude Code-sessionen: kjør `/mcp` → velg `vercel` → følg OAuth-flow i browser.
-2. Etter autorisering får Claude tilgang til: docs-søk, team/project-håndtering, deployments, logs.
-
-### 4. Verifiser Vercel-CLI-autentisering
+### 3. Verifiser Vercel-CLI-autentisering
 
 ```bash
 vercel whoami
@@ -68,7 +60,7 @@ Hvis ikke autentisert, si til brukeren:
 
 Vent på bekreftelse.
 
-### 5. Link prosjektet
+### 4. Link prosjektet
 
 ```bash
 vercel link
@@ -76,7 +68,7 @@ vercel link
 
 Dette er interaktivt — Vercel spør hvilken scope (org/team) og prosjektnavn. Brukeren må svare selv i terminalen. Be dem velge prosjektnavn som matcher GitHub-repo-navnet for konsistens.
 
-### 6. Hent Vercel-prosjektnavn fra `.vercel/project.json`
+### 5. Hent Vercel-prosjektnavn fra `.vercel/project.json`
 
 Etter link genereres `.vercel/project.json` lokalt med `orgId` og `projectId`. Les feltet `projectId` eller spør brukeren hva de kalte prosjektet. Fyll inn `{{VERCEL_PROJECT}}`-placeholder i:
 - `CLAUDE.md`
@@ -151,8 +143,6 @@ Første push til GitHub (fra steg 12) trigger ofte deploy _før_ env-vars ble pu
 vercel ls | head -5
 ```
 
-Eller bruk Vercel MCP: `mcp__vercel__list_deployments` med `projectId` fra `.vercel/project.json`.
-
 Hvis siste deploy har `● Error`-status:
 
 ```bash
@@ -200,8 +190,6 @@ Hent siste vellykkede production-deploy-URL via CLI:
 PROD_URL=$(vercel ls --prod 2>&1 | grep -m1 "● Ready" | awk '{print $2}')
 # F.eks. https://mitt-prosjekt.vercel.app
 ```
-
-Eller via Vercel MCP: `mcp__vercel__get_project` → les `alias`-feltet (det stabile `<prosjekt>.vercel.app`-domenet).
 
 Produksjons-URL-en bør være den stabile `<prosjekt>.vercel.app` (ikke `<hash>-<team>.vercel.app` som er deploy-spesifikk).
 
@@ -273,7 +261,7 @@ Informér bruker:
 
 ## Forventet resultat
 
-- (Hvis Vercel ble linket) `{{VERCEL_PROJECT}}` erstattet med prosjektnavn. `.vercel/project.json` finnes lokalt. Vercel MCP tilgjengelig i Claude Code.
+- (Hvis Vercel ble linket) `{{VERCEL_PROJECT}}` erstattet med prosjektnavn. `.vercel/project.json` finnes lokalt. `vercel` CLI klar for deploy-workflow.
 - (Hvis env-push) Env-variabler synlige i Vercel dashboard under Project → Settings → Environment Variables. Sensitive vars riktig merket.
 - (Hvis env-push) Production-deploy grønn etter redeploy (hvis første feilet).
 - (Hvis Auth URLs satt) Supabase dashboard viser riktig Site URL + Redirect URLs. Signup/OAuth/magic-links fungerer i prod.
@@ -281,9 +269,7 @@ Informér bruker:
 
 ## Feilsøking
 
-- **`vercel: command not found`**: `pnpm add -g vercel` (trengs for CLI-kommandoene; MCP-serveren fungerer uavhengig).
-- **`/mcp vercel` viser "Needs authentication"**: bruker må fullføre OAuth-flyten i browser. Browser åpnes automatisk ved første kall.
-- **Vercel MCP returnerer 401**: autorisering utløpt — kjør `/mcp` → vercel → re-auth.
+- **`vercel: command not found`**: `pnpm add -g vercel`.
 - **`vercel link` krever interaktiv input**: bruker må klikke gjennom selv — Claude kan ikke fullføre interaktive CLI-prompts.
 - **`vercel env add` feiler med "already exists"**: variabelen finnes fra før for den environmenten. Legg til `--force` for å overskrive.
 - **`SUPABASE_SERVICE_ROLE_KEY` feiler i development**: forventet — Vercel blokkerer sensitive vars der. Hopp over development-environment for den.

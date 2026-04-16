@@ -67,11 +67,10 @@ Vi ekskluderer `TEMPLATE.md` fra sjekken fordi filen inneholder dokumentasjon om
 
 MCP-serverne i `.mcp.json` refererer til disse env-variablene. Templaten bruker `.env.local` som single source of truth (settes opp i steg 09 med `dotenv-cli`). **Stdio-MCP-er** som trenger secrets wraps med `dotenv-cli -e .env.local --` så `.env.local` lastes inn i prosess-environmentet før child-prosessen starter — ingen `"env": { ... }`-blokker i `.mcp.json` selv.
 
-- GitHub: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
-- Vercel: OAuth via `/mcp` i Claude Code — ingen token trengs (autoriseres første gang MCP kalles)
-- `SUPABASE_ACCESS_TOKEN` — personlig access token fra Supabase (kun hvis Supabase brukes; HTTP-entry)
-- `RESEND_API_KEY` — API-nøkkel fra Resend dashboard (kun hvis Resend brukes; stdio m/dotenv-wrapper)
-- `CONTEXT7_API_KEY` — API-nøkkel fra context7.com/dashboard (valgfri, men gir høyere rate limits; stdio m/dotenv-wrapper)
+Default-sett (6 MCP-er):
+
+- `SUPABASE_PROJECT_REF` — supabase-prosjekt-ref brukes i URL-interpolering (`${SUPABASE_PROJECT_REF}`). Auth via OAuth — ingen Bearer-token trengs. Fylles inn i `.env.local` i steg 07.
+- `RESEND_API_KEY` — API-nøkkel fra Resend dashboard (kun hvis Resend brukes; stdio m/dotenv-wrapper). Fylles inn i steg 08.
 
 Disse krever ingen env-variabel:
 - `playwright` (@playwright/mcp) — browser-automasjon og E2E-testing
@@ -79,7 +78,20 @@ Disse krever ingen env-variabel:
 - `shadcn` (shadcn@latest mcp) — søk og hent shadcn-komponenter fra registries
 - `chrome-devtools` (chrome-devtools-mcp) — live Chrome-debugging mot åpen browser (komplementerer Playwright)
 
-Informér brukeren at disse må settes i `.env.local` for at MCP-serverne skal virke. Variablene fylles inn i sine respektive steg (`SUPABASE_ACCESS_TOKEN` i steg 09, `RESEND_API_KEY` i steg 08, `CONTEXT7_API_KEY` manuelt). Fjern eventuelt MCP-servere som ikke er aktuelle fra `.mcp.json`.
+Informér brukeren at disse må settes i `.env.local` for at MCP-serverne skal virke. Fjern eventuelt MCP-servere som ikke er aktuelle fra `.mcp.json`.
+
+### Bevisst utelatte MCP-er
+
+- **GitHub MCP** — ikke inkludert i default. `gh` CLI (brukes i steg 12) dekker samme behov (issues, PRs, Actions). Legg til manuelt om ønsket: hosted OAuth-endpoint `https://api.githubcopilot.com/mcp/` (type: http).
+- **Vercel MCP** — ikke inkludert. Vercel-plugin (`npx plugins add vercel/vercel-plugin`) + `vercel` CLI i steg 13 dekker workflow-en. Legg til manuelt om ønsket: `https://mcp.vercel.com` (type: http, OAuth).
+- **Context7 MCP** — ikke inkludert. Gir docs-oppslag for libraries, men `WebFetch` mot offisielle docs dekker det meste. Legg til manuelt med `CONTEXT7_API_KEY` i `.env.local` for høyere rate limits:
+
+  ```json
+  "context7": {
+    "command": "cmd",
+    "args": ["/c", "npx", "-y", "dotenv-cli", "-e", ".env.local", "--", "npx", "-y", "@upstash/context7-mcp"]
+  }
+  ```
 
 ### Windows-kompatibilitet: `cmd /c`-wrapper
 
@@ -101,7 +113,7 @@ Alle stdio-baserte MCP-er i `.mcp.json` bruker `"command": "cmd"` + `"args": ["/
 }
 ```
 
-HTTP-baserte MCP-er (github, vercel, supabase) er plattform-uavhengige — ingen endring trengs.
+HTTP-baserte MCP-er (supabase) er plattform-uavhengige — ingen endring trengs.
 
 ### Secrets via `dotenv-cli`-wrapper (stdio-MCP-er)
 

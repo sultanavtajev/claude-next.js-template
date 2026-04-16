@@ -48,8 +48,8 @@ Canonical doc-URLer for denne stacken:
 - [ ] [09 — Environment](./09-configure-env.md) — lag `.env.example` med alle nødvendige nøkler dokumentert
 - [ ] [10 — Verify](./10-verify.md) — kjør dev, build, lint, typecheck — alt grønt
 - [ ] [11 — Prosjekt-struktur](./11-prosjekt-struktur.md) — opprett `teknisk/dokumentasjon/` + `teknisk/sjekkliste/` med README-filer
-- [ ] [12 — Git + GitHub](./12-git-github.md) — reset git-historikk, GitHub-repo-gjennomgang (`gh auth`, opprett repo, push), MCP-autorisering
-- [ ] [13 — Vercel](./13-vercel.md) — **(valgfri)** link prosjekt til Vercel for deploy + MCP-autorisering
+- [ ] [12 — Git + GitHub](./12-git-github.md) — reset git-historikk, GitHub-repo-gjennomgang (`gh auth`, opprett repo, push)
+- [ ] [13 — Vercel](./13-vercel.md) — **(valgfri)** link prosjekt til Vercel for deploy, env-var-push, Supabase Auth URL-config
 - [ ] [14 — Cleanup](./14-cleanup.md) — slett `oppstart/`, final commit, push, informér om IDE/Claude-restart
 
 ## Regler for Claude

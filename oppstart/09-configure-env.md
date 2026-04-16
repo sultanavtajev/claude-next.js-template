@@ -45,14 +45,15 @@ Next.js auto-laster `.env.local` for `pnpm dev`/`build`/`start` (server + client
 ### `.env.example`
 
 ```bash
-# Supabase (fra dashboard → Project Settings → API)
+# Supabase — runtime (brukt av Next.js app + Supabase CLI + MCP)
+SUPABASE_PROJECT_REF=""                  # delen før .supabase.co i URLen — brukes av .mcp.json ${SUPABASE_PROJECT_REF}-interpolering
 NEXT_PUBLIC_SUPABASE_URL="https://your-project-ref.supabase.co"
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="" # tidligere anon key — trygg å eksponere
-SUPABASE_SERVICE_ROLE_KEY=""            # SERVER-ONLY — gir full DB-tilgang, ALDRI eksponer
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=""  # tidligere anon key — trygg å eksponere
+SUPABASE_SERVICE_ROLE_KEY=""             # SERVER-ONLY — gir full DB-tilgang, ALDRI eksponer
 
-# Supabase Management API (kun for Claude — brukes i steg 13 for å sette Auth URLs)
-# Hent fra https://supabase.com/dashboard/account/tokens
-SUPABASE_ACCESS_TOKEN=""
+# Supabase — CLI og Management API
+SUPABASE_DB_PASSWORD=""                  # fra Supabase dashboard (Settings → Database) — brukes av supabase db push
+SUPABASE_ACCESS_TOKEN=""                 # personal token fra https://supabase.com/dashboard/account/tokens
 
 # (Valgfritt) Resend for e-post
 RESEND_API_KEY=""

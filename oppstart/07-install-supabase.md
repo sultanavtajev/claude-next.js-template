@@ -23,9 +23,9 @@ Ett samlet steg for alt Supabase-arbeid:
 - [ ] Pre-flight docs-sjekk kjørt
 - [ ] `AskUserQuestion` stilt: har-prosjekt / må-opprette / hopp-over
 - [ ] (Hvis må-opprette) bruker har bekreftet at prosjekt er klart i Supabase dashboard
-- [ ] Project ref, URL, publishable key, service role key samlet via `AskUserQuestion`
-- [ ] `{{SUPABASE_PROJECT_REF}}` erstattet i `CLAUDE.md` og `.mcp.json`
-- [ ] Nøkler skrevet til `.env.local`
+- [ ] Project ref, URL, publishable key, service role key, DB-passord, access token samlet via `AskUserQuestion`
+- [ ] `{{SUPABASE_PROJECT_REF}}` erstattet i `CLAUDE.md` (ikke i `.mcp.json` — den bruker `${SUPABASE_PROJECT_REF}` env-interpolering mot `.env.local`)
+- [ ] `SUPABASE_PROJECT_REF`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_DB_PASSWORD`, `SUPABASE_ACCESS_TOKEN` skrevet til `.env.local`
 
 ### Del 2 — Klienter
 - [ ] `@supabase/supabase-js` og `@supabase/ssr` installert via `pnpm add`
@@ -71,32 +71,40 @@ Guide brukeren:
 
 ### 3. Samle inn nøkler via AskUserQuestion
 
-Bruk "Other"-opsjonen for fritekst:
+Bruk "Other"-opsjonen for fritekst. Dette bootstraps hele Supabase-oppsettet inklusive Management API-tilgang og DB-migrasjoner:
 
-| Spørsmål | Header |
-|----------|--------|
-| Hva er Supabase project ref? (f.eks. `abcdefghijklmnop`) | Project ref |
-| Oppgi `NEXT_PUBLIC_SUPABASE_URL` (full URL) | Supabase URL |
-| Oppgi `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key |
-| Oppgi `SUPABASE_SERVICE_ROLE_KEY` (kopier fra dashboard) | Service role key |
+| Spørsmål | Header | Hvor henter brukeren verdien? |
+|----------|--------|-------------------------------|
+| Hva er Supabase project ref? (f.eks. `abcdefghijklmnop`) | Project ref | Delen før `.supabase.co` i URLen |
+| Oppgi `NEXT_PUBLIC_SUPABASE_URL` (full URL) | Supabase URL | Dashboard → Project Settings → Data API |
+| Oppgi `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key | Dashboard → Project Settings → Data API (tidligere "anon key") |
+| Oppgi `SUPABASE_SERVICE_ROLE_KEY` (kopier fra dashboard) | Service role key | Dashboard → Project Settings → Data API — **SERVER-ONLY** |
+| Oppgi `SUPABASE_DB_PASSWORD` (fra Supabase-dashboard) | DB-passord | Ble satt ved prosjekt-opprettelse; kan resettes i Settings → Database → Reset database password |
+| Oppgi `SUPABASE_ACCESS_TOKEN` (personlig access token) | Access token | https://supabase.com/dashboard/account/tokens → `Generate new token` |
 
 ### 4. Fyll inn placeholders og skriv til `.env.local`
 
 Søk-og-erstatt `{{SUPABASE_PROJECT_REF}}` i:
 - `CLAUDE.md`
-- `.mcp.json`
+
+`.mcp.json` bruker `${SUPABASE_PROJECT_REF}` som env-interpolering og trenger ingen string-replace — Claude Code leser variabelen fra `.env.local` ved oppstart.
 
 Skriv nøklene til `.env.local` (opprett filen hvis den ikke finnes — den er allerede i `.gitignore`):
 
 ```
+SUPABASE_PROJECT_REF=<verdi fra spørsmål 3>
 NEXT_PUBLIC_SUPABASE_URL=<verdi fra spørsmål 3>
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<verdi fra spørsmål 3>
 SUPABASE_SERVICE_ROLE_KEY=<verdi fra spørsmål 3>
+SUPABASE_DB_PASSWORD=<verdi fra spørsmål 3>
+SUPABASE_ACCESS_TOKEN=<verdi fra spørsmål 3>
 ```
+
+`SUPABASE_DB_PASSWORD` brukes av Supabase CLI ved `db push` mot linket prosjekt. `SUPABASE_ACCESS_TOKEN` brukes til Management API (f.eks. Auth URL-config i steg 13) og CLI-autentisering.
 
 ### 5. Hvis "hopp over"
 
-Behold `{{SUPABASE_PROJECT_REF}}`-placeholderen og hopp over resten av dette steget. Informér brukeren om at klienter, auth og RLS må settes opp manuelt senere.
+Behold `{{SUPABASE_PROJECT_REF}}`-placeholderen i `CLAUDE.md` og hopp over resten av dette steget. Informér brukeren om at klienter, auth og RLS må settes opp manuelt senere.
 
 ## Del 2 — Installer klienter
 

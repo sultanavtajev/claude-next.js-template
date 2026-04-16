@@ -1,21 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/mcp-servers.json",
-  "_comment": "MCP-servere for dette prosjektet. {{PLACEHOLDERS}} fylles inn i oppstart-steg 01. Secrets leses fra .env.local via dotenv-cli-wrapper (ingen env-blokker her). VIKTIG: stdio-entries bruker cmd /c npx ... som Windows-kompatibel wrapper — ikke-Windows-brukere kan bytte til direkte npx (fjern 'cmd' + '/c' fra command/args).",
+  "_comment": "MCP-servere for dette prosjektet. Secrets leses fra .env.local via dotenv-cli-wrapper (stdio) eller OAuth (HTTP). VIKTIG: stdio-entries bruker cmd /c npx ... som Windows-kompatibel wrapper — ikke-Windows-brukere kan bytte til direkte npx (fjern 'cmd' + '/c' fra command/args). GitHub- og Vercel-MCP er bevisst utelatt: gh CLI og vercel-plugin dekker samme behov. Legg til context7-entry manuelt om du vil ha context7-docs-oppslag (krever CONTEXT7_API_KEY i .env.local).",
   "mcpServers": {
-    "github": {
-      "type": "http",
-      "url": "https://api.githubcopilot.com/mcp/"
-    },
-    "vercel": {
-      "type": "http",
-      "url": "https://mcp.vercel.com"
-    },
     "supabase": {
       "type": "http",
-      "url": "https://mcp.supabase.com/mcp?project_ref={{SUPABASE_PROJECT_REF}}",
-      "headers": {
-        "Authorization": "Bearer ${SUPABASE_ACCESS_TOKEN}"
-      }
+      "url": "https://mcp.supabase.com/mcp?project_ref=${SUPABASE_PROJECT_REF}"
     },
     "resend": {
       "command": "cmd",
@@ -28,10 +17,6 @@
     "next-devtools": {
       "command": "cmd",
       "args": ["/c", "npx", "-y", "next-devtools-mcp@latest"]
-    },
-    "context7": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "dotenv-cli", "-e", ".env.local", "--", "npx", "-y", "@upstash/context7-mcp"]
     },
     "shadcn": {
       "command": "cmd",
